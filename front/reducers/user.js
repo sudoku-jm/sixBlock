@@ -1,5 +1,5 @@
 const initalState = {
-  isLoggedIn: false,
+  isLoggedIn: true,
   user: null,
   logInLoading: false, // 로그인 시도중
   logInDone: false,
