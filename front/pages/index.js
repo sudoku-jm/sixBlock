@@ -11,7 +11,7 @@ const Home = () => {
     <AppLayout>
       {isLoggedIn ? (
         <>
-          <Menu />
+          <Menu page="index" />
           <DayBlock />
         </>
       ) : (

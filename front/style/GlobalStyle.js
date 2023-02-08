@@ -20,6 +20,7 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
   }
   html{
     font-size:62.5%; /*기본 브라우저 = 16px. 16px의 62.5%는 10px = 1rem.*/
