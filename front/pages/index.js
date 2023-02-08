@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import AppLayout from "../components/AppLayout";
 import DayBlock from "../components/DayBlock";
-import LoginLayout from "../components/LoginLayout";
+import LoginForm from "../components/LoginForm";
 import Menu from "../components/Menu";
 
 const Home = () => {
@@ -15,7 +15,7 @@ const Home = () => {
           <DayBlock />
         </>
       ) : (
-        <LoginLayout />
+        <LoginForm />
       )}
     </AppLayout>
   );

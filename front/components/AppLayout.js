@@ -1,8 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { GlobalStyle, ContainerStyle } from "../style/GlobalStyle";
 
 const AppLayout = ({ children }) => {
-  return <div>{children}</div>;
+  return (
+    <>
+      <GlobalStyle />
+      <ContainerStyle>{children}</ContainerStyle>
+    </>
+  );
 };
 
 AppLayout.propTypes = {
