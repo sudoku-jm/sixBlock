@@ -12,6 +12,9 @@ const Nav = styled.nav`
     top: 50%;
     right: 1rem;
     transform: translateY(-50%);
+    a {
+      display: block;
+    }
   }
 `;
 const PageTitle = styled.h2`
@@ -19,6 +22,13 @@ const PageTitle = styled.h2`
     margin: 0 0 4rem 0;
     font-size: 2.4rem;
     font-weight: 300;
+  }
+`;
+const PageTitle2 = styled.h3`
+  & {
+    margin: 0 0 1rem 0;
+    font-size: 1.8rem;
+    font-weight: 500;
   }
 `;
 
@@ -32,4 +42,4 @@ const Logo = styled.h1`
   }
 `;
 
-export { MenuStyle, Nav, Logo, PageTitle };
+export { MenuStyle, Nav, Logo, PageTitle, PageTitle2 };

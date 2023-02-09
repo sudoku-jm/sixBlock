@@ -1,11 +1,13 @@
 import React from "react";
 import { UserProfileStyle } from "../style/UserStyle";
+import PhotoProfile from "./PhotoProfile";
+import ProfileInfo from "./ProfileInfo";
 
 const UserProfile = () => {
   return (
     <UserProfileStyle>
-      <div>좌</div>
-      <div>우</div>
+      <PhotoProfile />
+      <ProfileInfo />
     </UserProfileStyle>
   );
 };

@@ -16,12 +16,19 @@ const Menu = ({ page }) => {
         </Link>
       </Logo>
       <Nav>
-        <Link href="/mypage">
-          <a title="페이지이동">
-            <TiHomeOutline style={styleIconMypage} />
-            <TiUserOutline style={styleIconMypage} />
-          </a>
-        </Link>
+        {page == "index" ? (
+          <Link href="/mypage">
+            <a title="페이지이동">
+              <TiUserOutline style={styleIconMypage} />
+            </a>
+          </Link>
+        ) : (
+          <Link href="/">
+            <a title="페이지이동">
+              <TiHomeOutline style={styleIconMypage} />
+            </a>
+          </Link>
+        )}
       </Nav>
     </MenuStyle>
   );

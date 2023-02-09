@@ -6,6 +6,17 @@ const GlobalStyle = createGlobalStyle`
     --color-primary: #6042f8;
     --color-secondary : #8e909f; 
     --color-white: #fff;
+    //primary opacity color
+    --color-primary-op1 : rgba(96, 96, 248, 0.1);
+    --color-primary-op2 : rgba(96, 96, 248, 0.2);
+    --color-primary-op3 : rgba(96, 96, 248, 0.3);
+    --color-primary-op4 : rgba(96, 96, 248, 0.4);
+    --color-primary-op5 : rgba(96, 96, 248, 0.5);
+    --color-primary-op6 : rgba(96, 96, 248, 0.6);
+    --color-primary-op7 : rgba(96, 96, 248, 0.7);
+    --color-primary-op8 : rgba(96, 96, 248, 0.8);
+    --color-primary-op9 : rgba(96, 96, 248, 0.9);
+
     //default
     --color-red : #ff7c7c;
     --color-greyeee : #eee;
@@ -173,6 +184,8 @@ const ContainerStyle = styled.section`
     color: var(--color-white) !important;
   }
   .btn-grey {
+    background: var(--color-greyeee) !important;
+    color: var(--color-black333) !important;
   }
   .btn-unvisiblelity-bdr {
     border: 1px solid var(--color-primary) !important;
