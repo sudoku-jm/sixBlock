@@ -62,6 +62,8 @@ const GlobalStyle = createGlobalStyle`
   select,
   textarea,
   button {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight:500;
     vertical-align: middle;
     border-radius: 0;
     cursor: pointer;

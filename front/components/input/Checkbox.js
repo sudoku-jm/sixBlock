@@ -1,10 +1,10 @@
 import React from "react";
 import { CheckboxEl } from "../../style/BlockStyle";
+import { TiTick } from "react-icons/ti";
 
-const Checkbox = ({ text, name, checked, onChange }) => {
+const Checkbox = ({ name, checked, onChange }) => {
   return (
     <CheckboxEl>
-      <label>
         <input
           type="checkbox"
           checked={checked}
@@ -12,11 +12,10 @@ const Checkbox = ({ text, name, checked, onChange }) => {
           id={name}
           name={name}
         />
-        <span>{text}</span>
+      <label htmlFor={name}>
+        <span></span>
+        <TiTick className="check_icon" />
       </label>
-      <div className="check">
-        <div className="inside"></div>
-      </div>
     </CheckboxEl>
   );
 };

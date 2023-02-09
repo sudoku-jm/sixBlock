@@ -4,6 +4,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import createSagaMiddleware from "redux-saga";
 import reducer from "../reducers";
 import rootSaga from "../sagas";
+import logger from "redux-logger"
 
 const loggerMiddleware = () => (next) => (action) => {
   next(action);
@@ -12,7 +13,7 @@ const loggerMiddleware = () => (next) => (action) => {
 const configureStore = () => {
   // 미들웨어 사용
   const sagaMiddleware = createSagaMiddleware();
-  const middlewares = [sagaMiddleware, loggerMiddleware];
+  const middlewares = [sagaMiddleware, loggerMiddleware, logger];
   const enhancer =
     process.env.NODE_ENV === "production"
       ? compose(applyMiddleware(...middlewares)) // 운영(배포)용 : 데브툴 연결x

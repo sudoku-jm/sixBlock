@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const DayBlockContainerEl = styled.div`
   h3 {
-    font-size: 20px;
+    font-size: 17px;
     margin: 10px 0 15px;
   }
   & > div {
@@ -14,84 +14,77 @@ export const DayBlockContainerEl = styled.div`
 `;
 
 export const DayBlockEl = styled.div`
+  display: flex;
+  justify-content: space-between;
   position: relative;
-  width: 49%;
-  padding: 20px;
-  border: 2px solid var(--color-primary);
+  width: 48.5%;
+  padding: 30px 20px;
   border-radius: 15px;
   background-color: ${(props) =>
-    props.isblockCheck ? "var(--color-f0f0f0)" : "transparent"};
+    props.isblockCheck ? "var(--color-f0f0f0)" : "var(--color-primary-op2)"};
   box-shadow: ${(props) =>
-    props.isblockCheck
-      ? "rgba(0, 0, 0, 0.24) 0px 3px 8px;"
-      : "transparent"};
+    props.isblockCheck ? "rgba(0, 0, 0, 0.24) 0px 3px 8px;" : "none"};
+  input[type="text"] {
+    border-bottom: ${(props) =>
+      props.isblockCheck ? "none" : "1px solid var(--color-c2c2c5);" };
+  }
 `;
 
 export const CheckboxEl = styled.div`
-  position: absolute;
-  top: -13px;
-  left: -10px;
-  display: inline-block;
-  margin-right: 5px;
   label {
-    line-height: 1.5;
-  }
-  span {
-    vertical-align: middle;
+    position: relative;
+    padding-right: 40px;
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0px;
+      left: 0;
+      border: 4px dashed var(--color-c2c2c5);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+    }
+    &::after {
+      content: "";
+      position: absolute;
+    }
+    .check_icon {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 4px;
+      font-size: 30px;
+      color: var(--color-c2c2c5);
+    }
   }
   input[type="checkbox"] {
-    display: inline-block;
-    vertical-align: middle;
-    appearance: none;
-    border: max(2px, 0.2em) solid var(--color-secondary);
-    border-radius: 50%;
-    width: 2.5em;
-    height: 2.5em;
-    transition: all 0.2s ease-in-out;
-    margin-right: 3px;
-    background-color: var(--color-white);
-    &:checked {
-      border: 0.2em solid var(--color-primary);
-      position: relative;
-      &::after {
-        position: absolute;
-        content: "✔"; 
-        /* 💜 */
-        display: inline-block;
-        top: -2px;
-        left: 3px;
-        font-weight: 700;
-        font-size: 24px;
-        color: var(--color-primary);
-      }
+    height: 0;
+    width: 0;
+    font-size: 0;
+    line-height: 0;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  input[type="checkbox"]:checked + label {
+    &::before {
+      background-color: var(--color-primary);
+      border: 4px solid var(--color-primary);
     }
-    /* &:focus-visible {
-      outline-offset: max(2px, 0.1em);
-      outline: max(2px, 0.1em) dotted var(--color-primary);
-    } */
-    &:hover {
-      box-shadow: 0 0 0 max(2px, 0.3em) var(--color-greyeee);
-    }
-    &:disabled {
-      background-color: var(--color-greyeee);
-      box-shadow: none;
-      opacity: 0.7;
-      cursor: not-allowed;
-      & + span {
-        opacity: 0.7;
-        cursor: not-allowed;
-      }
+    .check_icon {
+      color: var(--color-white);
     }
   }
 `;
 
 export const InputEl = styled.input`
-  width: 100%;
+  width: 80%;
   outline: none;
   border: none;
   border-bottom: 1px solid var(--color-c2c2c5);
   padding: 5px;
   cursor: text;
+  font-size: 18px;
   &:disabled {
     cursor: default;
   }
