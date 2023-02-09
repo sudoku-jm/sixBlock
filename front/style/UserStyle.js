@@ -1,68 +1,81 @@
 import styled from "styled-components";
-const UserProfileStyle = styled.section`
-  & {
-    display: flex;
-    margin: 3rem auto 0 auto;
-    background: var(--color-white);
-    box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.1);
-    border-radius: 2rem;
-    padding: 2rem;
-    .photo-wrap {
+const UserProfileStyle = styled.article`
+  display: flex;
+  flex-direction: ${(props) => (props.page === "mypage" ? "row" : "column")};
+  justify-content: ${(props) =>
+    props.page === "mypage" ? "flex-start" : "center"};
+  margin: 3rem auto 0 auto;
+  background: var(--color-white);
+  ${(props) =>
+    props.page === "mypage" && `box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.1);`};
+
+  border-radius: 2rem;
+  padding: 2rem;
+  text-align: ${(props) => (props.page === "mypage" ? "left" : "center")};
+  .photo-wrap {
+    position: relative;
+    overflow: hidden;
+    ${(props) => (props.page === "mypage" ? `margin: 0` : `margin:0 auto`)};
+    input {
+      position: absolute;
+      left: -9999px;
+    }
+    .photo {
+      display: block;
       position: relative;
-      .photo {
-        display: block;
-        position: relative;
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        overflow: hidden;
-        img {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%) scale(1.1);
-          width: 100%;
-        }
-      }
-      button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      width: 85px;
+      height: 85px;
+      border-radius: 50%;
+      overflow: hidden;
+      img {
         position: absolute;
-        right: 0;
-        bottom: 0;
-        width: 30px;
-        height: 30px;
-        background: var(--color-white);
-        border: 1px solid var(--color-c2c2c5);
-        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(1.1);
+        width: 100%;
       }
     }
-    .profile-info {
-      margin-left: 2rem;
-      width: calc(100% - 2rem);
-      .nickname {
-        display: block;
-        font-size: 1.6rem;
-        font-weight: 600;
-      }
-      .email {
-        display: block;
-        margin: 1rem 0;
-        color: var(--color-secondary);
-        font-size: 1.3rem;
-        font-weight: 300;
-      }
-      .btn-area {
-        button {
-          margin: 0 0.5rem 0 0;
-        }
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 30px;
+      height: 30px;
+      background: var(--color-white);
+      border: 1px solid var(--color-c2c2c5);
+      border-radius: 50%;
+    }
+  }
+  .profile-info {
+    ${(props) =>
+      props.page === "mypage"
+        ? ` margin-left: 2rem;width: calc(100% - 20rem);`
+        : `width:100%;`};
+    .nickname {
+      display: block;
+      font-size: 1.6rem;
+      font-weight: 600;
+    }
+    .user-id,
+    .email {
+      display: inline-block;
+      margin: 1rem 0;
+      color: var(--color-secondary);
+      font-size: 1.3rem;
+      font-weight: 300;
+    }
+    .btn-area {
+      button {
+        margin: 0 0.5rem 0 0;
       }
     }
   }
 `;
 
-const UserPlanerDashboardStyle = styled.section`
+const UserPlanerDashboardStyle = styled.article`
   & {
     margin-top: 6rem;
     .planer-dashboard {
@@ -119,4 +132,5 @@ const UserPlanerDashboardStyle = styled.section`
     }
   }
 `;
+
 export { UserProfileStyle, UserPlanerDashboardStyle };

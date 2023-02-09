@@ -8,7 +8,7 @@ const LoginForm = () => {
       <form>
         <div className="form-input">
           <label>아이디</label>
-          <input type="text" placeholder="이메일 주소" />
+          <input type="text" placeholder="아이디" />
         </div>
         <div className="form-input">
           <label>비밀번호</label>

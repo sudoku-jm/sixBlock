@@ -8,6 +8,7 @@ const mypage = () => {
     <AppLayout>
       <h1 className="hdtxt">마이 페이지</h1>
       <Menu page="mypage" />
+
       <UserProfile />
       <UserPlanerStatus />
     </AppLayout>
