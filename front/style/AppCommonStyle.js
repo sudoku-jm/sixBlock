@@ -42,4 +42,9 @@ const Logo = styled.h1`
   }
 `;
 
-export { MenuStyle, Nav, Logo, PageTitle, PageTitle2 };
+const ErrorMsg = styled.div`
+  color: var(--color-red);
+  font-size: 1.3rem;
+`;
+
+export { MenuStyle, Nav, Logo, PageTitle, PageTitle2, ErrorMsg };

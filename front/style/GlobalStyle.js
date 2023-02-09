@@ -176,6 +176,9 @@ const ContainerStyle = styled.section`
     font-size: 1.2rem !important;
     font-weight: 500 !important;
   }
+  .btnRoundS {
+    border-radius: 0.7rem !important;
+  }
   .btnRound {
     border-radius: 1.4rem !important;
   }

@@ -4,7 +4,28 @@ import {
   LOG_IN_FAILRE,
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
+  SIGNUP_REQUEST,
+  SIGNUP_SUCCESS,
 } from "../reducers/user";
+
+/*===========회원가입========== */
+function signupAPI(data) {
+  return axios.post("/user/signup", data);
+}
+function* signup(action) {
+  try {
+    const result = yield call(signupAPI, action.data);
+    console.log("signupAPI result");
+    yield put({
+      type: SIGNUP_SUCCESS,
+    });
+  } catch (err) {
+    yield put({
+      type: SIGNUP_FAILRE,
+      error: err.response.data,
+    });
+  }
+}
 
 /* ==========로그인============ */
 function loginAPI(data) {
@@ -30,10 +51,15 @@ function* logIn(action) {
     });
   }
 }
+
+function* watchSignup() {
+  yield takeLatest(SIGNUP_REQUEST, signup);
+}
 function* watchLogin() {
   yield takeLatest(LOG_IN_REQUEST, logIn);
 }
 
 export default function* userSaga() {
+  yield all([fork(watchSignup)]);
   yield all([fork(watchLogin)]);
 }

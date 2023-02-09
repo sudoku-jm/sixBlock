@@ -19,6 +19,13 @@ const FormStyle = styled.section`
       width: 100%;
       font-size: 1.4rem;
     }
+    .essential {
+      position: relative;
+      &:after {
+        content: "*";
+        color: var(--color-red);
+      }
+    }
   }
   .form-chk {
     margin-top: 3rem;
@@ -114,6 +121,11 @@ const FormStyle = styled.section`
     display: flex;
     input {
       width: inherit;
+    }
+    &.form-id {
+      input {
+        width: calc(100% - 70px);
+      }
     }
     &.form-email {
       em {

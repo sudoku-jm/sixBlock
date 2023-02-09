@@ -1,7 +1,8 @@
 import React, { useMemo, useRef } from "react";
 import { TiImage } from "react-icons/ti";
+import PropTypes from "prop-types";
 
-const PhotoProfile = () => {
+const PhotoProfile = ({ page }) => {
   const inputFile = useRef(null);
   const onUploadFile = () => {
     inputFile.current.click();
@@ -24,12 +25,19 @@ const PhotoProfile = () => {
             alt=""
           />
         </a>
-        <button title="이미지교체" onClick={onUploadFile}>
-          <TiImage style={styleIconImage} />
-        </button>
+
+        {page !== "mypage" && (
+          <button title="이미지교체" onClick={onUploadFile}>
+            <TiImage style={styleIconImage} />
+          </button>
+        )}
       </figure>
     </>
   );
+};
+
+PhotoProfile.propTypes = {
+  page: PropTypes.string.isRequired,
 };
 
 export default PhotoProfile;

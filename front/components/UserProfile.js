@@ -5,8 +5,8 @@ import ProfileInfo from "./ProfileInfo";
 
 const UserProfile = () => {
   return (
-    <UserProfileStyle>
-      <PhotoProfile />
+    <UserProfileStyle page="mypage">
+      <PhotoProfile page="mypage" />
       <ProfileInfo />
     </UserProfileStyle>
   );
