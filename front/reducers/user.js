@@ -1,5 +1,5 @@
 const initalState = {
-  isLoggedIn: false,
+  isLoggedIn: true,
   user: {
     id: "jm",
     nickname: "정미니",
