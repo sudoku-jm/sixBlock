@@ -25,7 +25,7 @@ const GlobalStyle = createGlobalStyle`
     --color-c2c2c5: #c2c2c5;  //placeholder
     --color-f0f0f0: #f0f0f0;  //after,disabled
 
-    --color-theme-dimmed : rgba(96, 66, 248, 0.2);
+    --color-dimmed : rgba(0,0,0, 0.2);
   }
   
   * {
