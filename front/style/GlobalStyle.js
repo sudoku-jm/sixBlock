@@ -197,6 +197,12 @@ const ContainerStyle = styled.section`
     border: 1px solid var(--color-primary) !important;
     color: var(--color-primary) !important;
   }
+
+  button:disabled,
+  input:read-only {
+    background: var(--color-f0f0f0) !important;
+    color: var(--color-c2c2c5) !important;
+  }
 `;
 
 const contentAfter = () => {

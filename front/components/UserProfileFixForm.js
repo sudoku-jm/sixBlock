@@ -1,12 +1,23 @@
-import React from "react";
+import { useCallback, useState } from "react";
 import FormStyle from "../style/FormStyle";
+import { useSelector } from "react-redux";
 const UserProfileFixForm = () => {
+  const { user } = useSelector((state) => state.user);
+  const { nickname } = user;
+  const [userId, setUserId] = useState(nickname);
+  const onNicknameChk = useCallback(
+    (e) => {
+      e.preventDefault();
+      setUserId(e.target.value);
+    },
+    [userId]
+  );
   return (
     <>
       <FormStyle>
         <div className="form-input">
           <label>닉네임</label>
-          <input type="text" value="jm" placeholder="닉네임" />
+          <input type="text" value={userId} onChange={onNicknameChk} />
         </div>
         <div className="form-input">
           <label>기존 비밀번호</label>
@@ -21,7 +32,9 @@ const UserProfileFixForm = () => {
           <input type="password" placeholder="신규 비밀번호 확인" />
         </div>
         <div className="form-btn form-btn-login">
-          <button className="btnL btnRound btn-primary">수정</button>
+          <button type="submit" className="btnL btnRound btn-primary">
+            수정
+          </button>
         </div>
       </FormStyle>
     </>

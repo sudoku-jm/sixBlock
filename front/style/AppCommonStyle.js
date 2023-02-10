@@ -47,4 +47,9 @@ const ErrorMsg = styled.div`
   font-size: 1.3rem;
 `;
 
-export { MenuStyle, Nav, Logo, PageTitle, PageTitle2, ErrorMsg };
+const DoneMsg = styled.div`
+  color: var(--color-primary);
+  font-size: 1.3rem;
+`;
+
+export { MenuStyle, Nav, Logo, PageTitle, PageTitle2, ErrorMsg, DoneMsg };

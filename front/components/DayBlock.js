@@ -5,7 +5,7 @@ import Day from "./block/Day";
 
 const DayBlock = () => {
   const { dayBlock } = useSelector((state) => state.block);
-  console.log("dayBlock", dayBlock);
+  // console.log("dayBlock", dayBlock);
 
   return (
     <>

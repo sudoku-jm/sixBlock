@@ -6,10 +6,10 @@ import LoginForm from "../components/LoginForm";
 import Menu from "../components/Menu";
 
 const Home = () => {
-  const { isLoggedIn } = useSelector((state) => state.user);
+  const { logInDone } = useSelector((state) => state.user);
   return (
     <AppLayout>
-      {isLoggedIn ? (
+      {logInDone ? (
         <>
           <Menu page="index" />
           <DayBlock />
