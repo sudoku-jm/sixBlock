@@ -2,6 +2,9 @@ import produce from "immer";
 
 const initialState = {
   user: {},
+  loadUserInfoLoading: false, //유저 정보 가져오기
+  loadUserInfoDone: false,
+  loadUserInfoError: null,
   signupLoading: false, //회원가입
   signupDone: false,
   signupError: null,
@@ -12,6 +15,11 @@ const initialState = {
   logInDone: false,
   logInError: null,
 };
+
+//회원정보
+export const LOAD_USER_INFO_SUCCESS = "LOAD_USER_INFO_SUCCESS";
+export const LOAD_USER_INFO_REQUEST = "LOAD_USER_INFO_REQUEST";
+export const LOAD_USER_INFO_FAILURE = "LOAD_USER_INFO_FAILURE";
 
 //회원가입
 export const SIGNUP_REQUEST = "SIGNUP_REQUEST";
@@ -32,12 +40,33 @@ const dummuUser = (data) => ({
   email: "jm91@bodyfriend.co.kr",
   photoProfile:
     "https://images.unsplash.com/photo-1661956602116-aa6865609028?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
-  plans: {},
+  plans: {
+    totalPlans: 300,
+    successRate: 100,
+    topKeywords: ["운동", "회사", "독서", "학원", "친구약속"],
+  },
 });
 
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
     switch (action.type) {
+      //================회원정보
+      case LOAD_USER_INFO_REQUEST:
+        draft.loadUserInfoLoading = true;
+        draft.loadUserInfoDone = false;
+        draft.loadUserInfoError = null;
+        break;
+      case LOAD_USER_INFO_SUCCESS:
+        draft.loadUserInfoLoading = false;
+        draft.loadUserInfoDone = true;
+        // draft.user = action.data;
+        draft.user = dummuUser();
+        break;
+      case LOAD_USER_INFO_FAILURE:
+        draft.loadUserInfoLoading = false;
+        draft.loadUserInfoDone = false;
+        draft.loadUserInfoError = action.error;
+        break;
       //================회원가입
       case SIGNUP_REQUEST:
         draft.signupLoading = true;
@@ -78,7 +107,7 @@ const reducer = (state = initialState, action) => {
         draft.logInLoading = false;
         draft.logInDone = true;
         // draft.user = action.data;
-        draft.user = dummuUser();
+        // draft.user = dummuUser();
         break;
       case LOG_IN_FAILRE:
         draft.logInLoading = false;

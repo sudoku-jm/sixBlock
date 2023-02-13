@@ -4,6 +4,9 @@ import {
   DUPLICATE_CHECK_ID_FAILRE,
   DUPLICATE_CHECK_ID_REQUEST,
   DUPLICATE_CHECK_ID_SUCCESS,
+  LOAD_USER_INFO_FAILURE,
+  LOAD_USER_INFO_REQUEST,
+  LOAD_USER_INFO_SUCCESS,
   LOG_IN_FAILRE,
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
@@ -12,9 +15,29 @@ import {
   SIGNUP_SUCCESS,
 } from "../reducers/user";
 
+/*===========회원정보========== */
+function loadUserInfoAPI() {
+  return axios.get("/user");
+}
+function* loadUserInfo() {
+  try {
+    // const result = yield call(loadUserInfoAPI);
+    console.log("loadUserInfoAPI result");
+    yield put({
+      type: LOAD_USER_INFO_SUCCESS,
+      // data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_USER_INFO_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
 /*===========회원가입========== */
 function signupAPI(data) {
-  return axios.post("/user/signup", data);
+  return axios.post("/user", data);
 }
 function* signup(action) {
   try {
@@ -75,6 +98,10 @@ function* logIn(action) {
   }
 }
 
+function* watchLoadUserInfo() {
+  yield takeLatest(LOAD_USER_INFO_REQUEST, loadUserInfo);
+}
+
 function* watchSignup() {
   yield takeLatest(SIGNUP_REQUEST, signup);
 }
@@ -86,6 +113,7 @@ function* watchLogin() {
 }
 
 export default function* userSaga() {
+  yield all([fork(watchLoadUserInfo)]);
   yield all([fork(watchSignup)]);
   yield all([fork(watchDuplicateCheckId)]);
   yield all([fork(watchLogin)]);
