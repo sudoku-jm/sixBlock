@@ -1,63 +1,93 @@
-const initalState = {
-  isLoggedIn: true,
-  user: {
-    id: "jm",
-    nickname: "정미니",
-    password: null,
-    // email : 'jm91@bodyfriend.co.kr',
-  },
+import produce from "immer";
+
+const initialState = {
+  user: {},
   signupLoading: false, //회원가입
   signupDone: false,
   signupError: null,
+  duplicateIdLoading: false, //아이디 중복체크
+  duplicateIdDone: false,
+  duplicateIdError: null,
   logInLoading: false, // 로그인 시도중
   logInDone: false,
   logInError: null,
 };
 
+//회원가입
 export const SIGNUP_REQUEST = "SIGNUP_REQUEST";
 export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
 export const SIGNUP_FAILRE = "SIGNUP_FAILRE";
-
+export const DUPLICATE_CHECK_ID_REQUEST = "DUPLICATE_CHECK_ID_REQUEST";
+export const DUPLICATE_CHECK_ID_SUCCESS = "DUPLICATE_CHECK_ID_SUCCESS";
+export const DUPLICATE_CHECK_ID_FAILRE = "DUPLICATE_CHECK_ID_FAILRE";
+//로그인
 export const LOG_IN_REQUEST = "LOG_IN_REQUEST";
 export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS";
 export const LOG_IN_FAILRE = "LOG_IN_FAILRE";
 
-const reducer = (state = initalState, action) => {
-  switch (action.type) {
-    //================회원가입
-    case SIGNUP_REQUEST:
-      draft.signupLoading = true;
-      draft.signupDone = false;
-      draft.signupError = null;
-      break;
-    case SIGNUP_SUCCESS:
-      draft.signupLoading = false;
-      draft.signupDone = true;
-      draft.signupError = null;
-      break;
-    case SIGNUP_FAILRE:
-      draft.signupLoading = false;
-      draft.signupDone = false;
-      draft.signupError = true;
-      break;
-    //= ==============로그인
-    case LOG_IN_REQUEST:
-      draft.logInLoading = true;
-      draft.logInError = null;
-      draft.logInDone = false;
-      break;
-    case LOG_IN_SUCCESS:
-      draft.logInLoading = false;
-      draft.logInDone = true;
-      draft.me = action.data;
-      break;
-    case LOG_IN_FAILRE:
-      draft.logInLoading = false;
-      draft.logInError = action.error;
-      break;
-    default:
-      return state;
-  }
+const dummuUser = (data) => ({
+  id: "jm1234",
+  nickname: "정미니",
+  password: null,
+  email: "jm91@bodyfriend.co.kr",
+  photoProfile:
+    "https://images.unsplash.com/photo-1661956602116-aa6865609028?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
+  plans: {},
+});
+
+const reducer = (state = initialState, action) => {
+  return produce(state, (draft) => {
+    switch (action.type) {
+      //================회원가입
+      case SIGNUP_REQUEST:
+        draft.signupLoading = true;
+        draft.signupDone = false;
+        draft.signupError = null;
+        break;
+      case SIGNUP_SUCCESS:
+        draft.signupLoading = false;
+        draft.signupDone = true;
+        break;
+      case SIGNUP_FAILRE:
+        draft.signupLoading = false;
+        draft.signupDone = false;
+        draft.signupError = action.error;
+        break;
+      //= ==============아이디 중복체크
+      case DUPLICATE_CHECK_ID_REQUEST:
+        draft.duplicateIdLoading = true;
+        draft.duplicateIdDone = false;
+        draft.duplicateIdError = null;
+        break;
+      case DUPLICATE_CHECK_ID_SUCCESS:
+        draft.duplicateIdLoading = false;
+        draft.duplicateIdDone = true;
+        break;
+      case DUPLICATE_CHECK_ID_FAILRE:
+        draft.duplicateIdLoading = false;
+        draft.duplicateIdDone = false;
+        draft.duplicateIdError = action.error;
+        break;
+      //= ==============로그인
+      case LOG_IN_REQUEST:
+        draft.logInLoading = true;
+        draft.logInDone = false;
+        draft.logInError = null;
+        break;
+      case LOG_IN_SUCCESS:
+        draft.logInLoading = false;
+        draft.logInDone = true;
+        // draft.user = action.data;
+        draft.user = dummuUser();
+        break;
+      case LOG_IN_FAILRE:
+        draft.logInLoading = false;
+        draft.logInError = action.error;
+        break;
+      default:
+        return state;
+    }
+  });
 };
 
 export default reducer;

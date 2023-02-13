@@ -26,7 +26,7 @@ export const DayBlockEl = styled.div`
   background-color: ${(props) =>
     props.isblockCheck ? "var(--color-f0f0f0)" : "var(--color-primary-op2)"};
   box-shadow: ${(props) =>
-    props.isblockCheck ? "rgba(0, 0, 0, 0.24) 0px 3px 8px;" : "none"};
+    props.isblockCheck ? "rgba(0, 0, 0, 0.2) 0px 3px 8px;" : "none"};
   input[type="text"] {
     border-bottom: ${(props) =>
       props.isblockCheck ? "none" : "1px solid var(--color-c2c2c5);"};
@@ -287,6 +287,8 @@ export const WeekBlockContainerEl = styled.div`
         width: calc(100% / 3);
         padding: 10px 0;
         text-align: center;
+        font-size: 1.7rem;
+        font-weight: 700;
       }
     }
   }
@@ -294,6 +296,10 @@ export const WeekBlockContainerEl = styled.div`
     .week_content_each {
       display: flex;
       height: 60px;
+      margin-bottom: 7px;
+      &:last-child {
+        margin-bottom: 0;
+      }
     }
     h3 {
       width: 50px;
@@ -304,14 +310,102 @@ export const WeekBlockContainerEl = styled.div`
     ul {
       width: calc(100% - 50px);
       display: flex;
+      justify-content: space-between;
+
       li {
-        width: calc(100% / 6);
+        width: calc(100% / 6 - 5px);
         display: flex;
+        position: relative;
         align-items: center;
         justify-content: center;
-        border: 2px solid var(--color-white);
-        background-color: var(--color-f0f0f0);
+        border-radius: 10px;
+        background-color: var(--color-primary-op2);
+
+        span {
+          &.dimmed_text {
+            color: var(--color-c2c2c5);
+          }
+          &.active_text {
+            /* color: var(--color-white); */
+            font-weight: 700;
+          }
+        }
+        &.finished_block {
+          background-color: var(--color-f0f0f0);
+          box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 3px;
+          cursor: pointer;
+          .finished_icon {
+            position: absolute;
+            content: "";
+            /* font-size: 20px; */
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            color: var(--color-white);
+            background-color: var(--color-primary);
+          }
+          span {
+            color: var(--color-c2c2c5);
+          }
+        }
       }
+    }
+  }
+`;
+
+export const KeywordModalEl = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 70%;
+  background-color: var(--color-white);
+  border-radius: 20px;
+  text-align: center;
+  z-index: 3;
+  .modal_inner {
+    position: relative;
+    .modal_close {
+      display: flex;
+      justify-content: flex-end;
+      padding: 15px;
+      font-size: 2rem;
+    }
+    .modal_title {
+      text-align: center;
+      font-size: 2rem;
+      padding-bottom: 10px;
+      border-bottom: 3px solid var(--color-primary);
+    }
+    .modal_content {
+      padding: 15px;
+      font-size: 1.6rem;
+      .modal_content_each {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+        min-height: 55px;
+        &:last-child {
+          margin-bottom: 0;
+        }
+        h5 {
+          width: 20%;
+        }
+        & > div {
+          width: 80%;
+        }
+      }
+    }
+  }
+`;
+
+export const MonthBlockContEl = styled.div`
+  .react-calendar {
+    width: 100%;
+    border: none;
+    .react-calendar__tile {
+      padding: 15px 10px 30px;
     }
   }
 `;

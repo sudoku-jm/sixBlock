@@ -1,5 +1,12 @@
+import Calendar from "react-calendar"
+import { MonthBlockContEl } from "../../style/BlockStyle"; 
+
 const MonthBlock = () => {
-  return <div></div>
+  return (
+    <MonthBlockContEl>
+      <Calendar />
+    </MonthBlockContEl>
+  );
 }
 
 export default MonthBlock

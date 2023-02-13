@@ -12,8 +12,8 @@ import Menu from "../components/Menu";
 import { SelectTitleEl } from "../style/BlockStyle";
 
 const Home = () => {
-  //로그인 여부
-  const { isLoggedIn } = useSelector((state) => state.user);
+  const { logInDone } = useSelector((state) => state.user);
+  
   //오늘 날짜
   const { curDate, dateArr } = useSelector((state) => state.block);
 
@@ -28,7 +28,7 @@ const Home = () => {
 
   return (
     <AppLayout>
-      {isLoggedIn ? (
+      {logInDone ? (
         <>
           <Menu page="index" />
           <SelectTitleEl className="select_text">

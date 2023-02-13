@@ -1,4 +1,5 @@
 import produce from "immer";
+import { dayDummyData, weekDummyData } from "../dummy/dummyData";
 
 const initialState = {
   getBlockLoading: false,
@@ -7,115 +8,9 @@ const initialState = {
 
   curDate: "2023-02-09",
   monthBlock: [],
-  weekBlock: [
-    {
-      day: "Monday",
-      weekData: [
-        {
-          type: "MORNING",
-          blockData: [
-            {
-              seq: 1,
-              typeNum: 1,
-              content: "test test",
-              isFinished: true,
-              regDate: "2023-02-09",
-            },
-            {
-              seq: 2,
-              typeNum: 2,
-              content: "",
-              isFinished: false,
-              regDate: "2023-02-09",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      day: "Wednesday",
-      weekData: [
-        {
-          type: "MORNING",
-          blockData: [
-            {
-              seq: 3,
-              typeNum: 1,
-              content: "test test",
-              isFinished: true,
-              regDate: "2023-02-09",
-            },
-            {
-              seq: 4,
-              typeNum: 2,
-              content: "",
-              isFinished: false,
-              regDate: "2023-02-09",
-            },
-          ],
-        },
-      ],
-    },
-  ],
-  dayBlock: [
-    {
-      type: "MORNING",
-      blockData: [
-        {
-          seq: 1,
-          typeNum: 1,
-          content: "test test",
-          isFinished: true,
-          regDate: "2023-02-09",
-        },
-        {
-          seq: 2,
-          typeNum: 2,
-          content: "",
-          isFinished: false,
-          regDate: "2023-02-09",
-        },
-      ],
-    },
-    {
-      type: "AFTERNOON",
-      blockData: [
-        {
-          seq: 3,
-          typeNum: 1,
-          content: "",
-          isFinished: false,
-          regDate: "2023-02-09",
-        },
-        {
-          seq: 4,
-          typeNum: 2,
-          content: "",
-          isFinished: false,
-          regDate: "2023-02-09",
-        },
-      ],
-    },
-    {
-      type: "DINNER",
-      blockData: [
-        {
-          seq: 5,
-          typeNum: 1,
-          content: "",
-          isFinished: false,
-          regDate: "2023-02-09",
-        },
-        {
-          seq: 6,
-          typeNum: 2,
-          content: "",
-          isFinished: false,
-          regDate: "2023-02-09",
-        },
-      ],
-    },
-  ],
+  weekBlock: weekDummyData,
+    
+  dayBlock: dayDummyData,
 
   //dayblock 에서 날짜 선택 시 일정이 있는지 체크할 arr. 월별로 불러오기?
   dateArr: [

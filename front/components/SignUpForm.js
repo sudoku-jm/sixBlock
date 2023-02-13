@@ -1,22 +1,29 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import useInput from "../hooks/useInput";
 import FormStyle from "../style/FormStyle";
-import { PageTitle, ErrorMsg } from "../style/AppCommonStyle";
-import { SIGNUP_REQUEST } from "../reducers/user";
+import { PageTitle, ErrorMsg, DoneMsg } from "../style/AppCommonStyle";
+import { DUPLICATE_CHECK_ID_REQUEST, SIGNUP_REQUEST } from "../reducers/user";
 import Router from "next/router";
+import regChk from "../hooks/useReg";
+
 const SignUpForm = () => {
   const dispatch = useDispatch();
-  const { signupDone, signupError } = useSelector((state) => state.user);
-  const [userId, onChangeId, setUserId] = useInput("");
+  const { signupDone, signupError, duplicateIdDone, duplicateIdError } =
+    useSelector((state) => state.user);
+
+  const idRef = useRef(null);
+  const [userId, setUserId] = useState("");
+  const [flagId, setFlagId] = useState(false);
+  const [flagReId, setFlagReId] = useState(true);
+  const [idDuple, setIdDuple] = useState(duplicateIdDone);
   const [userNickName, onChangeNickName, setUserNickName] = useInput("");
   const [userPassword, setPassword] = useState("");
   const [userPasswordChk, setUserPasswordChk] = useState("");
   const [term, setTerm] = useState(false);
 
-  const [passwordValidationError, setPasswordValidationError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
-  const [termError, setTermError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState({});
+  const [signupActive, setSignupActive] = useState(true);
 
   useEffect(() => {
     if (signupDone) {
@@ -26,53 +33,158 @@ const SignUpForm = () => {
       setPassword("");
       setUserPasswordChk("");
       setTerm(false);
-      setPasswordValidationError(false);
-      setPasswordError(false);
-      setTermError(false);
+      setErrorMsg({});
       Router.push("/");
     }
   }, [signupDone]);
 
   useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        idRef.current &&
+        !idRef.current.contains(event.target) &&
+        flagId &&
+        flagReId
+      ) {
+        if (userId === "") {
+          setErrorMsg({
+            ...errorMsg,
+            id: {
+              ...errorMsg.id,
+              error: true,
+              msg: "필수 정보 입니다",
+            },
+          });
+          return;
+        }
+        if (regChk.idRegExp(userId)) {
+          setErrorMsg({
+            ...errorMsg,
+            id: {
+              ...errorMsg.id,
+              error: true,
+              msg: "영문 숫자 포함 4-20자 이내",
+            },
+          });
+        }
+        if (!idDuple) {
+          dispatch({
+            type: DUPLICATE_CHECK_ID_REQUEST,
+            data: userId,
+          });
+        }
+      }
+    };
+    document.addEventListener("click", handleClickOutside, true);
+    return () => {
+      document.removeEventListener("click", handleClickOutside, true);
+    };
+  }, [userId, flagId, idDuple]);
+
+  useEffect(() => {
+    if (duplicateIdDone) {
+      setErrorMsg({
+        ...errorMsg,
+        id: {
+          error: false,
+          done: true,
+          msg: "아이디 사용 가능",
+        },
+      });
+      setIdDuple(true);
+      setSignupActive(false);
+    }
+  }, [duplicateIdDone]);
+
+  useEffect(() => {
+    if (duplicateIdError) {
+      alert(duplicateIdError);
+    }
     if (signupError) {
       alert(signupError);
     }
-  }, [signupError]);
+  }, [signupError, duplicateIdError]);
+
   const validationChk = () => {
-    const idRegExp = /^[a-z]+[a-z0-9]{3,19}$/g;
-    const passwordRegExp =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,19}$/;
-    const nicknameRegExp = /^[가-힣|a-z|A-Z|]+$/;
     //아이디 검증
-    if (!idRegExp.test(userId)) {
-      alert("아이디 확인!");
+    if (userId === "") {
+      setErrorMsg({
+        ...errorMsg,
+        id: {
+          ...errorMsg.id,
+          error: true,
+          msg: "필수 정보 입니다",
+        },
+      });
+      return;
+    }
+    if (regChk.idRegExp(userId)) {
+      setErrorMsg({
+        ...errorMsg,
+        id: {
+          error: true,
+          done: false,
+          msg: "영문 숫자 포함 4-20자 이내",
+        },
+      });
       return;
     }
     //닉네임 검증
-    if (!nicknameRegExp.test(userNickName)) {
-      alert("닉네임 확인!");
+    if (regChk.nicknameRegExp(userNickName)) {
+      setErrorMsg({
+        ...errorMsg,
+        nickname: {
+          error: true,
+          done: false,
+          msg: "2-8자 이내 한글 혹은 영문",
+        },
+      });
       return;
     }
     //비밀번호 검증
-    if (!passwordRegExp.test(userPassword)) {
-      alert("비밀번호 확인!");
-      return setPasswordValidationError(true);
+    if (regChk.passwordRegExp(userPassword)) {
+      setErrorMsg({
+        ...errorMsg,
+        password: {
+          error: true,
+          done: false,
+          msg: "영문 숫자 특수문자 포함 8-20자 이내",
+        },
+      });
+      return;
     }
     if (userPassword !== userPasswordChk) {
-      alert("비밀번호 재입력 확인!");
-      return setPasswordError(true);
+      setErrorMsg({
+        ...errorMsg,
+        passwordRe: {
+          error: true,
+          done: false,
+          msg: "비밀번호가 일치하지 않습니다.",
+        },
+      });
+      return;
     }
     //약관동의
     if (!term) {
-      alert("약관동의 확인!");
-      return setTermError(true);
+      setErrorMsg({
+        ...errorMsg,
+        term: {
+          error: true,
+          done: false,
+          msg: "약관동의 체크해야 가입가능.",
+        },
+      });
+      return;
     }
 
     return true;
   };
+
+  //폼 전송
   const handleSubmit = useCallback(
     (e) => {
       e.preventDefault();
+      setErrorMsg({});
       if (validationChk()) {
         //데이터 전달.
         dispatch({
@@ -88,26 +200,56 @@ const SignUpForm = () => {
     [userId, userNickName, userPassword, userPasswordChk, term]
   );
 
-  const onDuplicateChk = useCallback((e) => {
-    e.preventDefault();
-    console.log("asdasdsad");
+  const onClickId = useCallback(
+    (e) => {
+      e.preventDefault();
+      setFlagId(true);
+    },
+    [flagId]
+  );
+
+  const onChangeId = useCallback((e) => {
+    setUserId(e.target.value);
+    if (e.target.value === "") {
+      setErrorMsg({
+        ...errorMsg,
+        id: {
+          ...errorMsg.id,
+          error: true,
+          msg: "필수 정보 입니다",
+        },
+      });
+    } else if (regChk.idRegExp(e.target.value)) {
+      setFlagReId(false);
+      setErrorMsg({
+        ...errorMsg,
+        id: {
+          ...errorMsg.id,
+          error: true,
+          msg: "영문 숫자 포함 4-20자 이내",
+        },
+      });
+    } else {
+      setErrorMsg({});
+      setFlagReId(true);
+      setIdDuple(false);
+    }
   }, []);
   const onChangePassword = useCallback((e) => {
-    setPasswordValidationError(false);
     setPassword(e.target.value);
-    console.log(e.target.value);
+    setErrorMsg({});
   }, []);
   const onChangePasswordChk = useCallback(
     (e) => {
-      setPasswordError(e.target.value !== userPassword);
       setUserPasswordChk(e.target.value);
+      setErrorMsg({});
     },
     [userPassword]
   );
   const onChangeTerm = useCallback(
     (e) => {
       setTerm(e.target.checked);
-      setTermError(false);
+      setErrorMsg({});
     },
     [term]
   );
@@ -117,24 +259,25 @@ const SignUpForm = () => {
       <form onSubmit={handleSubmit}>
         <div className="form-input">
           <label className="essential">아이디</label>
-          <div className="form-row form-id">
-            <input
-              type="text"
-              name="user-id"
-              placeholder="영문 숫자 포함 4-20자 이내"
-              value={userId}
-              onChange={onChangeId}
-              minLength="4"
-              maxLength="20"
-              required
-            />
-            <button
-              className="btnS btnRoundS btn-primary"
-              onClick={onDuplicateChk}
-            >
-              중복검사
-            </button>
-          </div>
+          <input
+            type="text"
+            name="user-id"
+            placeholder="영문 숫자 포함 4-20자 이내"
+            value={userId}
+            onChange={onChangeId}
+            onClick={onClickId}
+            ref={idRef}
+            minLength="4"
+            maxLength="20"
+            required
+          />
+          {errorMsg.id?.error ? (
+            <ErrorMsg>{errorMsg.id.msg}</ErrorMsg>
+          ) : errorMsg.id?.done ? (
+            <DoneMsg>아이디 사용가능</DoneMsg>
+          ) : (
+            ""
+          )}
         </div>
         {/* <div className="form-input">
           <label>이메일</label>
@@ -165,6 +308,9 @@ const SignUpForm = () => {
             onChange={onChangeNickName}
             required
           />
+          {errorMsg.nickname?.error && (
+            <ErrorMsg>{errorMsg.nickname.msg}</ErrorMsg>
+          )}
         </div>
         <div className="form-input">
           <label className="essential">비밀번호</label>
@@ -178,10 +324,8 @@ const SignUpForm = () => {
             maxLength="20"
             required
           />
-          {passwordValidationError && (
-            <ErrorMsg>
-              영문 숫자 특수문자 포함 8-20자 이내로 입력하세요.
-            </ErrorMsg>
+          {errorMsg.password?.error && (
+            <ErrorMsg>{errorMsg.password.msg}</ErrorMsg>
           )}
         </div>
         <div className="form-input">
@@ -196,7 +340,9 @@ const SignUpForm = () => {
             maxLength="20"
             required
           />
-          {passwordError && <ErrorMsg>비밀번호가 일치하지 않습니다.</ErrorMsg>}
+          {errorMsg.passwordRe?.error && (
+            <ErrorMsg>{errorMsg.passwordRe.msg}</ErrorMsg>
+          )}
         </div>
         <div className="form-chk">
           <input
@@ -211,10 +357,14 @@ const SignUpForm = () => {
             <span>약관동의</span>
           </label>
         </div>
-        {termError && <ErrorMsg>약관동의 체크해야 가입가능요^^</ErrorMsg>}
+        {errorMsg.term?.error && <ErrorMsg>{errorMsg.term.msg}</ErrorMsg>}
 
         <div className="form-btn form-btn-login">
-          <button type="submit" className="btnL btnRound btn-primary">
+          <button
+            type="submit"
+            className="btnL btnRound btn-primary"
+            disabled={signupActive}
+          >
             회원가입
           </button>
         </div>

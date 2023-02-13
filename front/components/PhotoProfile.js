@@ -1,8 +1,11 @@
 import React, { useMemo, useRef } from "react";
 import { TiImage } from "react-icons/ti";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
 const PhotoProfile = ({ page }) => {
+  const { user } = useSelector((state) => state.user);
+  const { photoProfile } = user;
   const inputFile = useRef(null);
   const onUploadFile = () => {
     inputFile.current.click();
@@ -20,10 +23,7 @@ const PhotoProfile = ({ page }) => {
       <figure className="photo-wrap">
         <input type="file" id="file" ref={inputFile} className="hdtxt" />
         <a title="" className="photo">
-          <img
-            src="https://images.unsplash.com/photo-1661956602116-aa6865609028?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80"
-            alt=""
-          />
+          <img src={photoProfile || ""} alt="" />
         </a>
 
         {page !== "mypage" && (
