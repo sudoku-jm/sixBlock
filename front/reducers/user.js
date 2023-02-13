@@ -14,6 +14,13 @@ const initialState = {
   logInLoading: false, // 로그인 시도중
   logInDone: false,
   logInError: null,
+  logOutLoading: false, // 로그아웃 시도중
+  logOutDone: false,
+  logOutError: null,
+  modifyUserLoading: false, //유저 정보 수정
+  modifyUserDone: false,
+  modifyUserError: null,
+  beforePwChk: null,
 };
 
 //회원정보
@@ -32,6 +39,16 @@ export const DUPLICATE_CHECK_ID_FAILRE = "DUPLICATE_CHECK_ID_FAILRE";
 export const LOG_IN_REQUEST = "LOG_IN_REQUEST";
 export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS";
 export const LOG_IN_FAILRE = "LOG_IN_FAILRE";
+
+//로그아웃
+export const LOGOUT_REQUEST = "LOGOUT_REQUEST";
+export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
+export const LOGOUT_FAILRE = "LOGOUT_FAILRE";
+
+//회원정보 수정
+export const MODIFY_USER_REQUEST = "MODIFY_USER_REQUEST";
+export const MODIFY_USER_SUCCESS = "MODIFY_USER_SUCCESS";
+export const MODIFY_USER_FAILRE = "MODIFY_USER_FAILRE";
 
 const dummuUser = (data) => ({
   id: "jm1234",
@@ -107,11 +124,45 @@ const reducer = (state = initialState, action) => {
         draft.logInLoading = false;
         draft.logInDone = true;
         // draft.user = action.data;
-        // draft.user = dummuUser();
+        draft.user = dummuUser();
         break;
       case LOG_IN_FAILRE:
         draft.logInLoading = false;
         draft.logInError = action.error;
+        break;
+      //= ==============로그아웃
+      case LOGOUT_REQUEST:
+        draft.logOutLoading = true;
+        draft.logOutDone = false;
+        draft.logOutError = null;
+        break;
+      case LOGOUT_SUCCESS:
+        draft.logOutLoading = false;
+        draft.logOutDone = false;
+        draft.user = null;
+        break;
+      case LOGOUT_FAILRE:
+        draft.logOutLoading = false;
+        draft.logOutError = action.error;
+        break;
+      //= ==============회원정보 수정
+      case MODIFY_USER_REQUEST:
+        draft.modifyUserLoading = true;
+        draft.modifyUserDone = false;
+        draft.modifyUserError = null;
+        draft.beforePwChk = null;
+        break;
+      case MODIFY_USER_SUCCESS:
+        draft.modifyUserLoading = false;
+        draft.modifyUserDone = true;
+        draft.beforePwChk = action.data.beforePwChk;
+        // draft.user = action.data;
+        // draft.user = dummuUser();
+        break;
+      case MODIFY_USER_FAILRE:
+        draft.modifyUserLoading = false;
+        draft.modifyUserError = action.error;
+        draft.beforePwChk = null;
         break;
       default:
         return state;

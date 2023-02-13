@@ -1,4 +1,4 @@
-import { all, fork, put, takeLatest, call } from "redux-saga/effects";
+import { all, fork, put, takeLatest, call, delay } from "redux-saga/effects";
 import axios from "axios";
 import {
   DUPLICATE_CHECK_ID_FAILRE,
@@ -7,13 +7,20 @@ import {
   LOAD_USER_INFO_FAILURE,
   LOAD_USER_INFO_REQUEST,
   LOAD_USER_INFO_SUCCESS,
+  LOGOUT_FAILRE,
+  LOGOUT_REQUEST,
+  LOGOUT_SUCCESS,
   LOG_IN_FAILRE,
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
+  MODIFY_USER_FAILRE,
+  MODIFY_USER_REQUEST,
+  MODIFY_USER_SUCCESS,
   SIGNUP_FAILRE,
   SIGNUP_REQUEST,
   SIGNUP_SUCCESS,
 } from "../reducers/user";
+import { func } from "prop-types";
 
 /*===========회원정보========== */
 function loadUserInfoAPI() {
@@ -97,6 +104,60 @@ function* logIn(action) {
     });
   }
 }
+/* ==========로그아웃============ */
+function logoutAPI() {
+  // data.email, data.password 전달.
+  return axios.post("/user/logout");
+}
+
+function* logOut() {
+  try {
+    // const result = yield call(logoutAPI);
+    // console.log('result loginAPI', result);
+    // yield delay(1000);
+
+    yield put({
+      type: LOGOUT_SUCCESS,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOGOUT_FAILRE,
+      error: err.response.data,
+    });
+  }
+}
+
+/* ==========회원정보 수정============ */
+function modifyUserAPI(data) {
+  // data.email, data.password 전달.
+  return axios.post("/user/modify", data);
+}
+
+function* modifyUser(action) {
+  try {
+    // const result = yield call(modifyUserAPI, action.data);
+    // console.log('result loginAPI', result);
+    // yield delay(1000);
+
+    /* 
+    n-> 기존 비번 불일치 리턴
+    */
+    yield put({
+      type: MODIFY_USER_SUCCESS,
+      data: {
+        beforePwChk: "N",
+      },
+      // data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: MODIFY_USER_FAILRE,
+      error: err.response.data,
+    });
+  }
+}
 
 function* watchLoadUserInfo() {
   yield takeLatest(LOAD_USER_INFO_REQUEST, loadUserInfo);
@@ -111,10 +172,18 @@ function* watchDuplicateCheckId() {
 function* watchLogin() {
   yield takeLatest(LOG_IN_REQUEST, logIn);
 }
+function* watchLogOut() {
+  yield takeLatest(LOGOUT_REQUEST, logOut);
+}
+function* watchModifyUser() {
+  yield takeLatest(MODIFY_USER_REQUEST, modifyUser);
+}
 
 export default function* userSaga() {
   yield all([fork(watchLoadUserInfo)]);
   yield all([fork(watchSignup)]);
   yield all([fork(watchDuplicateCheckId)]);
   yield all([fork(watchLogin)]);
+  yield all([fork(watchLogOut)]);
+  yield all([fork(watchModifyUser)]);
 }
