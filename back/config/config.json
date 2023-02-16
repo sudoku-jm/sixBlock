@@ -1,0 +1,24 @@
+{
+  "development": {
+    "username": "root",
+    "password": 1004,
+    "database": "sixblock",
+    "host": "172.30.40.98",
+    "port" : 3306,
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "root",
+    "password": null,
+    "database": "sixblock",
+    "host": "172.30.40.98",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "sixblock",
+    "host": "172.30.40.98",
+    "dialect": "mysql"
+  }
+}
