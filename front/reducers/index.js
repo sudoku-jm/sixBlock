@@ -3,6 +3,7 @@ import { combineReducers } from "redux";
 
 import user from "./user";
 import block from "./block";
+import keyword from "./keyword";
 // import post from './post';
 
 const rootReducer = (state, action) => {
@@ -13,6 +14,7 @@ const rootReducer = (state, action) => {
       const combineReducer = combineReducers({
         user,
         block,
+        keyword,
         // post,
       });
       return combineReducer(state, action);

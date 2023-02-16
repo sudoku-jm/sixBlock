@@ -2,34 +2,25 @@ import { useCallback, useState } from "react";
 import { TiTick } from "react-icons/ti";
 import { useSelector } from "react-redux";
 import { WeekBlockContainerEl } from "../../style/BlockStyle";
-import Checkbox from "../input/Checkbox";
 import KeywordModal from "./KeywordModal";
 
 const WeekBlock = () => {
-  const blockArr = [
-    "Morning",
-    "Morning",
-    "Afternoon",
-    "Afternoon",
-    "Dinner",
-    "Dinner",
-  ];
   const { weekBlock } = useSelector((state) => state.block);
   console.log("weekBlock", weekBlock);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [blockData, setBlockData] = useState({});
-  const openKeywordModal = useCallback((blockDate, blockType, blockNum) => {
+  const openKeywordModal = useCallback(() => {
     setIsModalOpen(true);
-  }, []);
+  }, [isModalOpen]);
 
   return (
     <WeekBlockContainerEl>
       <div className="week_title">
         <ul>
-          {[...new Set(blockArr)].map((block, idx) => (
-            <li key={idx}>{block}</li>
-          ))}
+          <li>Morning</li>
+          <li>Afternoon</li>
+          <li>Dinner</li>
         </ul>
       </div>
       <div className="week_content">
@@ -43,33 +34,27 @@ const WeekBlock = () => {
                 <ul>
                   {weekData.map((day) => {
                     const { type, blockData } = day;
-                    return (
-                      <>
-                        {blockData.map((block) => {
-                          const { seq, typeNum, content, isFinished, regDate } =
-                            block;
-                          return (
-                            <li
-                              key={seq}
-                              onClick={() => {
-                                setBlockData(block);
-                                openKeywordModal();
-                              }}
-                              className={isFinished ? "finished_block" : ""}
-                            >
-                              {isFinished && (
-                                <TiTick className="finished_icon" />
-                              )}
-                              {content !== "" ? (
-                                <span className="active_text">{content}</span>
-                              ) : (
-                                <span className="dimmed_text">{type}</span>
-                              )}
-                            </li>
-                          );
-                        })}
-                      </>
-                    );
+                    return blockData.map((block) => {
+                      const { seq,  content, isFinished, } =
+                        block;
+                      return (
+                        <li
+                          key={seq}
+                          onClick={() => {
+                            setBlockData(block);
+                            openKeywordModal();
+                          }}
+                          className={isFinished ? "finished_block" : ""}
+                        >
+                          {isFinished && <TiTick className="finished_icon" />}
+                          {content !== "" ? (
+                            <span className="dotdot active_text">{content}</span>
+                          ) : (
+                            <span className="dotdot dimmed_text">{type}</span>
+                          )}
+                        </li>
+                      );
+                    });
                   })}
                 </ul>
               </div>

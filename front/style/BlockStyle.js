@@ -36,12 +36,15 @@ export const DayBlockEl = styled.div`
 export const CheckboxEl = styled.div`
   label {
     position: relative;
-    padding-right: 40px;
+    padding-right: ${(props) => (props.isText ? "0" : "40px")};
+    display: ${(props) => (props.isText ? "flex" : "block")};
+    justify-content: center;
+    line-height: 1.7;
     &::before {
       content: "";
       position: absolute;
-      top: 0px;
-      left: 0;
+      top: ${(props) => (props.isText ? "0" : "-9px")};
+      left: ${(props) => (props.isText ? "-85%" : "0")};
       border: 4px dashed var(--color-c2c2c5);
       width: 30px;
       height: 30px;
@@ -49,15 +52,18 @@ export const CheckboxEl = styled.div`
     }
     &::after {
       content: "";
-      position: absolute;
+      position: ${(props) => (props.isText ? "relative" : "absolute")};
     }
     .check_icon {
       content: "";
       position: absolute;
-      top: 3px;
-      left: 4px;
+      top: ${(props) => (props.isText ? "4px" : "-5px")};
+      left: ${(props) => (props.isText ? "-75%" : "4px")};
       font-size: 30px;
       color: var(--color-c2c2c5);
+    }
+    span {
+      font-size: 20px;
     }
   }
   input[type="checkbox"] {
@@ -102,7 +108,7 @@ export const SelectTitleEl = styled.div`
     border: none;
     outline: none;
   }
-  svg {
+  .title_icon {
     position: absolute;
     top: 20%;
     right: 0;
@@ -112,22 +118,33 @@ export const SelectTitleEl = styled.div`
 
 export const SelectBoxEl = styled.div`
   position: relative;
-  width: 80px;
+  width: ${(props) => (props.type === "inline" ? "80px" : "100%")};
   text-align: center;
   padding: 8px 20px 8px 8px;
   border-radius: 12px;
-  background-color: #ffffff;
+  background-color: var(--color-white);
   align-self: center;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.2);
   cursor: pointer;
+  &.disabled {
+    background-color: var(--color-dimmed);
+    cursor: auto;
+  }
 
   label {
     font-size: 14px;
     text-align: center;
   }
+  .ico_select {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: x-large;
+  }
   ul {
     position: absolute;
-    z-index: 2;
+    z-index: 4;
     list-style: none;
     top: 45px;
     left: 0;
@@ -143,7 +160,12 @@ export const SelectBoxEl = styled.div`
       font-size: 14px;
       padding: 6px 8px;
       transition: background-color 0.2s ease-in;
-      &:hover {
+      border-bottom: 2px solid var(--color-white);
+      &:last-child {
+        border-bottom: none;
+      }
+      &:hover,
+      &.selected_value {
         background-color: var(--color-primary-op4);
       }
     }
@@ -249,7 +271,14 @@ export const CalendarContEl = styled.div`
     border-radius: 15px;
     font-family: "Noto Sans KR", sans-serif;
     font-weight: 500;
-
+    z-index: 3;
+    .react-calendar,
+    .react-calendar *,
+    .react-calendar *:before,
+    .react-calendar *:after {
+      text-decoration: none;
+      font-size: 15px;
+    }
     .react-calendar__month-view__weekdays__weekday {
       text-decoration: none;
     }
@@ -257,15 +286,24 @@ export const CalendarContEl = styled.div`
       background: var(--color-primary);
     }
     .react-calendar__tile--now {
-      background: var(--color-c2c2c5);
+      background: var(--color-f0f0f0);
     }
     .react-calendar__tile {
       position: relative;
     }
+    .react-calendar__navigation {
+      margin-bottom: 25px;
+    }
+    .react-calendar__navigation__label__labelText {
+      font-size: 20px;
+    }
+    .react-calendar__navigation button {
+      font-size: 25px;
+    }
     .dot_container {
       position: absolute;
       content: "";
-      bottom: 0;
+      bottom: 10%;
       left: 50%;
       transform: translateX(-50%);
       .dot {
@@ -273,6 +311,30 @@ export const CalendarContEl = styled.div`
         height: 5px;
         background: var(--color-red);
         border-radius: 50%;
+      }
+      &.block_container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        .block {
+          width: 10px;
+          height: 5px;
+          &:not(.active) {
+            opacity: 0;
+          }
+          margin: 1px;
+          &:nth-child(1),
+          &:nth-child(2) {
+            background-color: var(--color-point01);
+          }
+          &:nth-child(3),
+          &:nth-child(4) {
+            background-color: var(--color-point02);
+          }
+          &:nth-child(5),
+          &:nth-child(6) {
+            background-color: var(--color-point03);
+          }
+        }
       }
     }
   }
@@ -320,7 +382,7 @@ export const WeekBlockContainerEl = styled.div`
         justify-content: center;
         border-radius: 10px;
         background-color: var(--color-primary-op2);
-
+        cursor: pointer;
         span {
           &.dimmed_text {
             color: var(--color-c2c2c5);
@@ -379,13 +441,13 @@ export const KeywordModalEl = styled.div`
       border-bottom: 3px solid var(--color-primary);
     }
     .modal_content {
-      padding: 15px;
+      padding: 15px 20px;
       font-size: 1.6rem;
       .modal_content_each {
         display: flex;
         align-items: center;
         margin-bottom: 10px;
-        min-height: 55px;
+        min-height: 65px;
         &:last-child {
           margin-bottom: 0;
         }
@@ -393,7 +455,23 @@ export const KeywordModalEl = styled.div`
           width: 20%;
         }
         & > div {
-          width: 80%;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: relative;
+        }
+        input[type="text"] {
+          text-align: center;
+        }
+      }
+    }
+    .modal_btm {
+      margin: 10px 0;
+      button {
+        margin-right: 5px;
+        &:last-child {
+          margin-right: 0;
         }
       }
     }
@@ -404,8 +482,37 @@ export const MonthBlockContEl = styled.div`
   .react-calendar {
     width: 100%;
     border: none;
+    z-index: 1;
     .react-calendar__tile {
-      padding: 15px 10px 30px;
+      padding: 10px 10px 35px;
+      margin: 7px 0;
+    }
+  }
+`;
+
+export const KeywordSelectModalEl = styled.div`
+  position: absolute;
+  top: 35px;
+  left: 50%;
+  width: 80%;
+  transform: translateX(-50%);
+  background-color: var(--color-white);
+  z-index: 5;
+  box-shadow: var(--basic-box-shadow);
+  border-radius: 10px;
+  max-height: calc(100vh / 2);
+  overflow-y: auto;
+  ul {
+    li {
+      padding: 10px;
+      &:hover {
+        background-color: var(--color-primary-op2);
+      }
+    }
+    &.input_keyword {
+      li {
+        background-color: var(--color-point01);
+      }
     }
   }
 `;

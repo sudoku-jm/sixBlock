@@ -4,11 +4,16 @@ export const weekDummyData = [
     date: "2023-02-13",
     weekData: [
       {
+        day: "Monday",
+        date: "2023-02-13",
         type: "Morning",
         blockData: [
           {
             seq: 1,
             typeNum: 1,
+            day: "Monday",
+            date: "2023-02-13",
+            type: "Morning",
             content: "test test",
             isFinished: false,
             regDate: "2023-02-09",
@@ -16,6 +21,9 @@ export const weekDummyData = [
           {
             seq: 2,
             typeNum: 2,
+            day: "Monday",
+            date: "2023-02-13",
+            type: "Morning",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -23,11 +31,16 @@ export const weekDummyData = [
         ],
       },
       {
+        day: "Monday",
+        date: "2023-02-13",
         type: "Afternoon",
         blockData: [
           {
             seq: 3,
             typeNum: 1,
+            day: "Monday",
+            date: "2023-02-13",
+            type: "Afternoon",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -35,6 +48,9 @@ export const weekDummyData = [
           {
             seq: 4,
             typeNum: 2,
+            day: "Monday",
+            date: "2023-02-13",
+            type: "Afternoon",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -42,11 +58,16 @@ export const weekDummyData = [
         ],
       },
       {
+        day: "Monday",
+        date: "2023-02-13",
         type: "Dinner",
         blockData: [
           {
             seq: 5,
             typeNum: 1,
+            day: "Monday",
+            date: "2023-02-13",
+            type: "Dinner",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -54,6 +75,9 @@ export const weekDummyData = [
           {
             seq: 6,
             typeNum: 2,
+            day: "Monday",
+            date: "2023-02-13",
+            type: "Dinner",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -67,11 +91,16 @@ export const weekDummyData = [
     date: "2023-02-14",
     weekData: [
       {
+        day: "Tuesday",
+        date: "2023-02-14",
         type: "Morning",
         blockData: [
           {
             seq: 7,
             typeNum: 1,
+            day: "Tuesday",
+            date: "2023-02-14",
+            type: "Morning",
             content: "test test",
             isFinished: true,
             regDate: "2023-02-09",
@@ -79,6 +108,9 @@ export const weekDummyData = [
           {
             seq: 8,
             typeNum: 2,
+            day: "Tuesday",
+            date: "2023-02-14",
+            type: "Morning",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -86,11 +118,16 @@ export const weekDummyData = [
         ],
       },
       {
+        day: "Tuesday",
+        date: "2023-02-14",
         type: "Afternoon",
         blockData: [
           {
             seq: 9,
             typeNum: 1,
+            day: "Tuesday",
+            date: "2023-02-14",
+            type: "Afternoon",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -98,6 +135,9 @@ export const weekDummyData = [
           {
             seq: 10,
             typeNum: 2,
+            day: "Tuesday",
+            date: "2023-02-14",
+            type: "Afternoon",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -105,11 +145,16 @@ export const weekDummyData = [
         ],
       },
       {
+        day: "Tuesday",
+        date: "2023-02-14",
         type: "Dinner",
         blockData: [
           {
             seq: 11,
             typeNum: 1,
+            day: "Tuesday",
+            date: "2023-02-14",
+            type: "Afternoon",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -117,6 +162,9 @@ export const weekDummyData = [
           {
             seq: 12,
             typeNum: 2,
+            day: "Tuesday",
+            date: "2023-02-14",
+            type: "Afternoon",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -130,11 +178,16 @@ export const weekDummyData = [
     date: "2023-02-15",
     weekData: [
       {
+        day: "Wednesday",
+        date: "2023-02-15",
         type: "Morning",
         blockData: [
           {
             seq: 13,
             typeNum: 1,
+            day: "Wednesday",
+            date: "2023-02-15",
+            type: "Morning",
             content: "test test",
             isFinished: true,
             regDate: "2023-02-09",
@@ -142,6 +195,9 @@ export const weekDummyData = [
           {
             seq: 14,
             typeNum: 2,
+            day: "Wednesday",
+            date: "2023-02-15",
+            type: "Morning",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -149,11 +205,16 @@ export const weekDummyData = [
         ],
       },
       {
+        day: "Wednesday",
+        date: "2023-02-15",
         type: "Afternoon",
         blockData: [
           {
             seq: 15,
             typeNum: 1,
+            day: "Wednesday",
+            date: "2023-02-15",
+            type: "Afternoon",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -161,6 +222,9 @@ export const weekDummyData = [
           {
             seq: 16,
             typeNum: 2,
+            day: "Wednesday",
+            date: "2023-02-15",
+            type: "Afternoon",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -168,11 +232,16 @@ export const weekDummyData = [
         ],
       },
       {
+        day: "Wednesday",
+        date: "2023-02-15",
         type: "Dinner",
         blockData: [
           {
             seq: 17,
             typeNum: 1,
+            day: "Wednesday",
+            date: "2023-02-15",
+            type: "Dinner",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -180,6 +249,9 @@ export const weekDummyData = [
           {
             seq: 18,
             typeNum: 2,
+            day: "Wednesday",
+            date: "2023-02-15",
+            type: "Dinner",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -193,11 +265,16 @@ export const weekDummyData = [
     date: "2023-02-16",
     weekData: [
       {
+        day: "Thursday",
+        date: "2023-02-16",
         type: "Morning",
         blockData: [
           {
             seq: 19,
             typeNum: 1,
+            day: "Thursday",
+            date: "2023-02-16",
+            type: "Morning",
             content: "test test",
             isFinished: true,
             regDate: "2023-02-09",
@@ -205,6 +282,9 @@ export const weekDummyData = [
           {
             seq: 20,
             typeNum: 2,
+            day: "Thursday",
+            date: "2023-02-16",
+            type: "Morning",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -212,11 +292,16 @@ export const weekDummyData = [
         ],
       },
       {
+        day: "Thursday",
+        date: "2023-02-16",
         type: "Afternoon",
         blockData: [
           {
             seq: 21,
             typeNum: 1,
+            day: "Thursday",
+            date: "2023-02-16",
+            type: "Afternoon",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -224,6 +309,9 @@ export const weekDummyData = [
           {
             seq: 22,
             typeNum: 2,
+            day: "Thursday",
+            date: "2023-02-16",
+            type: "Afternoon",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -231,11 +319,16 @@ export const weekDummyData = [
         ],
       },
       {
+        day: "Thursday",
+        date: "2023-02-16",
         type: "Dinner",
         blockData: [
           {
             seq: 23,
             typeNum: 1,
+            day: "Thursday",
+            date: "2023-02-16",
+            type: "Dinner",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -243,6 +336,9 @@ export const weekDummyData = [
           {
             seq: 24,
             typeNum: 2,
+            day: "Thursday",
+            date: "2023-02-16",
+            type: "Dinner",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -256,11 +352,16 @@ export const weekDummyData = [
     date: "2023-02-17",
     weekData: [
       {
+        day: "Friday",
+        date: "2023-02-17",
         type: "Morning",
         blockData: [
           {
             seq: 25,
             typeNum: 1,
+            day: "Friday",
+            date: "2023-02-17",
+            type: "Morning",
             content: "test test",
             isFinished: true,
             regDate: "2023-02-09",
@@ -268,6 +369,9 @@ export const weekDummyData = [
           {
             seq: 26,
             typeNum: 2,
+            day: "Friday",
+            date: "2023-02-17",
+            type: "Morning",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -275,11 +379,16 @@ export const weekDummyData = [
         ],
       },
       {
+        day: "Friday",
+        date: "2023-02-17",
         type: "Afternoon",
         blockData: [
           {
             seq: 27,
             typeNum: 1,
+            day: "Friday",
+            date: "2023-02-17",
+            type: "Afternoon",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -287,6 +396,9 @@ export const weekDummyData = [
           {
             seq: 28,
             typeNum: 2,
+            day: "Friday",
+            date: "2023-02-17",
+            type: "Afternoon",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -294,11 +406,16 @@ export const weekDummyData = [
         ],
       },
       {
+        day: "Friday",
+        date: "2023-02-17",
         type: "Dinner",
         blockData: [
           {
             seq: 29,
             typeNum: 1,
+            day: "Friday",
+            date: "2023-02-17",
+            type: "Dinner",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -306,6 +423,9 @@ export const weekDummyData = [
           {
             seq: 30,
             typeNum: 2,
+            day: "Friday",
+            date: "2023-02-17",
+            type: "Dinner",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -319,11 +439,16 @@ export const weekDummyData = [
     date: "2023-02-18",
     weekData: [
       {
+        day: "Saturday",
+        date: "2023-02-18",
         type: "Morning",
         blockData: [
           {
             seq: 31,
             typeNum: 1,
+            day: "Saturday",
+            date: "2023-02-18",
+            type: "Morning",
             content: "test test",
             isFinished: true,
             regDate: "2023-02-09",
@@ -331,6 +456,9 @@ export const weekDummyData = [
           {
             seq: 32,
             typeNum: 2,
+            day: "Saturday",
+            date: "2023-02-18",
+            type: "Morning",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -338,11 +466,16 @@ export const weekDummyData = [
         ],
       },
       {
+        day: "Saturday",
+        date: "2023-02-18",
         type: "Afternoon",
         blockData: [
           {
             seq: 33,
             typeNum: 1,
+            day: "Saturday",
+            date: "2023-02-18",
+            type: "Afternoon",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -350,6 +483,9 @@ export const weekDummyData = [
           {
             seq: 34,
             typeNum: 2,
+            day: "Saturday",
+            date: "2023-02-18",
+            type: "Afternoon",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -357,11 +493,16 @@ export const weekDummyData = [
         ],
       },
       {
+        day: "Saturday",
+        date: "2023-02-18",
         type: "Dinner",
         blockData: [
           {
             seq: 35,
             typeNum: 1,
+            day: "Saturday",
+            date: "2023-02-18",
+            type: "Dinner",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -369,6 +510,9 @@ export const weekDummyData = [
           {
             seq: 36,
             typeNum: 2,
+            day: "Saturday",
+            date: "2023-02-18",
+            type: "Dinner",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -382,11 +526,16 @@ export const weekDummyData = [
     date: "2023-02-19",
     weekData: [
       {
+        day: "Sunday",
+        date: "2023-02-19",
         type: "Morning",
         blockData: [
           {
             seq: 37,
             typeNum: 1,
+            day: "Sunday",
+            date: "2023-02-19",
+            type: "Morning",
             content: "test test",
             isFinished: true,
             regDate: "2023-02-09",
@@ -394,6 +543,9 @@ export const weekDummyData = [
           {
             seq: 38,
             typeNum: 2,
+            day: "Sunday",
+            date: "2023-02-19",
+            type: "Morning",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -401,11 +553,16 @@ export const weekDummyData = [
         ],
       },
       {
+        day: "Sunday",
+        date: "2023-02-19",
         type: "Afternoon",
         blockData: [
           {
             seq: 39,
             typeNum: 1,
+            day: "Sunday",
+            date: "2023-02-19",
+            type: "Afternoon",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -413,6 +570,9 @@ export const weekDummyData = [
           {
             seq: 40,
             typeNum: 2,
+            day: "Sunday",
+            date: "2023-02-19",
+            type: "Afternoon",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -420,11 +580,16 @@ export const weekDummyData = [
         ],
       },
       {
+        day: "Sunday",
+        date: "2023-02-19",
         type: "Dinner",
         blockData: [
           {
             seq: 41,
             typeNum: 1,
+            day: "Sunday",
+            date: "2023-02-19",
+            type: "Dinner",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -432,6 +597,9 @@ export const weekDummyData = [
           {
             seq: 42,
             typeNum: 2,
+            day: "Sunday",
+            date: "2023-02-19",
+            type: "Dinner",
             content: "",
             isFinished: false,
             regDate: "2023-02-09",
@@ -449,6 +617,7 @@ export const dayDummyData = [
       {
         seq: 1,
         typeNum: 1,
+        type: "Morning",
         content: "test test",
         isFinished: true,
         regDate: "2023-02-09",
@@ -456,6 +625,7 @@ export const dayDummyData = [
       {
         seq: 2,
         typeNum: 2,
+        type: "Morning",
         content: "",
         isFinished: false,
         regDate: "2023-02-09",
@@ -468,6 +638,7 @@ export const dayDummyData = [
       {
         seq: 3,
         typeNum: 1,
+        type: "Afternoon",
         content: "",
         isFinished: false,
         regDate: "2023-02-09",
@@ -475,6 +646,7 @@ export const dayDummyData = [
       {
         seq: 4,
         typeNum: 2,
+        type: "Afternoon",
         content: "",
         isFinished: false,
         regDate: "2023-02-09",
@@ -487,6 +659,7 @@ export const dayDummyData = [
       {
         seq: 5,
         typeNum: 1,
+        type: "Dinner",
         content: "",
         isFinished: false,
         regDate: "2023-02-09",
@@ -494,10 +667,36 @@ export const dayDummyData = [
       {
         seq: 6,
         typeNum: 2,
+        type: "Dinner",
         content: "",
         isFinished: false,
         regDate: "2023-02-09",
       },
     ],
   },
+];
+
+export const dummyKeywordList = [
+  { seq: 0, keyword: "운동", regDate: "2023-02-13" },
+  { seq: 1, keyword: "직장", regDate: "2023-02-13" },
+  { seq: 2, keyword: "식사", regDate: "2023-02-13" },
+  { seq: 3, keyword: "약속", regDate: "2023-02-13" },
+  { seq: 4, keyword: "놀기", regDate: "2023-02-13" },
+  { seq: 5, keyword: "산책", regDate: "2023-02-13" },
+  { seq: 6, keyword: "취미생활", regDate: "2023-02-13" },
+  { seq: 7, keyword: "학교", regDate: "2023-02-13" },
+  { seq: 8, keyword: "하고싶은게있는데딱히쓸게없음", regDate: "2023-02-13" },
+];
+
+export const dummyMonthList = [
+  { seq: 1, date: "2023-02-01", planList: [1, 2, 3, 4, 5, 6] },
+  { seq: 2, date: "2023-02-02", planList: [1, 2, 3, 6] },
+  { seq: 3, date: "2023-02-05", planList: [1, 6] },
+  { seq: 4, date: "2023-02-07", planList: [1, 4, 5, 6] },
+  { seq: 5, date: "2023-02-10", planList: [1, 2, 4, 5, 6] },
+  { seq: 6, date: "2023-02-13", planList: [1, 2, 3, 4] },
+  { seq: 7, date: "2023-02-14", planList: [1, 2, 3, 4] },
+  { seq: 8, date: "2023-02-15", planList: [1, 2, 3, 4] },
+  { seq: 9, date: "2023-02-21", planList: [1, 2, 3, 4] },
+  { seq: 10, date: "2023-02-28", planList: [1, 2, 3, 4] },
 ];

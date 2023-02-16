@@ -1,15 +1,25 @@
 import produce from "immer";
-import { dayDummyData, weekDummyData } from "../dummy/dummyData";
+import { dayDummyData, dummyMonthList, weekDummyData } from "../dummy/dummyData";
 
 const initialState = {
   getBlockLoading: false,
   getBlockDone: false,
   getBlockError: null,
 
+  blockArr: [
+    "Morning1",
+    "Morning2",
+    "Afternoon1",
+    "Afternoon2",
+    "Dinner1",
+    "Dinner2",
+  ],
+
   curDate: "2023-02-09",
-  monthBlock: [],
+
+  monthBlock: dummyMonthList,
   weekBlock: weekDummyData,
-    
+
   dayBlock: dayDummyData,
 
   //dayblock 에서 날짜 선택 시 일정이 있는지 체크할 arr. 월별로 불러오기?
@@ -34,6 +44,12 @@ export const GET_DAY_BLOCK_REQUEST = "GET_DAY_BLOCK_REQUEST";
 export const GET_DAY_BLOCK_SUCCESS = "GET_DAY_BLOCK_SUCCESS";
 export const GET_DAY_BLOCK_FAIL = "GET_DAY_BLOCK_FAIL";
 
+//일일 블록 변경
+export const POST_DAY_BLOCK_REQUEST = "POST_DAY_BLOCK_REQUEST";
+export const POST_DAY_BLOCK_SUCCESS = "POST_DAY_BLOCK_SUCCESS";
+export const POST_DAY_BLOCK_FAIL = "POST_DAY_BLOCK_FAIL";
+
+//일일
 export const checkDayBlock = (dayType, seq, content) => {
   console.log("checkDayBlock", dayType, seq, content);
   return {
@@ -63,12 +79,25 @@ export const getDayBlock = (date) => {
   };
 };
 
+//주간
+export const handleDayBlock = (data) => {
+  console.log("handleDayBlock", data);
+  return {
+    type: POST_DAY_BLOCK_REQUEST,
+    data,
+  };
+};
+
+//리듀서
 const reducer = (state = initialState, action) => {
   console.log("block reducer :: ", state, action);
   //일일 블록 변경하기 : action.seq , action.content 넘겨받아서 찾아서 넣어주기
   return produce(state, (draft) => {
-    let curDayBlock;
-    let curDay;
+    //일일
+    let curDayBlock, curDay;
+
+    //주간
+    let curDate;
 
     switch (action.type) {
       case DAY_BLOCK_INPUT_CHECK:
@@ -116,6 +145,25 @@ const reducer = (state = initialState, action) => {
         draft.getBlockError = true;
         break;
 
+      case POST_DAY_BLOCK_REQUEST:
+        console.log(">POST_DAY_BLOCK_REQUEST reducer");
+        curDate = draft.weekBlock.find((week) => {
+          console.log("=====================11111", week.day, action.data.day);
+          return week.day === action.data.day;
+        });
+        curDay = curDate.weekData.find((day) => {
+          console.log("==================22222", day.type, action.data.type);
+          return day.type === action.data.type;
+        });
+        curDayBlock = curDay.blockData.find((day) => {
+          console.log("======================33333", day.seq, action.data.seq);
+          return day.seq === action.data.seq;
+        });
+        curDayBlock.content = action.data.content;
+        curDayBlock.isFinished = action.data.isFinished;
+        curDayBlock.regDate = new Date();
+
+        break;
       default:
         return state;
     }

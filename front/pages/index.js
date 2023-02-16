@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { TiCalendar } from "react-icons/ti";
+import { TiCalendar, TiPlus } from "react-icons/ti";
 import { useSelector } from "react-redux";
 import AppLayout from "../components/AppLayout";
 import DayBlock from "../components/block/DayBlock";
@@ -10,19 +10,22 @@ import DateSelect from "../components/input/DateSelect";
 import LoginForm from "../components/LoginForm";
 import Menu from "../components/Menu";
 import { SelectTitleEl } from "../style/BlockStyle";
+import KeywordModal from "../components/block/KeywordModal";
 
 const Home = () => {
   const { logInDone } = useSelector((state) => state.user);
-  
+
   //오늘 날짜
   const { curDate, dateArr } = useSelector((state) => state.block);
 
   //날짜 팝업
   const [isPopOpen, setIsPopOpen] = useState(false);
 
+  //키워드 세팅 팝업
+  const [isKeywordPopOpen, setIsKeywordPopOpen] = useState(false);
+
   const [type, setType] = useState("일간");
   const selectType = useCallback((typeValue) => {
-    console.log("type", typeValue)
     setType(typeValue);
   }, []);
 
@@ -33,18 +36,24 @@ const Home = () => {
           <Menu page="index" />
           <SelectTitleEl className="select_text">
             <SelectBox
+              type={"inline"}
               defaultValue={type}
+              selectList={["일간", "주간", "월간"]}
               onChange={selectType}
             />
-            {/* <DatePickerItem date={curDate} /> */}
-            <TiCalendar onClick={() => setIsPopOpen((prev) => !prev)} />
-            {isPopOpen && (
-              <DateSelect
-                date={curDate}
-                dateArr={dateArr}
-                setIsPopOpen={setIsPopOpen}
-              />
-            )}
+            <div className="title_icon">
+              <TiPlus onClick={() => setIsKeywordPopOpen((prev) => !prev)} />
+              
+              {type!=="월간" && <TiCalendar onClick={() => setIsPopOpen((prev) => !prev)} />}
+              {isKeywordPopOpen && <KeywordModal />}
+              {isPopOpen && (
+                <DateSelect
+                  date={curDate}
+                  dateArr={dateArr}
+                  setIsPopOpen={setIsPopOpen}
+                />
+              )}
+            </div>
           </SelectTitleEl>
           {type === "일간" ? (
             <DayBlock />

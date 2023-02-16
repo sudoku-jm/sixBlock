@@ -1,10 +1,50 @@
-import { TiTimes, TiKeyOutline, TiCalendarOutline, } from "react-icons/ti";
-import { useSelector } from "react-redux";
+import { useCallback, useState } from "react";
+import {
+  TiTimes,
+  TiKeyOutline,
+  TiCalendarOutline,
+  TiCalendar,
+} from "react-icons/ti";
+import { useDispatch, useSelector } from "react-redux";
+import { handleDayBlock } from "../../reducers/block";
 import { KeywordModalEl, DimmedBG } from "../../style/BlockStyle";
+import KeywordSelectPop from "./KeywordSelectPop";
 import Checkbox from "../input/Checkbox";
-const KeywordModal = ({ setIsModalOpen, blockData }) => {
-  console.log("blockDat", blockData)
-  const { seq, typeNum, content, isFinished, regDate } = blockData;
+import DateSelect from "../input/DateSelect";
+import Selectbox from "../input/Selectbox";
+const KeywordModal = ({ type, blockData, setIsModalOpen }) => {
+  const dispatch = useDispatch();
+
+  const { keywordList } = useSelector((state) => state.keyword);
+  const { blockArr } = useSelector((state) => state.block);
+
+  const [currentBlock, setCurrentBlock] = useState(blockData);
+  const handleCurrentBlock = useCallback(
+    (e, text) => {
+      if (text) {
+        setCurrentBlock({
+          ...currentBlock,
+          type: text.replace(/[0-9]/g, ""),
+        });
+      } else {
+        const { name, value, checked } = e.target;
+        setCurrentBlock({
+          ...currentBlock,
+          [name]: name === "isFinished" ? checked : value,
+        });
+      }
+    },
+    [currentBlock]
+  );
+
+  const [isDatePopOpen, setIsDatePopOpen] = useState(false);
+
+  const [isKeywordPopOpen, setIsKeywordPopOpen] = useState(false);
+
+  const setCurrentBlockAction = useCallback(() => {
+    dispatch(handleDayBlock(currentBlock));
+    setIsModalOpen(false);
+  }, [currentBlock]);
 
   return (
     <>
@@ -21,47 +61,76 @@ const KeywordModal = ({ setIsModalOpen, blockData }) => {
           <div className="modal_content">
             <div className="modal_content_each">
               <h5>
-                <TiKeyOutline />
+                {/* <TiKeyOutline /> */}
                 Keyword
               </h5>
               <div>
-                <select>
-                  <option>11</option>
-                  <option>22</option>
-                  <option>33</option>
-                </select>
+                <input
+                  type="text"
+                  name="content"
+                  value={currentBlock.content}
+                  onChange={(e) => {
+                    handleCurrentBlock(e);
+                    setIsKeywordPopOpen(true)
+                  }}
+                />
+                {isKeywordPopOpen && <KeywordSelectPop text={currentBlock.content}/>}
               </div>
             </div>
 
             <div className="modal_content_each">
               <h5>
-                <TiCalendarOutline />
+                {/* <TiCalendarOutline /> */}
                 Date
               </h5>
-              <div></div>
+              <div>
+                <span>{currentBlock.date}</span>
+                <TiCalendar onClick={() => setIsDatePopOpen((prev) => !prev)} />
+                {isDatePopOpen && (
+                  <DateSelect
+                    date={currentBlock.date}
+                    dateArr={[]}
+                    setIsPopOpen={setIsDatePopOpen}
+                  />
+                )}
+              </div>
             </div>
 
             <div className="modal_content_each">
               <h5>Time</h5>
-              <div></div>
+              <div>
+                <Selectbox
+                  type={"block"}
+                  disabled={true}
+                  defaultValue={`${currentBlock.type}${currentBlock.typeNum}`}
+                  selectList={blockArr}
+                  onChange={(text) => {
+                    handleCurrentBlock(null, text);
+                  }}
+                />
+              </div>
             </div>
-
             <div className="modal_content_each">
-              <h5>Memo</h5>
-              <div></div>
+              <Checkbox
+                checked={currentBlock.isFinished}
+                onChange={(e) => {
+                  handleCurrentBlock(e);
+                }}
+                name="isFinished"
+                text="Done"
+              />
             </div>
           </div>
 
-      <div className="modal_content_each">
-
-        <Checkbox checked={isFinished} onChange={(e)=>{console.log(e.target.checked)}} name="day_check"/>
-      </div>
-
-        </div>
-
-
-        <div className="modal_btm">
-          
+          <div className="modal_btm">
+            <button
+              className="btnM btnRound btn-primary"
+              onClick={setCurrentBlockAction}
+            >
+              Apply
+            </button>
+            <button className="btnM btnRound btn-grey">Delete</button>
+          </div>
         </div>
       </KeywordModalEl>
     </>
