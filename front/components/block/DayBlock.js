@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
-import { DayBlockContainerEl } from "../style/BlockStyle";
-import Day from "./block/Day";
+import { DayBlockContainerEl } from "../../style/BlockStyle";
+import Day from "./Day";
 
 const DayBlock = () => {
   const { dayBlock } = useSelector((state) => state.block);

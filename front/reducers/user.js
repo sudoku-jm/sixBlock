@@ -50,6 +50,8 @@ export const MODIFY_USER_REQUEST = "MODIFY_USER_REQUEST";
 export const MODIFY_USER_SUCCESS = "MODIFY_USER_SUCCESS";
 export const MODIFY_USER_FAILRE = "MODIFY_USER_FAILRE";
 
+//프로필 사진 변경
+
 const dummuUser = (data) => ({
   id: "jm1234",
   nickname: "정미니",

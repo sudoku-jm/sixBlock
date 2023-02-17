@@ -25,7 +25,15 @@ const GlobalStyle = createGlobalStyle`
     --color-c2c2c5: #c2c2c5;  //placeholder
     --color-f0f0f0: #f0f0f0;  //after,disabled
 
-    --color-theme-dimmed : rgba(96, 66, 248, 0.2);
+    --color-dimmed : rgba(0,0,0, 0.1);
+
+    //기타 블록용 색상
+    --color-point01 : #F695AE;
+    --color-point02 : #FEC94D;
+    --color-point03 : #8F95F9;
+
+    --basic-box-shadow : 0px 4px 4px rgb(0 0 0 / 20%);
+
   }
   
   * {

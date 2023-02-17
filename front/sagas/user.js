@@ -44,12 +44,15 @@ function* loadUserInfo() {
 }
 /*===========회원가입========== */
 function signupAPI(data) {
+  //id , pw, nickname 전달
   return axios.post("/user", data);
 }
 function* signup(action) {
   try {
     const result = yield call(signupAPI, action.data);
     console.log("signupAPI result");
+
+    //result.data.status 가 403일경우 이미 사용중인 아이디.
     yield put({
       type: SIGNUP_SUCCESS,
     });
