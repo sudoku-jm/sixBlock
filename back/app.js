@@ -1,8 +1,9 @@
 const express = require("express");
-
+const UserRouter = require("./routes/user");
 const db = require("./models");
-
 const app = express();
+const dotenv = require("dotenv");
+dotenv.config();
 
 db.sequelize
   .sync()
@@ -11,9 +12,15 @@ db.sequelize
   })
   .catch(console.error);
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.get("/", (req, res) => {
   res.send("hi express");
 });
+
+// 라우터 분리
+app.use("/user", UserRouter);
 
 app.listen(5500, () => {
   console.log("server test 🧨");

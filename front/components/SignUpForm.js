@@ -39,6 +39,30 @@ const SignUpForm = () => {
   }, [signupDone]);
 
   useEffect(() => {
+    if (duplicateIdDone) {
+      setErrorMsg({
+        ...errorMsg,
+        id: {
+          error: false,
+          done: true,
+          msg: "아이디 사용 가능",
+        },
+      });
+      setIdDuple(true);
+      setSignupActive(false);
+    }
+  }, [duplicateIdDone]);
+
+  useEffect(() => {
+    if (duplicateIdError) {
+      alert(duplicateIdError);
+    }
+    if (signupError) {
+      alert(signupError);
+    }
+  }, [signupError, duplicateIdError]);
+
+  useEffect(() => {
     const handleClickOutside = (event) => {
       if (
         idRef.current &&
@@ -80,30 +104,6 @@ const SignUpForm = () => {
       document.removeEventListener("click", handleClickOutside, true);
     };
   }, [userId, flagId, idDuple]);
-
-  useEffect(() => {
-    if (duplicateIdDone) {
-      setErrorMsg({
-        ...errorMsg,
-        id: {
-          error: false,
-          done: true,
-          msg: "아이디 사용 가능",
-        },
-      });
-      setIdDuple(true);
-      setSignupActive(false);
-    }
-  }, [duplicateIdDone]);
-
-  useEffect(() => {
-    if (duplicateIdError) {
-      alert(duplicateIdError);
-    }
-    if (signupError) {
-      alert(signupError);
-    }
-  }, [signupError, duplicateIdError]);
 
   const validationChk = () => {
     //아이디 검증

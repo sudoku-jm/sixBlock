@@ -52,4 +52,23 @@ const DoneMsg = styled.div`
   font-size: 1.3rem;
 `;
 
-export { MenuStyle, Nav, Logo, PageTitle, PageTitle2, ErrorMsg, DoneMsg };
+const ModalStyle = styled.section`
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.7);
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+`;
+
+export {
+  MenuStyle,
+  Nav,
+  Logo,
+  PageTitle,
+  PageTitle2,
+  ErrorMsg,
+  DoneMsg,
+  ModalStyle,
+};

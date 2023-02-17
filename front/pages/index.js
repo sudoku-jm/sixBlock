@@ -13,7 +13,7 @@ import { SelectTitleEl } from "../style/BlockStyle";
 import KeywordModal from "../components/block/KeywordModal";
 
 const Home = () => {
-  const { logInDone } = useSelector((state) => state.user);
+  const { user, logInDone } = useSelector((state) => state.user);
 
   //오늘 날짜
   const { curDate, dateArr } = useSelector((state) => state.block);
@@ -31,7 +31,7 @@ const Home = () => {
 
   return (
     <AppLayout>
-      {logInDone ? (
+      {user ? (
         <>
           <Menu page="index" />
           <SelectTitleEl className="select_text">
@@ -43,8 +43,10 @@ const Home = () => {
             />
             <div className="title_icon">
               <TiPlus onClick={() => setIsKeywordPopOpen((prev) => !prev)} />
-              
-              {type!=="월간" && <TiCalendar onClick={() => setIsPopOpen((prev) => !prev)} />}
+
+              {type !== "월간" && (
+                <TiCalendar onClick={() => setIsPopOpen((prev) => !prev)} />
+              )}
               {isKeywordPopOpen && <KeywordModal />}
               {isPopOpen && (
                 <DateSelect

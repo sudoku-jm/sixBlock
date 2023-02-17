@@ -1,15 +1,21 @@
-import React, { useMemo, useRef } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { TiImage } from "react-icons/ti";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const PhotoProfile = ({ page }) => {
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { photoProfile } = user;
   const inputFile = useRef(null);
-  const onUploadFile = () => {
+  const onUploadFile = useCallback(() => {
     inputFile.current.click();
-  };
+  }, [inputFile.current]);
+  const onChangeFile = useCallback((e) => {
+    const imageFormData = new FormData();
+    imageFormData.append("image", e.target.files[0]);
+    // dispatch({});
+  }, []);
   const styleIconImage = useMemo(
     () => ({
       fontSize: "1.8rem",
@@ -21,7 +27,13 @@ const PhotoProfile = ({ page }) => {
   return (
     <>
       <figure className="photo-wrap">
-        <input type="file" id="file" ref={inputFile} className="hdtxt" />
+        <input
+          type="file"
+          id="file"
+          ref={inputFile}
+          onChange={onChangeFile}
+          className="hdtxt"
+        />
         <a title="" className="photo">
           <img src={photoProfile || ""} alt="" />
         </a>

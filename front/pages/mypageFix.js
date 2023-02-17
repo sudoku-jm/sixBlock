@@ -13,12 +13,14 @@ const mypageFix = () => {
     <AppLayout>
       <h1 className="hdtxt">내 정보 수정</h1>
       <Menu page="mypage" />
+
       <UserProfileStyle page="fix">
         <PhotoProfile page="fix" />
         <div className="profile-info">
           <p className="user-id">{id}</p>
         </div>
       </UserProfileStyle>
+
       <UserProfileFixForm />
     </AppLayout>
   );
