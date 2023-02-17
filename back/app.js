@@ -1,5 +1,6 @@
 const express = require("express");
 const UserRouter = require("./routes/user");
+const BlockRouter = require("./routes/block");
 const db = require("./models");
 const app = express();
 const dotenv = require("dotenv");
@@ -21,6 +22,7 @@ app.get("/", (req, res) => {
 
 // 라우터 분리
 app.use("/user", UserRouter);
+app.use("/block", BlockRouter);
 
 app.listen(5500, () => {
   console.log("server test 🧨");
