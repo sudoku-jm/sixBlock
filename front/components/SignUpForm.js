@@ -94,7 +94,7 @@ const SignUpForm = () => {
         if (!idDuple) {
           dispatch({
             type: DUPLICATE_CHECK_ID_REQUEST,
-            data: userId,
+            data: { userId },
           });
         }
       }

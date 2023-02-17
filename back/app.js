@@ -1,9 +1,10 @@
 const express = require("express");
+const cors = require("cors");
 const UserRouter = require("./routes/user");
 const db = require("./models");
-const app = express();
 const dotenv = require("dotenv");
 dotenv.config();
+const app = express();
 
 db.sequelize
   .sync()
@@ -11,6 +12,13 @@ db.sequelize
     console.log("db 연결 성공");
   })
   .catch(console.error);
+
+app.use(
+  cors({
+    origin: "http://192.168.1.128:13000",
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

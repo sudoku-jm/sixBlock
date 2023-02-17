@@ -1,5 +1,9 @@
 import produce from "immer";
-import { dayDummyData, dummyMonthList, weekDummyData } from "../dummy/dummyData";
+import {
+  dayDummyData,
+  dummyMonthList,
+  weekDummyData,
+} from "../dummy/dummyData";
 
 const initialState = {
   getBlockLoading: false,
@@ -90,7 +94,7 @@ export const handleDayBlock = (data) => {
 
 //리듀서
 const reducer = (state = initialState, action) => {
-  console.log("block reducer :: ", state, action);
+  // console.log("block reducer :: ", state, action);
   //일일 블록 변경하기 : action.seq , action.content 넘겨받아서 찾아서 넣어주기
   return produce(state, (draft) => {
     //일일
