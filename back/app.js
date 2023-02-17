@@ -2,6 +2,8 @@ const express = require("express");
 const UserRouter = require("./routes/user");
 const db = require("./models");
 const app = express();
+const dotenv = require("dotenv");
+dotenv.config();
 
 db.sequelize
   .sync()
