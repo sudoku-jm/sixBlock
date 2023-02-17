@@ -1,7 +1,7 @@
 import produce from "immer";
 
 const initialState = {
-  user: {},
+  user: null,
   loadUserInfoLoading: false, //유저 정보 가져오기
   loadUserInfoDone: false,
   loadUserInfoError: null,
@@ -9,7 +9,7 @@ const initialState = {
   signupDone: false,
   signupError: null,
   duplicateIdLoading: false, //아이디 중복체크
-  duplicateIdDone: false,
+  duplicateIdDone: null,
   duplicateIdError: null,
   logInLoading: false, // 로그인 시도중
   logInDone: false,
@@ -98,18 +98,18 @@ const reducer = (state = initialState, action) => {
         break;
       case SIGNUP_FAILRE:
         draft.signupLoading = false;
-        draft.signupDone = false;
+        // draft.signupDone = false;
         draft.signupError = action.error;
         break;
       //= ==============아이디 중복체크
       case DUPLICATE_CHECK_ID_REQUEST:
         draft.duplicateIdLoading = true;
-        draft.duplicateIdDone = false;
+        draft.duplicateIdDone = null;
         draft.duplicateIdError = null;
         break;
       case DUPLICATE_CHECK_ID_SUCCESS:
         draft.duplicateIdLoading = false;
-        draft.duplicateIdDone = true;
+        draft.duplicateIdDone = action.data.duplicate == "N" ? true : false;
         break;
       case DUPLICATE_CHECK_ID_FAILRE:
         draft.duplicateIdLoading = false;
@@ -125,8 +125,8 @@ const reducer = (state = initialState, action) => {
       case LOG_IN_SUCCESS:
         draft.logInLoading = false;
         draft.logInDone = true;
-        // draft.user = action.data;
-        draft.user = dummuUser();
+        draft.user = action.data;
+        // draft.user = dummuUser();
         break;
       case LOG_IN_FAILRE:
         draft.logInLoading = false;

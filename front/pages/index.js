@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { TiCalendar, TiPlus } from "react-icons/ti";
 import { useSelector } from "react-redux";
 import AppLayout from "../components/AppLayout";
@@ -11,10 +11,15 @@ import LoginForm from "../components/LoginForm";
 import Menu from "../components/Menu";
 import { SelectTitleEl } from "../style/BlockStyle";
 import KeywordModal from "../components/block/KeywordModal";
+import Router from "next/router";
 
 const Home = () => {
-  const { user, logInDone } = useSelector((state) => state.user);
-
+  const { user } = useSelector((state) => state.user);
+  useEffect(() => {
+    if (!(user && user.id)) {
+      Router.push("/");
+    }
+  }, [user && user.id]);
   //오늘 날짜
   const { curDate, dateArr } = useSelector((state) => state.block);
 

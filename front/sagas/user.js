@@ -50,13 +50,14 @@ function signupAPI(data) {
 function* signup(action) {
   try {
     const result = yield call(signupAPI, action.data);
-    console.log("signupAPI result");
+    console.log("signupAPI result", result);
 
     //result.data.status 가 403일경우 이미 사용중인 아이디.
     yield put({
       type: SIGNUP_SUCCESS,
     });
   } catch (err) {
+    console.error(err);
     yield put({
       type: SIGNUP_FAILRE,
       error: err.response.data,
@@ -70,19 +71,21 @@ function duplicateCheckIdAPI(data) {
 }
 function* duplicateCheckId(action) {
   try {
-    console.log("action??????????", action);
     const result = yield call(duplicateCheckIdAPI, action.data);
     console.log("duplicateCheckIdAPI result", result);
-    // yield put({
-    //   type: DUPLICATE_CHECK_ID_SUCCESS,
-    // });
+
+    //기존 아이디 없을 때 N 있을 때 Y
+    yield put({
+      type: DUPLICATE_CHECK_ID_SUCCESS,
+      data: result.data,
+    });
   } catch (err) {
     console.error(err);
 
-    // yield put({
-    //   type: DUPLICATE_CHECK_ID_FAILRE,
-    //   error: err.response.data,
-    // });
+    yield put({
+      type: DUPLICATE_CHECK_ID_FAILRE,
+      error: err.response.data,
+    });
   }
 }
 
