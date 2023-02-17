@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { KeywordSelectModalEl } from "../../style/BlockStyle";
 
-const KeywordSelectPop = ({ text }) => {
+const KeywordSelectPop = ({ text,handleCurrentBlock, setIsKeywordPopOpen }) => {
   const { keywordList } = useSelector((state) => state.keyword);
   const [inputKeywordList, setInputKeywordList] = useState([]);
   useEffect(() => {
@@ -13,6 +13,11 @@ const KeywordSelectPop = ({ text }) => {
     );
   }, [text]);
   console.log("inputlist", text, inputKeywordList);
+
+  const setKeyword = useCallback((keyword) => {
+    handleCurrentBlock(null, keyword, 'content')
+    setIsKeywordPopOpen(false)
+  }, []);
   return (
     <KeywordSelectModalEl>
       <ul className="input_keyword">
@@ -20,7 +25,11 @@ const KeywordSelectPop = ({ text }) => {
           inputKeywordList.length > 0 &&
           inputKeywordList.map((keywordObj) => {
             const { seq, keyword } = keywordObj;
-            return <li key={seq}>{keyword}</li>;
+            return (
+              <li onClick={() => setKeyword(keyword)} key={seq}>
+                {keyword}
+              </li>
+            );
           })}
       </ul>
       <ul>
@@ -28,7 +37,11 @@ const KeywordSelectPop = ({ text }) => {
           keywordList &&
           keywordList.map((keywordObj) => {
             const { seq, keyword } = keywordObj;
-            return <li key={seq}>{keyword}</li>;
+            return (
+              <li onClick={() => setKeyword(keyword)} key={seq}>
+                {keyword}
+              </li>
+            );
           })}
       </ul>
     </KeywordSelectModalEl>
