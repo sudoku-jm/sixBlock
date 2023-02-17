@@ -14,7 +14,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   Keyword.associate = (db) => {
-     db.Keyword.hasMany(db.Block)
+     db.Keyword.hasMany(db.Block),
+     db.Keyword.belongsTo(db.FixedKeyword)
   };
   return Keyword
 }

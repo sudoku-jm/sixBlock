@@ -4,7 +4,6 @@ const db = require("./models");
 
 const app = express();
 
-
 db.sequelize
   .sync()
   .then(() => {
@@ -12,11 +11,10 @@ db.sequelize
   })
   .catch(console.error);
 
-
 app.get("/", (req, res) => {
   res.send("hi express");
 });
 
-app.listen(3306, () => {
+app.listen(5500, () => {
   console.log("server test 🧨");
 });

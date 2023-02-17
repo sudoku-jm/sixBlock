@@ -8,6 +8,7 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
 db.User = require("./user")(sequelize, Sequelize)
 db.Block = require("./block")(sequelize, Sequelize)
 db.Keyword = require("./keyword")(sequelize, Sequelize);
+db.FixedKeyword = require("./fixedKeyword")(sequelize, Sequelize);
 
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
