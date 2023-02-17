@@ -70,16 +70,19 @@ function duplicateCheckIdAPI(data) {
 }
 function* duplicateCheckId(action) {
   try {
-    // const result = yield call(duplicateCheckIdAPI, action.data);
-    console.log("duplicateCheckIdAPI result");
-    yield put({
-      type: DUPLICATE_CHECK_ID_SUCCESS,
-    });
+    console.log("action??????????", action);
+    const result = yield call(duplicateCheckIdAPI, action.data);
+    console.log("duplicateCheckIdAPI result", result);
+    // yield put({
+    //   type: DUPLICATE_CHECK_ID_SUCCESS,
+    // });
   } catch (err) {
-    yield put({
-      type: DUPLICATE_CHECK_ID_FAILRE,
-      error: err.response.data,
-    });
+    console.error(err);
+
+    // yield put({
+    //   type: DUPLICATE_CHECK_ID_FAILRE,
+    //   error: err.response.data,
+    // });
   }
 }
 
