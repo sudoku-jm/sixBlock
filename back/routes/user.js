@@ -25,9 +25,9 @@ router.post("/duplicatechkid", async (req, res, next) => {
     res.status(201).json({
       duplicate: "N",
     });
-  } catch (error) {
-    console.error(error);
-    next(error); //statue(500) 500번 에러
+  } catch (err) {
+    console.error(err);
+    next(err); //statue(500) 500번 에러
   }
 });
 
@@ -55,9 +55,9 @@ router.post("/", async (req, res, next) => {
     });
 
     res.status(201).send("ok");
-  } catch (error) {
-    console.error(error);
-    next(error);
+  } catch (err) {
+    console.error(err);
+    next(err);
   }
 });
 
@@ -107,6 +107,15 @@ router.post("/logout", async (req, res, next) => {
   req.logout();
   req.session.destroy();
   res.status(200).send("ok : 로그아웃 완료");
+});
+
+//마이페이지 > 유저정보 더 불러오기
+router.post("/userinfo", async (req, res, next) => {
+  try {
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
 });
 
 module.exports = router;
