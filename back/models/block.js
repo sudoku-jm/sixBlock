@@ -24,8 +24,13 @@ module.exports = (sequelize, DataTypes) => {
       },
       isFinished: {
         //true/false
-        type: DataTypes.BOOLEAN,
+        type: DataTypes.CHAR(1),
         allowNull: false,
+      },
+      userid: {
+        type: DataTypes.STRING(20),
+        allowNull: false,
+        
       },
     },
     {
@@ -34,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   Block.associate = (db) => {
-    db.Block.belongsTo(db.User);
+    db.Block.belongsTo(db.User, { foreignKey: "userid" });
     db.Block.belongsTo(db.Keyword);
   };
   return Block;

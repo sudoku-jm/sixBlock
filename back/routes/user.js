@@ -123,7 +123,7 @@ router.post("/userinfo", async (req, res, next) => {
         userid: req.body.userid,
       },
       attributes: {
-        exclude: ["password", "updatedAt", "id", "createdAt"],
+        exclude: ["password", "updatedAt", "createdAt"],
       },
     });
 
@@ -133,7 +133,7 @@ router.post("/userinfo", async (req, res, next) => {
 
     const plans = await Block.findAll({
       where: {
-        UserId: req.body.userid,
+        UserId: user.id,
       },
       attributes: {
         exclude: ["id", "type", "typeNum", "day", "date"],

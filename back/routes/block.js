@@ -2,7 +2,22 @@ const express = require("express");
 const { User, Block } = require("../models"); //DB 가져오기
 const router = express.Router();
 
-router.post("/", async (req, res) => {
+router.get("/day", async (req, res, next) => {
+  try {
+    const dayData = await Block.findOne({
+      where : {
+        date : req.body.curDate
+      }
+    })
+
+    if(!dayData){
+      return 
+    }
+
+  }catch{
+
+  }
+
   // await Block.create({
   //   type: req.body.blockData.type,
   //   typeNum: req.body.blockData.typeNum,
@@ -12,7 +27,6 @@ router.post("/", async (req, res) => {
   //   keywordId: req.body.blockData.keywordId,
   // });
   // res.json(); 
-  res.send('ok')
 });
 
 module.exports = router;

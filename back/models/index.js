@@ -5,8 +5,8 @@ const db = {}
 
 const sequelize = new Sequelize(config.database, config.username, config.password, config)
 
-db.User = require("./user")(sequelize, Sequelize)
 db.Block = require("./block")(sequelize, Sequelize)
+db.User = require("./user")(sequelize, Sequelize)
 db.Keyword = require("./keyword")(sequelize, Sequelize);
 db.FixedKeyword = require("./fixedKeyword")(sequelize, Sequelize);
 
