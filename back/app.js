@@ -17,7 +17,7 @@ db.sequelize
 
 app.use(
   cors({
-    origin: "*",
+    origin: ["http://192.168.1.128:13000", "http://192.168.1.128:23000"],
     credentials: true,
   })
 );

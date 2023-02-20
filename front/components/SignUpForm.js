@@ -34,7 +34,7 @@ const SignUpForm = () => {
       setUserPasswordChk("");
       setTerm(false);
       setErrorMsg({});
-      Router.push("/");
+      // Router.push("/");
     }
   }, [signupDone]);
 
@@ -50,6 +50,15 @@ const SignUpForm = () => {
       });
       setIdDuple(true);
       setSignupActive(false);
+    } else {
+      setErrorMsg({
+        ...errorMsg,
+        id: {
+          error: true,
+          done: false,
+          msg: "이미 존재하는 아이디입니다.",
+        },
+      });
     }
   }, [duplicateIdDone]);
 
@@ -61,49 +70,6 @@ const SignUpForm = () => {
       alert(signupError);
     }
   }, [signupError, duplicateIdError]);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (
-        idRef.current &&
-        !idRef.current.contains(event.target) &&
-        flagId &&
-        flagReId
-      ) {
-        if (userId === "") {
-          setErrorMsg({
-            ...errorMsg,
-            id: {
-              ...errorMsg.id,
-              error: true,
-              msg: "필수 정보 입니다",
-            },
-          });
-          return;
-        }
-        if (regChk.idRegExp(userId)) {
-          setErrorMsg({
-            ...errorMsg,
-            id: {
-              ...errorMsg.id,
-              error: true,
-              msg: "영문 숫자 포함 4-20자 이내",
-            },
-          });
-        }
-        if (!idDuple) {
-          dispatch({
-            type: DUPLICATE_CHECK_ID_REQUEST,
-            data: { userId },
-          });
-        }
-      }
-    };
-    document.addEventListener("click", handleClickOutside, true);
-    return () => {
-      document.removeEventListener("click", handleClickOutside, true);
-    };
-  }, [userId, flagId, idDuple]);
 
   const validationChk = () => {
     //아이디 검증
@@ -180,6 +146,68 @@ const SignUpForm = () => {
     return true;
   };
 
+  useEffect(() => {
+    if (userId === "") {
+      setErrorMsg({});
+    }
+
+    const fuc = () => {
+      if (userId === "") {
+        setErrorMsg({
+          ...errorMsg,
+          id: {
+            ...errorMsg.id,
+            error: true,
+            msg: "필수 정보 입니다",
+          },
+        });
+        return;
+      }
+      if (regChk.idRegExp(userId)) {
+        setErrorMsg({
+          ...errorMsg,
+          id: {
+            ...errorMsg.id,
+            error: true,
+            msg: "영문 숫자 포함 4-20자 이내",
+          },
+        });
+      }
+      if (!idDuple) {
+        dispatch({
+          type: DUPLICATE_CHECK_ID_REQUEST,
+          data: { userId },
+        });
+      }
+    };
+    const handleClickOutside = (event) => {
+      if (
+        idRef.current &&
+        !idRef.current.contains(event.target) &&
+        flagId &&
+        flagReId
+      ) {
+        fuc();
+      }
+    };
+    const handleBlurOutside = (event) => {
+      if (
+        idRef.current &&
+        idRef.current.contains(event.target) &&
+        flagId &&
+        flagReId
+      ) {
+        fuc();
+      }
+    };
+    document.addEventListener("focusout", handleBlurOutside, true);
+    document.addEventListener("click", handleClickOutside, true);
+    return () => {
+      document.removeEventListener("focusout", handleBlurOutside, true);
+      document.removeEventListener("click", handleClickOutside, true);
+    };
+  }, [userId, flagId, idDuple]);
+
   //폼 전송
   const handleSubmit = useCallback(
     (e) => {
@@ -200,7 +228,7 @@ const SignUpForm = () => {
     [userId, userNickName, userPassword, userPasswordChk, term]
   );
 
-  const onClickId = useCallback(
+  const onFocusId = useCallback(
     (e) => {
       e.preventDefault();
       setFlagId(true);
@@ -265,7 +293,7 @@ const SignUpForm = () => {
             placeholder="영문 숫자 포함 4-20자 이내"
             value={userId}
             onChange={onChangeId}
-            onClick={onClickId}
+            onFocus={onFocusId}
             ref={idRef}
             minLength="4"
             maxLength="20"
