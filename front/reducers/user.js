@@ -56,14 +56,14 @@ const dummuUser = (data) => ({
   // id: "jm1234",
   // nickname: "정미니",
   // password: null,
-  email: "jm91@bodyfriend.co.kr",
+  // email: "jm91@bodyfriend.co.kr",
   photoProfile:
     "https://images.unsplash.com/photo-1661956602116-aa6865609028?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
-  plans: {
-    totalPlans: 300,
-    successRate: 100,
-    topKeywords: ["운동", "회사", "독서", "학원", "친구약속"],
-  },
+  // plans: {
+  //   totalPlans: 300,
+  //   successRate: 100,
+  //   topKeywords: ["운동", "회사", "독서", "학원", "친구약속"],
+  // },
 });
 
 const reducer = (state = initialState, action) => {

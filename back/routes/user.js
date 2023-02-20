@@ -145,7 +145,8 @@ router.post("/userinfo", async (req, res, next) => {
     const topKeyword = ["키워드1", "키워드2", "키워드3", "키워드4", "키워드5"];
 
     const result = {
-      user,
+      userid: user.userid,
+      nickname: user.nickname,
       plans: {
         totalPlans: plans.length,
         successRate:
