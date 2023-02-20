@@ -9,7 +9,7 @@ import regChk from "../hooks/useReg";
 
 const SignUpForm = () => {
   const dispatch = useDispatch();
-  const { signupDone, signupError, duplicateIdDone, duplicateIdError } =
+  const { signupDone, signupError, duplicateIdDone, duplicateIdError, user } =
     useSelector((state) => state.user);
 
   const idRef = useRef(null);
@@ -25,6 +25,11 @@ const SignUpForm = () => {
   const [errorMsg, setErrorMsg] = useState({});
   const [signupActive, setSignupActive] = useState(true);
 
+  useEffect(() => {
+    if (user && user.userid) {
+      Router.replace("/");
+    }
+  }, [user && user.userid]);
   useEffect(() => {
     if (signupDone) {
       console.log("성공!");
@@ -151,6 +156,8 @@ const SignUpForm = () => {
       setErrorMsg({});
     }
 
+    let clicked = false;
+
     const fuc = () => {
       if (userId === "") {
         setErrorMsg({
@@ -180,6 +187,7 @@ const SignUpForm = () => {
         });
       }
     };
+
     const handleClickOutside = (event) => {
       if (
         idRef.current &&
@@ -187,10 +195,14 @@ const SignUpForm = () => {
         flagId &&
         flagReId
       ) {
-        fuc();
+        if (!clicked) {
+          fuc();
+        }
       }
     };
+
     const handleBlurOutside = (event) => {
+      clicked = true;
       if (
         idRef.current &&
         idRef.current.contains(event.target) &&
