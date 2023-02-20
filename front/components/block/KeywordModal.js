@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   TiTimes,
   TiKeyOutline,
@@ -13,18 +13,31 @@ import Checkbox from "../input/Checkbox";
 import DateSelect from "../input/DateSelect";
 import Selectbox from "../input/Selectbox";
 const KeywordModal = ({ type, blockData, setIsModalOpen }) => {
+  console.log("keywordmodal================", type, blockData);
+
   const dispatch = useDispatch();
 
-  const { keywordList } = useSelector((state) => state.keyword);
-  const { blockArr } = useSelector((state) => state.block);
+  const { blockArr, weekBlock } = useSelector((state) => state.block);
 
-  const [currentBlock, setCurrentBlock] = useState(blockData);
+  //input 시 내용 저장
+  const [currentBlock, setCurrentBlock] = useState(
+    type === "month"
+      ? weekBlock
+          .find((d) => d.date === blockData)
+          ?.weekData.find((w) => w.date === blockData)
+          ?.blockData.find((b) => b.date === blockData)
+      : blockData
+  );
+
+  useEffect(()=>{console.log("curbLOCK", currentBlock)},[currentBlock])
+  
   const handleCurrentBlock = useCallback(
-    (e, text) => {
+    (e, text, nameType) => {
+      console.log("handlecurrentblock", e, text)
       if (text) {
         setCurrentBlock({
           ...currentBlock,
-          type: text.replace(/[0-9]/g, ""),
+          [nameType]: text.replace(/[0-9]/g, ""),
         });
       } else {
         const { name, value, checked } = e.target;
@@ -69,12 +82,19 @@ const KeywordModal = ({ type, blockData, setIsModalOpen }) => {
                   type="text"
                   name="content"
                   value={currentBlock.content}
+                  onClick={()=>setIsKeywordPopOpen(true)}
                   onChange={(e) => {
-                    handleCurrentBlock(e);
-                    setIsKeywordPopOpen(true)
+                    handleCurrentBlock(e, e.target.value, 'content');
+                    setIsKeywordPopOpen(true);
                   }}
                 />
-                {isKeywordPopOpen && <KeywordSelectPop text={currentBlock.content}/>}
+                {isKeywordPopOpen && (
+                  <KeywordSelectPop
+                    text={currentBlock.content}
+                    handleCurrentBlock={handleCurrentBlock}
+                    setIsKeywordPopOpen={setIsKeywordPopOpen}
+                  />
+                )}
               </div>
             </div>
 
@@ -105,7 +125,7 @@ const KeywordModal = ({ type, blockData, setIsModalOpen }) => {
                   defaultValue={`${currentBlock.type}${currentBlock.typeNum}`}
                   selectList={blockArr}
                   onChange={(text) => {
-                    handleCurrentBlock(null, text);
+                    handleCurrentBlock(null, text, 'type');
                   }}
                 />
               </div>

@@ -104,9 +104,15 @@ router.post("/login", async (req, res, next) => {
 
 //로그아웃
 router.post("/logout", async (req, res, next) => {
-  req.logout();
-  req.session.destroy();
-  res.status(200).json("server ok: 로그아웃 완료");
+  console.log("===========logout!!");
+  req.logout((err) => {
+    req.session.destroy();
+    if (err) {
+      res.redirect("/");
+    } else {
+      res.status(200).send("server ok: 로그아웃 완료");
+    }
+  });
 });
 
 //마이페이지 > 유저정보 더 불러오기
@@ -114,7 +120,7 @@ router.post("/userinfo", async (req, res, next) => {
   try {
     const user = await User.findOne({
       where: {
-        userid: req.body.userId,
+        userid: req.body.userid,
       },
       attributes: {
         exclude: ["password", "updatedAt", "id", "createdAt"],
@@ -127,15 +133,32 @@ router.post("/userinfo", async (req, res, next) => {
 
     const plans = await Block.findAll({
       where: {
-        UserId: req.body.userId,
+        UserId: req.body.userid,
       },
       attributes: {
         exclude: ["id", "type", "typeNum", "day", "date"],
       },
     });
-    console.log("plans", plans);
+    console.log("============plans", plans);
+    const finishedLen =
+      plans.length > 0 ? plans.map((p) => p.isFinished == true).length : 0;
+    const topKeyword = ["키워드1", "키워드2", "키워드3", "키워드4", "키워드5"];
 
-    res.status(200).json({ user, plans: plans });
+    const result = {
+      user,
+      plans: {
+        totalPlans: plans.length,
+        successRate:
+          plans.length > 0
+            ? parseInt((finishedLen / plans.length) * 100, 10)
+            : 0, //성공개수/전체개수 * 100
+        topKeywords: topKeyword,
+      },
+    };
+
+    console.log("=============result", result);
+
+    res.status(200).json(result);
   } catch (err) {
     console.error(err);
     next(err);

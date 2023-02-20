@@ -78,11 +78,7 @@ const reducer = (state = initialState, action) => {
       case LOAD_USER_INFO_SUCCESS:
         draft.loadUserInfoLoading = false;
         draft.loadUserInfoDone = true;
-        draft.user;
-        // draft.user = action.data;
-        // draft.user.email = action.data.email;
-        // draft.user.photoProfile = action.data.photoProfile;
-        // draft.user.plans = action.data.plans;
+        draft.user = action.data;
         break;
       case LOAD_USER_INFO_FAILURE:
         draft.loadUserInfoLoading = false;

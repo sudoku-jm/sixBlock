@@ -58,7 +58,7 @@ const MonthBlock = () => {
       {isPopOpen && (
         <KeywordModal
           type={"month"}
-          blockData={date}
+          blockData={moment(date).format("YYYY-MM-DD")}
           setIsModalOpen={setIsPopOpen}
         />
       )}
