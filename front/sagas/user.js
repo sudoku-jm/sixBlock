@@ -30,10 +30,10 @@ function* loadUserInfo() {
   try {
     // const result = yield call(loadUserInfoAPI);
     console.log("loadUserInfoAPI result");
-    yield put({
-      type: LOAD_USER_INFO_SUCCESS,
-      // data: result.data,
-    });
+    // yield put({
+    //   type: LOAD_USER_INFO_SUCCESS,
+    //   // data: result.data,
+    // });
   } catch (err) {
     console.error(err);
     yield put({
@@ -97,15 +97,16 @@ function loginAPI(data) {
 
 function* logIn(action) {
   try {
-    // const result = yield call(loginAPI, action.data);
-    // console.log('result loginAPI', result);
+    const result = yield call(loginAPI, action.data);
+    console.log("result loginAPI", result);
     // yield delay(1000);
 
     yield put({
       type: LOG_IN_SUCCESS,
-      // data: result.data,
+      data: result.data,
     });
   } catch (err) {
+    //로그인 실패 시 뜨는 얼럿창
     console.error(err);
     yield put({
       type: LOG_IN_FAILRE,

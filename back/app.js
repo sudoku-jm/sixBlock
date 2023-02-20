@@ -1,9 +1,17 @@
 const express = require("express");
 const cors = require("cors");
+const session = require("express-session");
+const cookieParser = require("cookie-parser");
+const passport = require("passport");
+const dotenv = require("dotenv");
+
 const UserRouter = require("./routes/user");
 const db = require("./models");
-const dotenv = require("dotenv");
+const passportConfig = require("./passport");
+
+// env 파일 연결 들고오기
 dotenv.config();
+
 const app = express();
 
 db.sequelize
@@ -12,6 +20,9 @@ db.sequelize
     console.log("db 연결 성공");
   })
   .catch(console.error);
+
+//패스포트 연결
+passportConfig();
 
 app.use(
   cors({
@@ -22,6 +33,18 @@ app.use(
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+//쿠키
+app.use(cookieParser(process.env.COOKIE_SECRET));
+//세션
+app.use(
+  session({
+    saveUninitialized: false,
+    resave: false,
+    secret: process.env.COOKIE_SECRET,
+  })
+);
+app.use(passport.initialize());
+app.use(session());
 
 app.get("/", (req, res) => {
   res.send("hi express");

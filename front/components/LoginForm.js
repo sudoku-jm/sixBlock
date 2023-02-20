@@ -24,8 +24,8 @@ const LoginForm = () => {
       dispatch({
         type: LOG_IN_REQUEST,
         data: {
-          userId,
-          userPassword,
+          userid: userId,
+          password: userPassword,
         },
       });
     },
