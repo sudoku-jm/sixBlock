@@ -23,17 +23,18 @@ import {
 import { func } from "prop-types";
 
 /*===========회원정보========== */
-function loadUserInfoAPI() {
-  return axios.post("/user/userinfo");
+function loadUserInfoAPI(data) {
+  return axios.post("/user/userinfo", data);
 }
 function* loadUserInfo(action) {
   try {
+    console.log("action loadUserInfo", action.data);
     const result = yield call(loadUserInfoAPI, action.data);
-    console.log("loadUserInfoAPI result");
-    // yield put({
-    //   type: LOAD_USER_INFO_SUCCESS,
-    //   // data: result.data,
-    // });
+    console.log("loadUserInfoAPI result", result);
+    yield put({
+      type: LOAD_USER_INFO_SUCCESS,
+      data: result.data,
+    });
   } catch (err) {
     console.error(err);
     yield put({

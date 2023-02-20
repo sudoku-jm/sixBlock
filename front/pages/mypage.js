@@ -13,14 +13,14 @@ const mypage = () => {
   const dispatch = useDispatch();
   //임시(클라이언트 사이드 랜더링)
   useEffect(() => {
-    if (!(user && user.userid)) {
+    if (!(user && user.userid) && user == null) {
       Router.push("/");
-    } else {
-      //접속 시 유저정보 들고오기
-      // dispatch({
-      //   type: LOAD_USER_INFO_REQUEST,
-      //   data: { userid: user.userid },
-      // });
+    }
+    if (user && user.userid) {
+      dispatch({
+        type: LOAD_USER_INFO_REQUEST,
+        data: { userid: user.userid },
+      });
     }
   }, [user && user.userid]);
 
