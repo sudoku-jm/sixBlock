@@ -53,9 +53,9 @@ export const MODIFY_USER_FAILRE = "MODIFY_USER_FAILRE";
 //프로필 사진 변경
 
 const dummuUser = (data) => ({
-  id: "jm1234",
-  nickname: "정미니",
-  password: null,
+  // id: "jm1234",
+  // nickname: "정미니",
+  // password: null,
   email: "jm91@bodyfriend.co.kr",
   photoProfile:
     "https://images.unsplash.com/photo-1661956602116-aa6865609028?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
@@ -79,7 +79,9 @@ const reducer = (state = initialState, action) => {
         draft.loadUserInfoLoading = false;
         draft.loadUserInfoDone = true;
         // draft.user = action.data;
-        draft.user = dummuUser();
+        // draft.user.email = action.data.email;
+        // draft.user.photoProfile = action.data.photoProfile;
+        // draft.user.plans = action.data.plans;
         break;
       case LOAD_USER_INFO_FAILURE:
         draft.loadUserInfoLoading = false;

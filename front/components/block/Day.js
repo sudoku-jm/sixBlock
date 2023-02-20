@@ -7,7 +7,7 @@ import InputText from "../input/Input";
 
 const Day = ({ day, dayType }) => {
   const { seq, content, isFinished } = day;
-  console.log("seq, isFinished ", seq, isFinished, content);
+  // console.log("seq, isFinished ", seq, isFinished, content);
   const dispatch = useDispatch();
   const [text, setText] = useState(content);
 
@@ -17,10 +17,12 @@ const Day = ({ day, dayType }) => {
   };
 
   const handleBlockCheck = (checked, seq) => {
-    if (isFinished) { //이미 체크된 경우 > 해제
+    if (isFinished) {
+      //이미 체크된 경우 > 해제
       console.log("111", isFinished);
       dispatch(unCheckDayBlock(dayType, seq));
-    } else { //체크 처리
+    } else {
+      //체크 처리
       console.log("222", isFinished);
       dispatch(checkDayBlock(dayType, seq, text));
     }

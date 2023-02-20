@@ -16,10 +16,10 @@ import Router from "next/router";
 const Home = () => {
   const { user } = useSelector((state) => state.user);
   useEffect(() => {
-    if (!(user && user.id)) {
+    if (!(user && user.userid)) {
       Router.push("/");
     }
-  }, [user && user.id]);
+  }, [user && user.userid]);
   //오늘 날짜
   const { curDate, dateArr } = useSelector((state) => state.block);
 

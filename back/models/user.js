@@ -17,6 +17,15 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(100), //암호화 하면 늘어나기 때문
         allowNull: true,
       },
+      // profile: {
+      //   type: DataTypes.STRING(200), //이미지 URL 경로
+      //   allowNull: false,
+      // },
+      // email : {
+      //   type : DataTypess.STRING(30), //문자열 30자 이내
+      //   allowNull : false,
+      //   unique : true,
+      // }
     },
     {
       charset: "utf8", //이모티콘 : utf8mb4
