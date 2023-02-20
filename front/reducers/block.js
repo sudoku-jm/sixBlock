@@ -30,7 +30,7 @@ const initialState = {
     "Dinner2",
   ],
   dateArr: [],
-  curDate: "2023-02-09",
+  curDate: "2023-02-20",
 };
 
 //일 블록 가져오기

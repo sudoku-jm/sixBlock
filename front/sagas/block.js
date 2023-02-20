@@ -9,8 +9,9 @@ function loadDayBlockAPI(id){
 }
 function* loadDayBlock(){
   try{
-    const result = yield call(loadDayBlockAPI)
-    console.log("loadDayblockAPI result: ", result)
+    // const result = yield call(loadDayBlockAPI)
+    // console.log("loadDayblockAPI result: ", result)
+    console.log("loadDayBlockAPI result");
     yield put({
       type: LOAD_DAY_BLOCK_REQUEST,
       
