@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const UserRouter = require("./routes/user");
 const BlockRouter = require("./routes/block");
+const KeywordRouter = require("./routes/keyword");
 const db = require("./models");
 const dotenv = require("dotenv");
 dotenv.config();
@@ -16,7 +17,7 @@ db.sequelize
 
 app.use(
   cors({
-    origin: "http://192.168.1.128:13000",
+    origin: "*",
     credentials: true,
   })
 );
