@@ -24,11 +24,11 @@ import { func } from "prop-types";
 
 /*===========회원정보========== */
 function loadUserInfoAPI() {
-  return axios.get("/user");
+  return axios.post("/user/userinfo");
 }
-function* loadUserInfo() {
+function* loadUserInfo(action) {
   try {
-    // const result = yield call(loadUserInfoAPI);
+    const result = yield call(loadUserInfoAPI, action.data);
     console.log("loadUserInfoAPI result");
     // yield put({
     //   type: LOAD_USER_INFO_SUCCESS,

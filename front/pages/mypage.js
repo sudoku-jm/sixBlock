@@ -15,14 +15,15 @@ const mypage = () => {
   useEffect(() => {
     if (!(user && user.userid)) {
       Router.push("/");
+    } else {
+      //접속 시 유저정보 들고오기
+      // dispatch({
+      //   type: LOAD_USER_INFO_REQUEST,
+      //   data: { userid: user.userid },
+      // });
     }
   }, [user && user.userid]);
-  useEffect(() => {
-    //접속 시 유저정보 들고오기
-    dispatch({
-      type: LOAD_USER_INFO_REQUEST,
-    });
-  }, []);
+
   return (
     <AppLayout>
       <h1 className="hdtxt">마이 페이지</h1>
