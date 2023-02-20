@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { LOGOUT_REQUEST } from "../reducers/user";
 
@@ -7,6 +7,11 @@ const ProfileInfo = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { id, nickname } = user;
+  useEffect(() => {
+    if (!(user && user.userid) && user == null) {
+      Router.push("/");
+    }
+  }, [user && user.userid]);
   const onLogout = useCallback(() => {
     dispatch({
       type: LOGOUT_REQUEST,

@@ -106,12 +106,36 @@ router.post("/login", async (req, res, next) => {
 router.post("/logout", async (req, res, next) => {
   req.logout();
   req.session.destroy();
-  res.status(200).send("ok : 로그아웃 완료");
+  res.status(200).json("server ok: 로그아웃 완료");
 });
 
 //마이페이지 > 유저정보 더 불러오기
 router.post("/userinfo", async (req, res, next) => {
   try {
+    const user = await User.findOne({
+      where: {
+        userid: req.body.userId,
+      },
+      attributes: {
+        exclude: ["password", "updatedAt", "id", "createdAt"],
+      },
+    });
+
+    if (!user) {
+      return res.status(404).send("존재하지 않는 사용자입니다");
+    }
+
+    const plans = await Block.findAll({
+      where: {
+        UserId: req.body.userId,
+      },
+      attributes: {
+        exclude: ["id", "type", "typeNum", "day", "date"],
+      },
+    });
+    console.log("plans", plans);
+
+    res.status(200).json({ user, plans: plans });
   } catch (err) {
     console.error(err);
     next(err);
