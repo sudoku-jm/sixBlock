@@ -101,4 +101,12 @@ router.post("/login", async (req, res, next) => {
     });
   })(req, res, next);
 });
+
+//로그아웃
+router.post("/logout", async (req, res, next) => {
+  req.logout();
+  req.session.destroy();
+  res.status(200).send("ok : 로그아웃 완료");
+});
+
 module.exports = router;

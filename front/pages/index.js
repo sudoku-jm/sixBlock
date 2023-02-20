@@ -12,15 +12,19 @@ import Menu from "../components/Menu";
 import { SelectTitleEl } from "../style/BlockStyle";
 import KeywordModal from "../components/block/KeywordModal";
 import Router from "next/router";
-import { LOAD_DAY_BLOCK_REQUEST, LOAD_MONTH_BLOCK_REQUEST, LOAD_WEEK_BLOCK_REQUEST } from "../reducers/block";
+import {
+  LOAD_DAY_BLOCK_REQUEST,
+  LOAD_MONTH_BLOCK_REQUEST,
+  LOAD_WEEK_BLOCK_REQUEST,
+} from "../reducers/block";
 
 const Home = () => {
   const { user } = useSelector((state) => state.user);
   useEffect(() => {
-    if (!(user && user.id)) {
+    if (!(user && user.userid)) {
       Router.push("/");
     }
-  }, [user && user.id]);
+  }, [user && user.userid]);
   //오늘 날짜
   const { curDate, dateArr } = useSelector((state) => state.block);
 
@@ -36,6 +40,12 @@ const Home = () => {
   }, []);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (user && user.userid) {
+      getBlockData();
+    }
+  }, [type, user && user.userid]);
 
   const getBlockData = useCallback(() => {
     if (type === "일간") {
@@ -61,10 +71,6 @@ const Home = () => {
       });
     }
   }, [type]);
-
-  useEffect(()=>{
-    // getBlockData()
-  },[type])
 
   return (
     <AppLayout>

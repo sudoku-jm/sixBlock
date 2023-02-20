@@ -7,7 +7,7 @@ import InputText from "../input/Input";
 
 const Day = ({ day, dayType }) => {
   const { seq, content, isFinished } = day;
-  console.log("seq, isFinished ", seq, isFinished, content);
+  // console.log("seq, isFinished ", seq, isFinished, content);
   const dispatch = useDispatch();
   const [text, setText] = useState(content);
 

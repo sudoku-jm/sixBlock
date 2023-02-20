@@ -122,7 +122,7 @@ function logoutAPI() {
 
 function* logOut() {
   try {
-    // const result = yield call(logoutAPI);
+    yield call(logoutAPI);
     // console.log('result loginAPI', result);
     // yield delay(1000);
 

@@ -13,10 +13,10 @@ const mypage = () => {
   const dispatch = useDispatch();
   //임시(클라이언트 사이드 랜더링)
   useEffect(() => {
-    if (!(user && user.id)) {
+    if (!(user && user.userid)) {
       Router.push("/");
     }
-  }, [user && user.id]);
+  }, [user && user.userid]);
   useEffect(() => {
     //접속 시 유저정보 들고오기
     dispatch({
