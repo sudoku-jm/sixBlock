@@ -1,32 +1,47 @@
 const express = require("express");
-const { User, Block } = require("../models"); //DB 가져오기
+const { User, Block, Datetime } = require("../models"); //DB 가져오기
+const { isLoggedIn } = require("./middlewares");
 const router = express.Router();
+const moment = require("moment");
 
-router.get("/day", async (req, res, next) => {
+router.post("/day", isLoggedIn, async (req, res, next) => {
   try {
-    const dayData = await Block.findOne({
-      where : {
-        date : req.body.curDate
-      }
-    })
+    let returnData = []
+    const curDate = req.body.curDate;
+    const m = moment(curDate);
+    const dateSeqObj = await Datetime.findOne({
+      where: {
+        full_date: curDate,
+      },
+      attributes: {
+        exclude: ["updatedAt", "createdAt"],
+      },
+    });
+    const dateSeq = dateSeqObj.Datetime;
 
-    if(!dayData){
-      return 
-    }
+    const dateArr = await Block.findAll({
+      where: {
+        dayId: dateSeq,
+        userid : req.user.id, //middleware 에서 가져옴
+      },
+      attributes: {
+        exclude: ["updatedAt", "createdAt"],
+      },
+    });
 
-  }catch{
+    returnData = [
+      ...dateArr,
 
+    ]
+
+    return res.status(200).send(returnData);
+
+    
+  } catch (err) {
+    console.error(err);
+    next(err);
   }
 
-  // await Block.create({
-  //   type: req.body.blockData.type,
-  //   typeNum: req.body.blockData.typeNum,
-  //   day: req.body.blockData.day,
-  //   date: req.body.blockData.date,
-  //   isFinished: req.body.blockData.isFinished,
-  //   keywordId: req.body.blockData.keywordId,
-  // });
-  // res.json(); 
 });
 
 module.exports = router;

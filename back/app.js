@@ -53,7 +53,7 @@ app.get("/", (req, res) => {
 });
 
 // 라우터 분리
-app.use("/block", BlockRouter);
+app.use("/block", BlockRouter);8
 app.use("/user", UserRouter);
 
 app.listen(5500, () => {

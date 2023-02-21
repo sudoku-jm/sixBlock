@@ -8,14 +8,15 @@ import {
 
 //===============일 블록
 //일 블록 불러오기
-function loadDayBlockAPI(id) {
-  return axios.get(`/block/${id}`);
+function loadDayBlockAPI(data) {
+  return axios.post(`/block/day`, data);
 }
-function* loadDayBlock() {
+function* loadDayBlock(action) {
   try {
-    const result = yield call(loadDayBlockAPI);
+    console.log("action loadDayBlock", action.data);
+    const result = yield call(loadDayBlockAPI, action.data);
     console.log("=========================loadDayBlockAPI result", result);
-    console.log(result)
+    console.log(result);
     yield put({
       type: LOAD_DAY_BLOCK_SUCCESS,
     });

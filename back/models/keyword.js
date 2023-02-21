@@ -4,8 +4,16 @@ module.exports = (sequelize, DataTypes) => {
     {
       keyword: {
         type: DataTypes.STRING(50), //50글자이하 제한
-        allowNull: false,
+        allowNull: true, //null일 경우 fixedKeyword 에서 가져오기
         // unique: true,
+      },
+      fixedKeywordId: {
+        type: DataTypes.CHAR(10),
+        allowNull: false,
+      },
+      k_delYN: {
+        type: DataTypes.CHAR(1), //삭제여부 : Y, N
+        allowNull: false,
       },
     },
     {
@@ -14,8 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   Keyword.associate = (db) => {
-    db.Keyword.hasMany(db.Block);
-    db.Keyword.belongsTo(db.FixedKeyword);
+    
   };
   return Keyword;
 };
