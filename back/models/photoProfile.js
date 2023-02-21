@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   PhotoProfile.associate = (db) => {
-    db.PhotoProfile.belongsTo(db.User);
+    db.PhotoProfile.belongsTo(db.User,{foreignKey: 'userId', sourceKey : 'userid'});
   };
   return PhotoProfile;
 };
