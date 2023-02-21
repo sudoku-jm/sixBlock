@@ -1,6 +1,5 @@
 export const backUrl =
   process.env.NODE_ENV === "development"
-    ? // ? "http://192.168.1.128:15500"
-      // : "http://192.168.1.128:15500";
-      "http://192.168.1.128:25500"
-    : "http://192.168.1.128:25500";
+    ?
+      "http://localhost:5500"
+    : "http://192.168.1.128:5500";

@@ -1,7 +1,15 @@
 module.exports = (sequelize, DataTypes) => {
   const PhotoProfile = sequelize.define(
     "PhotoProfile",
+
     {
+      id :{
+        type:DataTypes.INTEGER,
+        primaryKey : true,
+        allowNull : false,
+        autoIncremenet : false,
+      }
+      ,
       src: {
         type: DataTypes.STRING(200), //이미지 URL 경로는 길어질 수 있음.
         allowNull: false,
@@ -15,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
     }
   );
-  User.associate = (db) => {
+  PhotoProfile.associate = (db) => {
     db.PhotoProfile.belongsTo(db.User);
   };
   return PhotoProfile;

@@ -6,21 +6,22 @@ module.exports = (sequelize, DataTypes) => {
       userid: {
         type: DataTypes.STRING(20),
         allowNull: false,
+        primaryKey: true,
+        autoIncremenet : false,
+        unique : true,
       },
       email: {
         type: DataTypes.STRING(20),
         allowNull: true,
         unique: true,
-        primaryKey: true,
       },
       nickname: {
         type: DataTypes.STRING(10), //STRING, TEXT, BOOLEAN, INTEGER, FLOAT, DATETIME
         allowNull: false,
-        // unique: false,
       },
       password: {
         type: DataTypes.STRING(100), //암호화 하면 늘어나기 때문
-        allowNull: true,
+        allowNull: false,
       },
       profile: {
         type: DataTypes.STRING(200), //이미지 URL 경로
@@ -31,11 +32,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
 
-      // email : {
-      //   type : DataTypess.STRING(30), //문자열 30자 이내
-      //   allowNull : false,
-      //   unique : true,
-      // }
     },
     {
       charset: "utf8", //이모티콘 : utf8mb4
@@ -43,9 +39,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   User.associate = (db) => {
-    // db.User.hasMany(db.Block, { foreignKey: "userid" }); //User -> Block 여러개 가짐
-    // db.User.hasMany(db.Keyword); //User -> keyword 여러개 가짐
-    // db.User.belongsTo(db.Block, { through: "plan" });
+    db.User.hasMany(db.Block, {foreignKey: 'userId', sourceKey : 'userid'}); 
+    db.User.hasMany(db.PhotoProfile ); 
   };
   return User;
 };

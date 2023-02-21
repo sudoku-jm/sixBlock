@@ -8,64 +8,45 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
       },
       year : {
-        type: DataTypes.CHAR(4),
+        type: DataTypes.STRING(4),
         allowNull: false,
       },
       month : {
-        type: DataTypes.CHAR(2),
+        type: DataTypes.STRING(2),
         allowNull: false,
       },
       date : {
-        type: DataTypes.CHAR(2),
+        type: DataTypes.STRING(2),
         allowNull: false,
       },
       day : {
-        type: DataTypes.CHAR(2),
+        type: DataTypes.STRING(2),
         allowNull: false,
       },
       week : {
-        type: DataTypes.CHAR(2),
+        type: DataTypes.STRING(2),
         allowNull: false,
       },
       weekId : {
-        type: DataTypes.CHAR(6),
+        type: DataTypes.STRING(6),
         allowNull: false,
       },
       d_delYn: {
-        type: DataTypes.CHAR(1), //삭제여부 : Y, N
+        type: DataTypes.STRING(1), //삭제여부 : Y, N
         allowNull: false,
       },
     },
     {
       charset: "utf8",
       collate: "utf8_general_ci",
+      timestamps : false
+
     }
   );
   Datetime.associate = (db) => {
+    db.Datetime.hasMany(db.Block);
   };
 
-  const result = Datetime.create({
-    fullDate: "2023-01-01",
-    year: fullDate.split("-")[0],
-    month: fullDate.split("-")[1],
-    date: fullDate.split("-")[2],
-    week: getWeek(fullDate),
-    weekId: {
-      type: DataTypes.CHAR(50),
-      allowNull: false,
-    },
-    d_delYn: {
-      type: DataTypes.CHAR(1), //삭제여부 : Y, N
-      allowNull: false,
-    },
-  });
-
-  const getWeek = (date) => {
-    const currentDate = date.getDate();
-    const firstDay = new Date(date.setDate(1)).getDay();
-
-    return Math.ceil((currentDate + firstDay) / 7);
-  };
 
   return Datetime
 }

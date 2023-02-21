@@ -2,9 +2,10 @@ module.exports = (sequelize, DataTypes) => {
   const Code = sequelize.define(
     "Code",
     {
-      codeName: {
+      name: {
         type: DataTypes.STRING(10),
         allowNull: false,
+        primaryKey : true,
         unique: true,
       },
       desc1: { //코드 세부 
@@ -23,9 +24,11 @@ module.exports = (sequelize, DataTypes) => {
     {
       charset: "utf8",
       collate: "utf8_general_ci",
+      timestamps : false
     }
   );
   Code.associate = (db) => {
+    db.Datetime.hasMany(db.Block);
   };
   return Code
 }
