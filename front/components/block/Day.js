@@ -16,17 +16,15 @@ const Day = ({ day, dayType }) => {
     value !== "" && setText(value);
   };
 
-  const handleBlockCheck = (checked, seq) => {
-    if (isFinished) {
-      //이미 체크된 경우 > 해제
-      console.log("111", isFinished);
-      dispatch(unCheckDayBlock(dayType, seq));
-    } else {
-      //체크 처리
-      console.log("222", isFinished);
-      dispatch(checkDayBlock(dayType, seq, text));
-    }
-  };
+  // const handleBlockCheck = (checked, seq) => {
+  //   if (isFinished) { //이미 체크된 경우 > 해제
+  //     console.log("111", isFinished);
+  //     dispatch(unCheckDayBlock(dayType, seq));
+  //   } else { //체크 처리
+  //     console.log("222", isFinished);
+  //     dispatch(checkDayBlock(dayType, seq, text));
+  //   }
+  // };
 
   return (
     <DayBlockEl isblockCheck={isFinished}>
@@ -37,7 +35,10 @@ const Day = ({ day, dayType }) => {
       />
       <Checkbox
         checked={isFinished}
-        onChange={(e) => handleBlockCheck(e.target.checked, seq)}
+        onChange={(e) =>
+          console.log(e)
+          //  handleBlockCheck(e.target.checked, seq)
+        }
         name={`daycheck_${seq}`}
       />
     </DayBlockEl>

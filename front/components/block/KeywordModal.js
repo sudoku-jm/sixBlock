@@ -55,7 +55,7 @@ const KeywordModal = ({ type, blockData, setIsModalOpen }) => {
   const [isKeywordPopOpen, setIsKeywordPopOpen] = useState(false);
 
   const setCurrentBlockAction = useCallback(() => {
-    dispatch(handleDayBlock(currentBlock));
+    // dispatch(handleDayBlock(currentBlock));
     setIsModalOpen(false);
   }, [currentBlock]);
 

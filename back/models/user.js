@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(20),
         allowNull: true,
         unique: true,
+        primaryKey: true,
       },
       nickname: {
         type: DataTypes.STRING(10), //STRING, TEXT, BOOLEAN, INTEGER, FLOAT, DATETIME
@@ -21,10 +22,15 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(100), //암호화 하면 늘어나기 때문
         allowNull: true,
       },
-      // profile: {
-      //   type: DataTypes.STRING(200), //이미지 URL 경로
-      //   allowNull: false,
-      // },
+      profile: {
+        type: DataTypes.STRING(200), //이미지 URL 경로
+        allowNull: true,
+      },
+      u_delYN: {
+        type: DataTypes.CHAR(1), //삭제여부 : Y, N
+        allowNull: false,
+      },
+
       // email : {
       //   type : DataTypess.STRING(30), //문자열 30자 이내
       //   allowNull : false,
@@ -37,8 +43,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   User.associate = (db) => {
-    db.User.hasMany(db.Block); //User -> Block 여러개 가짐
-    db.User.hasMany(db.Keyword); //User -> keyword 여러개 가짐
+    // db.User.hasMany(db.Block, { foreignKey: "userid" }); //User -> Block 여러개 가짐
+    // db.User.hasMany(db.Keyword); //User -> keyword 여러개 가짐
     // db.User.belongsTo(db.Block, { through: "plan" });
   };
   return User;

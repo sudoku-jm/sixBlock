@@ -1,5 +1,6 @@
 const express = require("express");
 const { User, Block } = require("../models");
+const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 const router = express.Router();
 const bcrypt = require("bcrypt"); //비밀번호 암호화
 const passport = require("passport");
@@ -116,16 +117,16 @@ router.post("/logout", async (req, res, next) => {
 });
 
 //마이페이지 > 유저정보 더 불러오기
-router.post("/userinfo", async (req, res, next) => {
+router.post("/userinfo", isLoggedIn, async (req, res, next) => {
   try {
-    const user = await User.findOne({
-      where: {
-        userid: req.body.userid,
-      },
-      attributes: {
-        exclude: ["password", "updatedAt", "createdAt"],
-      },
-    });
+    // const user = await User.findOne({
+    //   where: {
+    //     userid: req.body.userid,
+    //   },
+    //   attributes: {
+    //     exclude: ["password", "updatedAt", "createdAt"],
+    //   },
+    // });
 
     if (!user) {
       return res.status(404).send("존재하지 않는 사용자입니다");
@@ -133,7 +134,7 @@ router.post("/userinfo", async (req, res, next) => {
 
     const plans = await Block.findAll({
       where: {
-        UserId: user.id,
+        UserId: req.user.id, //middleware 에서 가져옴
       },
       attributes: {
         exclude: ["id", "type", "typeNum", "day", "date"],

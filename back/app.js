@@ -5,7 +5,9 @@ const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const dotenv = require("dotenv");
 
+const BlockRouter = require("./routes/block");
 const UserRouter = require("./routes/user");
+const KeywordRouter = require("./routes/keyword");
 const db = require("./models");
 const passportConfig = require("./passport");
 
@@ -51,6 +53,7 @@ app.get("/", (req, res) => {
 });
 
 // 라우터 분리
+app.use("/block", BlockRouter);8
 app.use("/user", UserRouter);
 
 app.listen(5500, () => {

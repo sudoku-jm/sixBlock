@@ -10,10 +10,12 @@ const sequelize = new Sequelize(
   config
 );
 
+db.Block = require("./block")(sequelize, Sequelize);
 db.User = require("./user")(sequelize, Sequelize);
 db.Keyword = require("./keyword")(sequelize, Sequelize);
 db.FixedKeyword = require("./fixedKeyword")(sequelize, Sequelize);
-db.Block = require("./block")(sequelize, Sequelize);
+db.Datetime = require("./datetime")(sequelize, Sequelize);
+db.Code = require("./code")(sequelize, Sequelize);
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { TiCalendar, TiPlus } from "react-icons/ti";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AppLayout from "../components/AppLayout";
 import DayBlock from "../components/block/DayBlock";
 import MonthBlock from "../components/block/MonthBlock";
@@ -12,6 +12,11 @@ import Menu from "../components/Menu";
 import { SelectTitleEl } from "../style/BlockStyle";
 import KeywordModal from "../components/block/KeywordModal";
 import Router from "next/router";
+import {
+  LOAD_DAY_BLOCK_REQUEST,
+  LOAD_MONTH_BLOCK_REQUEST,
+  LOAD_WEEK_BLOCK_REQUEST,
+} from "../reducers/block";
 
 const Home = () => {
   const { user } = useSelector((state) => state.user);
@@ -33,6 +38,39 @@ const Home = () => {
   const selectType = useCallback((typeValue) => {
     setType(typeValue);
   }, []);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (user && user.userid) {
+      getBlockData();
+    }
+  }, [type, user && user.userid]);
+
+  const getBlockData = useCallback(() => {
+    if (type === "일간") {
+      dispatch({
+        type: LOAD_DAY_BLOCK_REQUEST,
+        data: {
+          curDate: curDate,
+        },
+      });
+    } else if (type === "주간") {
+      dispatch({
+        type: LOAD_WEEK_BLOCK_REQUEST,
+        data: {
+          curDate: curDate,
+        },
+      });
+    } else if (type === "월간") {
+      dispatch({
+        type: LOAD_MONTH_BLOCK_REQUEST,
+        data: {
+          curDate: curDate,
+        },
+      });
+    }
+  }, [type]);
 
   return (
     <AppLayout>
