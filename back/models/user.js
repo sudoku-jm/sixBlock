@@ -27,16 +27,16 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue : "N"
       },
-
-      // email : {
-      //   type : DataTypess.STRING(30), //문자열 30자 이내
-      //   allowNull : false,
-      //   unique : true,
-      // }
+      email : {
+        type : DataTypes.STRING(30), //문자열 30자 이내
+        allowNull : true,
+        unique : true,
+      }
     },
     {
       charset: "utf8", //이모티콘 : utf8mb4
       collate: "utf8_general_ci",
+      paranoid : true,
     }
   );
   User.associate = (db) => {

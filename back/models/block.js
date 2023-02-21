@@ -35,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       charset: "utf8", //이모티콘 : utf8mb4
       collate: "utf8_general_ci",
+      paranoid: true,
     }
   );
   Block.associate = (db) => {
