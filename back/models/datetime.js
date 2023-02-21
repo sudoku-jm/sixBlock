@@ -44,28 +44,5 @@ module.exports = (sequelize, DataTypes) => {
   Datetime.associate = (db) => {
   };
 
-  const result = Datetime.create({
-    fullDate: "2023-01-01",
-    year: fullDate.split("-")[0],
-    month: fullDate.split("-")[1],
-    date: fullDate.split("-")[2],
-    week: getWeek(fullDate),
-    weekId: {
-      type: DataTypes.CHAR(50),
-      allowNull: false,
-    },
-    d_delYn: {
-      type: DataTypes.CHAR(1), //삭제여부 : Y, N
-      allowNull: false,
-    },
-  });
-
-  const getWeek = (date) => {
-    const currentDate = date.getDate();
-    const firstDay = new Date(date.setDate(1)).getDay();
-
-    return Math.ceil((currentDate + firstDay) / 7);
-  };
-
   return Datetime
 }
