@@ -7,38 +7,39 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
       },
-      year : {
-        type: DataTypes.CHAR(4),
-        allowNull: false,
+      year: {
+        type: DataTypes.STRING(4),
+        allowNull: true,
       },
-      month : {
-        type: DataTypes.CHAR(2),
-        allowNull: false,
+      month: {
+        type: DataTypes.STRING(2),
+        allowNull: true,
       },
-      date : {
-        type: DataTypes.CHAR(2),
-        allowNull: false,
+      date: {
+        type: DataTypes.STRING(2),
+        allowNull: true,
       },
-      day : {
-        type: DataTypes.CHAR(2),
-        allowNull: false,
+      day: {
+        type: DataTypes.STRING(2),
+        allowNull: true,
       },
-      week : {
-        type: DataTypes.CHAR(2),
-        allowNull: false,
+      week: {
+        type: DataTypes.STRING(2),
+        allowNull: true,
       },
-      weekId : {
-        type: DataTypes.CHAR(6),
-        allowNull: false,
+      weekId: {
+        type: DataTypes.STRING(6),
+        allowNull: true,
       },
-      d_delYn: {
-        type: DataTypes.CHAR(1), //삭제여부 : Y, N
-        allowNull: false,
-      },
+      // d_delYn: {
+      //   type: DataTypes.CHAR(1), //삭제여부 : Y, N
+      //   allowNull: false,
+      // },
     },
     {
       charset: "utf8",
       collate: "utf8_general_ci",
+      timestamps: false,
     }
   );
   Datetime.associate = (db) => {

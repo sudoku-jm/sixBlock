@@ -7,17 +7,20 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
       },
-      desc1: { //코드 세부 
+      desc1: {
+        //코드 세부
         type: DataTypes.STRING(10),
         allowNull: true,
       },
-      desc2: { //코드 세부
+      desc2: {
+        //코드 세부
         type: DataTypes.STRING(10),
         allowNull: true,
       },
       c_delYn: {
-        type: DataTypes.CHAR(1), //삭제여부 : Y, N
+        type: DataTypes.STRING(1), //삭제여부 : Y, N
         allowNull: false,
+        defaultValue: "N",
       },
     },
     {

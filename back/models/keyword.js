@@ -8,12 +8,13 @@ module.exports = (sequelize, DataTypes) => {
         // unique: true,
       },
       fixedKeywordId: {
-        type: DataTypes.CHAR(10),
+        type: DataTypes.STRING(10),
         allowNull: false,
       },
       k_delYN: {
-        type: DataTypes.CHAR(1), //삭제여부 : Y, N
+        type: DataTypes.STRING(1), //삭제여부 : Y, N
         allowNull: false,
+        defaultValue: "N",
       },
     },
     {

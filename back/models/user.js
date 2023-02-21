@@ -23,8 +23,9 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       u_delYN: {
-        type: DataTypes.CHAR(1), //삭제여부 : Y, N
+        type: DataTypes.STRING(1), //삭제여부 : Y, N
         allowNull: false,
+        defaultValue : "N"
       },
 
       // email : {
