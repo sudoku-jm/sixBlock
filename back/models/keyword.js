@@ -24,7 +24,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   Keyword.associate = (db) => {
-    
+    db.Keyword.hasMany(db.User, { foreignKey: "userId" }); //User -> keyword 여러개 가짐
+    db.Keyword.hasMany(db.Block, {as : "keywordId"});
+    db.Keyword.hasMany(db.FixedKeyword);
   };
   return Keyword;
 };

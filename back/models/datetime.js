@@ -39,10 +39,12 @@ module.exports = (sequelize, DataTypes) => {
     {
       charset: "utf8",
       collate: "utf8_general_ci",
-      timestamps: false,
+      // timestamps: false,
+      paranoid: true,
     }
   );
   Datetime.associate = (db) => {
+     db.Datetime.hasMany(db.Block);
   };
 
   return Datetime

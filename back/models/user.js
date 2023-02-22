@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     "User",
     {
       //users 테이블 생성
-      userid: {
+      userId: {
         type: DataTypes.STRING(20),
         allowNull: false,
         unique: true,
@@ -40,9 +40,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   User.associate = (db) => {
-    // db.User.hasMany(db.Block, { foreignKey: "userid" }); //User -> Block 여러개 가짐
-    // db.User.hasMany(db.Keyword); //User -> keyword 여러개 가짐
-    // db.User.belongsTo(db.Block, { through: "plan" });
+    db.User.hasMany(db.Block, { foreignKey: "userId" }); //User -> Block 여러개 가짐
+    db.User.hasMany(db.Keyword); //User -> keyword 여러개 가짐
   };
   return User;
 };

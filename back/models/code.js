@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   Code.associate = (db) => {
+     db.Code.hasMany(db.Block);
   };
   return Code
 }
