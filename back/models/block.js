@@ -2,11 +2,11 @@ module.exports = (sequelize, DataTypes) => {
   const Block = sequelize.define(
     "Block",
     {
-      id : {
-        type:DataTypes.INTEGER,
-        primaryKey : true,
-        allowNull : false,
-        autoIncremenet : false,
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        allowNull: false,
+        autoIncremenet: false,
       },
       // keyword: {
       //   type: DataTypes.STRING(50), //50글자이하 제한
@@ -35,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       b_delYn: {
         type: DataTypes.STRING(1), //삭제여부 : Y, N
         allowNull: false,
+        defaultValue: "N",
       },
     },
     {
@@ -43,10 +44,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   Block.associate = (db) => {
-    db.Block.belongsTo(db.User, {foreignKey: 'userId', sourceKey : 'userid'});
-    db.Block.belongsTo(db.Datetime );
-    db.Block.belongsTo(db.Code );
-    db.Block.hasMany(db.Keyword );
+    db.Block.belongsTo(db.User, { foreignKey: "userId", sourceKey: "userid" });
+    db.Block.belongsTo(db.Datetime);
+    db.Block.belongsTo(db.Code);
+    db.Block.hasMany(db.Keyword);
   };
   return Block;
 };

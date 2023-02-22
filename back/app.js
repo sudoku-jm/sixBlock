@@ -46,14 +46,15 @@ app.use(
   })
 );
 app.use(passport.initialize());
-app.use(session());
+app.use(passport.session());
 
 app.get("/", (req, res) => {
   res.send("hi express");
 });
 
-// 라우터 분리
-app.use("/block", BlockRouter);8
+//==================라우터 분리===========
+app.use("/block", BlockRouter);
+8;
 app.use("/user", UserRouter);
 
 app.listen(5500, () => {

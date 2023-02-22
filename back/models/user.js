@@ -7,8 +7,8 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(20),
         allowNull: false,
         primaryKey: true,
-        autoIncremenet : false,
-        unique : true,
+        autoIncremenet: false,
+        unique: true,
       },
       email: {
         type: DataTypes.STRING(20),
@@ -24,10 +24,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       u_delYN: {
-        type: DataTypes.CHAR(1), //삭제여부 : Y, N
+        type: DataTypes.STRING(1), //삭제여부 : Y, N
         allowNull: false,
+        defaultValue: "N",
       },
-
     },
     {
       charset: "utf8", //이모티콘 : utf8mb4
@@ -35,8 +35,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   User.associate = (db) => {
-    db.User.hasMany(db.Block, {foreignKey: 'userId', sourceKey : 'userid'}); 
-    db.User.hasMany(db.PhotoProfile,{foreignKey: 'userId', sourceKey : 'userid'} ); 
+    db.User.hasMany(db.Block, { foreignKey: "userId", sourceKey: "userid" });
+    db.User.hasMany(db.PhotoProfile, {
+      foreignKey: "userId",
+      sourceKey: "userid",
+    });
   };
   return User;
 };

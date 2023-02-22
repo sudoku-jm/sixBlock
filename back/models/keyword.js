@@ -2,11 +2,11 @@ module.exports = (sequelize, DataTypes) => {
   const Keyword = sequelize.define(
     "Keyword",
     {
-      id : {
-        type:DataTypes.INTEGER,
-        primaryKey : true,
-        allowNull : false,
-        autoIncremenet : false,
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        allowNull: false,
+        autoIncremenet: false,
       },
       keyword: {
         type: DataTypes.STRING(50), //50글자이하 제한
@@ -18,8 +18,9 @@ module.exports = (sequelize, DataTypes) => {
       //   allowNull: false,
       // },
       k_delYN: {
-        type: DataTypes.CHAR(1), //삭제여부 : Y, N
+        type: DataTypes.STRING(1), //삭제여부 : Y, N
         allowNull: false,
+        defaultValue: "N",
       },
     },
     {
@@ -28,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   Keyword.associate = (db) => {
-    db.Keyword.belongsToMany(db.FixedKeyword,{through : 'fixKeywords'})
+    db.Keyword.belongsToMany(db.FixedKeyword, { through: "fixKeywords" });
     db.Keyword.belongsTo(db.Block);
   };
   return Keyword;
