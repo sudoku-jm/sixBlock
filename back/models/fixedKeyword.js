@@ -2,7 +2,12 @@ module.exports = (sequelize, DataTypes) => {
   const FixedKeyword = sequelize.define(
     "FixedKeyword",
     {
-      
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        allowNull: false,
+        autoIncremenet: false,
+      },
       fixedKeyword: {
         type: DataTypes.STRING(50),
         allowNull: false,
@@ -17,11 +22,11 @@ module.exports = (sequelize, DataTypes) => {
     {
       charset: "utf8",
       collate: "utf8_general_ci",
-      paranoid: true,
+      timestamps: false,
     }
   );
   FixedKeyword.associate = (db) => {
-     db.FixedKeyword.belongsTo(db.Keyword);
+    db.FixedKeyword.belongsTo(db.Keyword);
   };
-  return FixedKeyword
-}
+  return FixedKeyword;
+};

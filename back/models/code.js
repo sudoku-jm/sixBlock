@@ -2,9 +2,10 @@ module.exports = (sequelize, DataTypes) => {
   const Code = sequelize.define(
     "Code",
     {
-      codeName: {
+      name: {
         type: DataTypes.STRING(10),
         allowNull: false,
+        primaryKey: true,
         unique: true,
       },
       desc1: {
@@ -26,11 +27,11 @@ module.exports = (sequelize, DataTypes) => {
     {
       charset: "utf8",
       collate: "utf8_general_ci",
-      paranoid: true,
+      timestamps: false,
     }
   );
   Code.associate = (db) => {
-     db.Code.hasMany(db.Block);
+    db.Datetime.hasMany(db.Block);
   };
-  return Code
-}
+  return Code;
+};

@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt"); //비밀번호 암호화
 const passport = require("passport");
 
 //아이디 중복 체크
-router.post("/duplicatechkid", async (req, res, next) => {
+router.post("/duplicatechkid", isNotLoggedIn, async (req, res, next) => {
   // user/duplicatechkid
   try {
     const exUser = await User.findOne({
@@ -33,7 +33,7 @@ router.post("/duplicatechkid", async (req, res, next) => {
 });
 
 //회원가입
-router.post("/", async (req, res, next) => {
+router.post("/", isNotLoggedIn, async (req, res, next) => {
   // user
   try {
     //기존 유저 아이디 여부 확인(아이디 중복검사)
@@ -63,11 +63,11 @@ router.post("/", async (req, res, next) => {
 });
 
 //로그인
-router.post("/login", async (req, res, next) => {
+router.post("/login", isNotLoggedIn, async (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) {
       //서버에러
-      console.error(err);
+      console.error("서버에러", err);
       return next(err);
     }
     if (info) {
@@ -78,12 +78,9 @@ router.post("/login", async (req, res, next) => {
       //req.login() 동작시 랜덤정보(쿠키) + 세션 연결 자동
       if (loginerr) {
         //패스포트쪽 로그인 에러
-        console.error(loginerr);
+        console.error("패스포트쪽", loginerr);
         return next(loginerr);
       }
-
-      //사용자 정보 찾기 , 사용자 추가 정보 더해서 줄 수 있음.
-      console.log("user passport", user);
 
       //사용자 정보 비밀번호 제외 내려주기
       const fulluserWithoutPassword = await User.findOne({
@@ -104,7 +101,7 @@ router.post("/login", async (req, res, next) => {
 });
 
 //로그아웃
-router.post("/logout", async (req, res, next) => {
+router.post("/logout", isLoggedIn, async (req, res) => {
   console.log("===========logout!!");
   req.logout((err) => {
     req.session.destroy();
@@ -119,22 +116,13 @@ router.post("/logout", async (req, res, next) => {
 //마이페이지 > 유저정보 더 불러오기
 router.post("/userinfo", isLoggedIn, async (req, res, next) => {
   try {
-    // const user = await User.findOne({
-    //   where: {
-    //     userid: req.body.userid,
-    //   },
-    //   attributes: {
-    //     exclude: ["password", "updatedAt", "createdAt"],
-    //   },
-    // });
-
-    if (!user) {
+    if (!req.user.userid) {
       return res.status(404).send("존재하지 않는 사용자입니다");
     }
 
     const plans = await Block.findAll({
       where: {
-        UserId: req.user.id, //middleware 에서 가져옴 
+        UserId: req.user.userid, //middleware 에서 가져옴
       },
       attributes: {
         exclude: ["id", "type", "typeNum", "day", "date"],
@@ -146,8 +134,8 @@ router.post("/userinfo", isLoggedIn, async (req, res, next) => {
     const topKeyword = ["키워드1", "키워드2", "키워드3", "키워드4", "키워드5"];
 
     const result = {
-      userid: user.userid,
-      nickname: user.nickname,
+      userid: req.user.userid,
+      nickname: req.user.nickname,
       plans: {
         totalPlans: plans.length,
         successRate:

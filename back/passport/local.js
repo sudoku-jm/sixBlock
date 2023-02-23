@@ -12,10 +12,9 @@ module.exports = () => {
       },
       async (userid, password, done) => {
         try {
+          console.log("===userid??????????????????", userid);
           //1. 기존 유저가 있는지 검색. id로 검색.
-          const user = await User.findOne({
-            where: { userid },
-          });
+          const user = await User.findOne({ where: { userid } });
           //2. 사용자가 없다면 리턴
           if (!user) {
             return done(null, false, { reason: "존재하지 않는 사용자입니다." });

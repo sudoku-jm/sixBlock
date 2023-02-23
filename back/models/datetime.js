@@ -31,21 +31,21 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(6),
         allowNull: true,
       },
-      // d_delYn: {
-      //   type: DataTypes.CHAR(1), //삭제여부 : Y, N
-      //   allowNull: false,
-      // },
+      d_delYn: {
+        type: DataTypes.STRING(1), //삭제여부 : Y, N
+        allowNull: true,
+        defaultValue: "N",
+      },
     },
     {
       charset: "utf8",
       collate: "utf8_general_ci",
-      // timestamps: false,
-      paranoid: true,
+      timestamps: false,
     }
   );
   Datetime.associate = (db) => {
-     db.Datetime.hasMany(db.Block);
+    db.Datetime.hasMany(db.Block);
   };
 
-  return Datetime
-}
+  return Datetime;
+};

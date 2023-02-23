@@ -4,9 +4,9 @@
 /prepare/back/node_modules
 /prepare/front/node_modules
 /prepare/front_back/node_modules
+/front_back/node_modules
 /back/node_modules
 /front/node_modules
-/front_back/node_modules
 /node_modules
 /.pnp
 .pnp.js
