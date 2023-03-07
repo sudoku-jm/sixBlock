@@ -21,13 +21,13 @@ const UserProfileFixForm = () => {
   const [doneFlag, setDoneFlag] = useState(false);
   const [errorMsg, setErrorMsg] = useState({});
   useEffect(() => {
-    if (modifyUserDone && beforePwChk === null) {
+    if (modifyUserDone && beforePwChk === "Y") {
       console.log("수정 성공!");
       setErrorMsg({});
       setUserInput({
         ...userInput,
       });
-    } else if (doneFlag && beforePwChk !== null) {
+    } else if (doneFlag && beforePwChk == "N") {
       setErrorMsg({
         ...errorMsg,
         passwordBefore: {
@@ -39,6 +39,7 @@ const UserProfileFixForm = () => {
       setDoneFlag(false);
     }
   }, [modifyUserDone, beforePwChk, doneFlag]);
+
   useEffect(() => {
     if (modifyUserError) {
       alert(modifyUserError);
@@ -61,40 +62,42 @@ const UserProfileFixForm = () => {
       });
       return;
     }
-    //비밀번호 검증
-    if (regChk.passwordRegExp(passwordBefore)) {
-      setErrorMsg({
-        ...errorMsg,
-        passwordBefore: {
-          error: true,
-          done: false,
-          msg: "영문 숫자 특수문자 포함 8-20자 이내",
-        },
-      });
-      return;
-    }
-    if (regChk.passwordRegExp(passwordNew)) {
-      setErrorMsg({
-        ...errorMsg,
-        password: {
-          error: true,
-          done: false,
-          msg: "영문 숫자 특수문자 포함 8-20자 이내",
-        },
-      });
-      return;
-    }
+    if (passwordBefore !== "" || passwordNew !== "" || passwordNewChk !== "") {
+      //비밀번호 검증
+      if (regChk.passwordRegExp(passwordBefore)) {
+        setErrorMsg({
+          ...errorMsg,
+          passwordBefore: {
+            error: true,
+            done: false,
+            msg: "영문 숫자 특수문자 포함 8-20자 이내",
+          },
+        });
+        return;
+      }
+      if (regChk.passwordRegExp(passwordNew)) {
+        setErrorMsg({
+          ...errorMsg,
+          password: {
+            error: true,
+            done: false,
+            msg: "영문 숫자 특수문자 포함 8-20자 이내",
+          },
+        });
+        return;
+      }
 
-    if (passwordNew !== passwordNewChk) {
-      setErrorMsg({
-        ...errorMsg,
-        passwordRe: {
-          error: true,
-          done: false,
-          msg: "비밀번호가 일치하지 않습니다.",
-        },
-      });
-      return;
+      if (passwordNew !== passwordNewChk) {
+        setErrorMsg({
+          ...errorMsg,
+          passwordRe: {
+            error: true,
+            done: false,
+            msg: "비밀번호가 일치하지 않습니다.",
+          },
+        });
+        return;
+      }
     }
 
     return true;
@@ -111,7 +114,6 @@ const UserProfileFixForm = () => {
           type: MODIFY_USER_REQUEST,
           data: userInput,
         });
-        console.log("gg");
         setDoneFlag(true);
       }
     },

@@ -146,8 +146,8 @@ function modifyUserAPI(data) {
 
 function* modifyUser(action) {
   try {
-    // const result = yield call(modifyUserAPI, action.data);
-    // console.log('result loginAPI', result);
+    const result = yield call(modifyUserAPI, action.data);
+    console.log("result loginAPI", result);
     // yield delay(1000);
 
     /* 
@@ -155,17 +155,14 @@ function* modifyUser(action) {
     */
     yield put({
       type: MODIFY_USER_SUCCESS,
-      data: {
-        beforePwChk: "N",
-      },
-      // data: result.data,
+      data: result.data,
     });
   } catch (err) {
     console.error(err);
-    yield put({
-      type: MODIFY_USER_FAILRE,
-      error: err.response.data,
-    });
+    // yield put({
+    //   type: MODIFY_USER_FAILRE,
+    //   error: err.response.data,
+    // });
   }
 }
 

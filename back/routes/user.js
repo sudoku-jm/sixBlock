@@ -128,7 +128,7 @@ router.post("/userinfo", isLoggedIn, async (req, res, next) => {
         exclude: ["id", "type", "typeNum", "day", "date"],
       },
     });
-    console.log("============plans", plans);
+    // console.log("============plans", plans);
     const finishedLen =
       plans.length > 0 ? plans.map((p) => p.isFinished == true).length : 0;
     const topKeyword = ["키워드1", "키워드2", "키워드3", "키워드4", "키워드5"];
@@ -146,9 +146,52 @@ router.post("/userinfo", isLoggedIn, async (req, res, next) => {
       },
     };
 
-    console.log("=============result", result);
+    // console.log("=============result", result);
 
     res.status(200).json(result);
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+});
+
+//유저 정보 수정
+router.post("/modify", isLoggedIn, async (req, res, next) => {
+  try {
+    let result = {};
+
+    //닉네임만 변경 시
+    if (
+      req.body.passwordBefore == "" ||
+      req.body.passwordNew == "" ||
+      req.body.passwordNewChk == ""
+    ) {
+      //비밀번호 업데이트
+      await User.update(
+        {
+          nickname: req.body.userNickname,
+        },
+        { where: { userid: req.user.userid } }
+      );
+      result.beforePwChk = "Y";
+      result.nickname = req.body.userNickname;
+      return res.status(200).json(result);
+    } else {
+      const hashedPassword = await bcrypt.hash(req.body.passwordBefore, 12);
+      // const hashedPasswordNew = await bcrypt.hash(req.body.passwordNew, 12);
+
+      console.log("req.user.password=============", req.user.password);
+      console.log("hashedPassword=============", hashedPassword);
+
+      if (req.body.passwordBefore !== req.user.password) {
+        result.beforePwChk = "N";
+        return res.status(202).json(result);
+      } else {
+        result.beforePwChk = "Y";
+        console.log("==========okok!!");
+        // return res.status(200).json(result);
+      }
+    }
   } catch (err) {
     console.error(err);
     next(err);

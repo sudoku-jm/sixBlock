@@ -36,10 +36,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   User.associate = (db) => {
-    db.User.hasMany(db.Keyword, {
-      foreignKey: "userId",
-      sourceKey: "userid",
-    });
+    db.User.hasMany(db.Keyword, { foreignKey: "userId", sourceKey: "userid" });
     db.User.hasMany(db.Block, { foreignKey: "userId", sourceKey: "userid" });
     db.User.hasMany(db.PhotoProfile, {
       foreignKey: "userId",

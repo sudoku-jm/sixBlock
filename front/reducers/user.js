@@ -157,8 +157,10 @@ const reducer = (state = initialState, action) => {
         draft.modifyUserLoading = false;
         draft.modifyUserDone = true;
         draft.beforePwChk = action.data.beforePwChk;
-        // draft.user = action.data;
-        // draft.user = dummuUser();
+        draft.user.nickname =
+          action.data.beforePwChk == "Y"
+            ? action.data.nickname
+            : draft.user.nickname;
         break;
       case MODIFY_USER_FAILRE:
         draft.modifyUserLoading = false;
