@@ -28,7 +28,7 @@ passportConfig();
 
 app.use(
   cors({
-    origin: ["http://192.168.1.128:13000", "http://192.168.1.128:23000"],
+    origin: ["http://localhost:3000","http://192.168.1.128:13000", "http://192.168.1.128:23000"],
     credentials: true,
   })
 );
@@ -47,6 +47,8 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+
+// app.use(express.static("public"));
 
 app.get("/", (req, res) => {
   res.send("hi express");

@@ -19,8 +19,11 @@ import {
   SIGNUP_FAILRE,
   SIGNUP_REQUEST,
   SIGNUP_SUCCESS,
+  UPLOAD_PROFILE_IMG_FAILRE,
+  UPLOAD_PROFILE_IMG_REQUEST,
+  UPLOAD_PROFILE_IMG_SUCCESS,
+
 } from "../reducers/user";
-import { func } from "prop-types";
 
 /*===========회원정보========== */
 function loadUserInfoAPI() {
@@ -159,12 +162,37 @@ function* modifyUser(action) {
     });
   } catch (err) {
     console.error(err);
-    // yield put({
-    //   type: MODIFY_USER_FAILRE,
-    //   error: err.response.data,
-    // });
+    yield put({
+      type: MODIFY_USER_FAILRE,
+      error: err.response.data,
+    });
   }
 }
+
+/* ==========회원유저 프로필 이미지 등록============ */
+
+function uploadProfilePhotoAPI(data) {
+  return axios.post("/user/image",data)
+}
+
+function* uploadProfilePhoto(action){
+  try{
+    const result = yield call(uploadProfilePhotoAPI ,action.data);
+    // console.log("result uploadProfilePhotoAPI",result);
+    yield put({
+      type : UPLOAD_PROFILE_IMG_SUCCESS,
+      data : result.data
+    });
+  }catch(err){
+    console.error(err);
+    yield({
+      type : UPLOAD_PROFILE_IMG_FAILRE,
+      error: result.response.data
+    });
+  }
+}
+
+
 
 function* watchLoadUserInfo() {
   yield takeLatest(LOAD_USER_INFO_REQUEST, loadUserInfo);
@@ -185,6 +213,9 @@ function* watchLogOut() {
 function* watchModifyUser() {
   yield takeLatest(MODIFY_USER_REQUEST, modifyUser);
 }
+function* watchUploadProfilePhoto() {
+  yield takeLatest(UPLOAD_PROFILE_IMG_REQUEST, uploadProfilePhoto);
+}
 
 export default function* userSaga() {
   yield all([fork(watchLoadUserInfo)]);
@@ -193,4 +224,6 @@ export default function* userSaga() {
   yield all([fork(watchLogin)]);
   yield all([fork(watchLogOut)]);
   yield all([fork(watchModifyUser)]);
+  yield all([fork(watchUploadProfilePhoto)])
+
 }

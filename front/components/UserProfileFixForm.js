@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ErrorMsg } from "../style/AppCommonStyle";
 import regChk from "../hooks/useReg";
 import { MODIFY_USER_REQUEST } from "../reducers/user";
+import Router from "next/router";
 const UserProfileFixForm = () => {
   const dispatch = useDispatch();
   const { user, modifyUserDone, modifyUserError, beforePwChk } = useSelector(
@@ -27,6 +28,7 @@ const UserProfileFixForm = () => {
       setUserInput({
         ...userInput,
       });
+      Router.push("/mypage");
     } else if (doneFlag && beforePwChk == "N") {
       setErrorMsg({
         ...errorMsg,

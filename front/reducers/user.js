@@ -21,6 +21,10 @@ const initialState = {
   modifyUserDone: false,
   modifyUserError: null,
   beforePwChk: null,
+  profileImgUploadLoading : false, //유저 프로필 사진 등록 시도
+  profileImgUploadDone : false,
+  profileImgUploadError : null,
+
 };
 
 //회원정보
@@ -51,14 +55,17 @@ export const MODIFY_USER_SUCCESS = "MODIFY_USER_SUCCESS";
 export const MODIFY_USER_FAILRE = "MODIFY_USER_FAILRE";
 
 //프로필 사진 변경
+export const UPLOAD_PROFILE_IMG_REQUEST = "UPLOAD_PROFILE_IMG_REQUEST";
+export const UPLOAD_PROFILE_IMG_SUCCESS = "UPLOAD_PROFILE_IMG_SUCCESS";
+export const UPLOAD_PROFILE_IMG_FAILRE = "UPLOAD_PROFILE_IMG_FAILRE";
 
 const dummuUser = (data) => ({
   // id: "jm1234",
   // nickname: "정미니",
   // password: null,
   // email: "jm91@bodyfriend.co.kr",
-  photoProfile:
-    "https://images.unsplash.com/photo-1661956602116-aa6865609028?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
+  // photoProfile:
+  //   "https://images.unsplash.com/photo-1661956602116-aa6865609028?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
   // plans: {
   //   totalPlans: 300,
   //   successRate: 100,
@@ -74,11 +81,13 @@ const reducer = (state = initialState, action) => {
         draft.loadUserInfoLoading = true;
         draft.loadUserInfoDone = false;
         draft.loadUserInfoError = null;
+        draft.modifyUserDone = false;
         break;
       case LOAD_USER_INFO_SUCCESS:
         draft.loadUserInfoLoading = false;
         draft.loadUserInfoDone = true;
         draft.user = action.data;
+        draft.user.srcYn = action.data.srcYn;
         break;
       case LOAD_USER_INFO_FAILURE:
         draft.loadUserInfoLoading = false;
@@ -166,6 +175,20 @@ const reducer = (state = initialState, action) => {
         draft.modifyUserLoading = false;
         draft.modifyUserError = action.error;
         draft.beforePwChk = null;
+        break;
+      //= ==============회원 프로필 사진 등록
+      case UPLOAD_PROFILE_IMG_REQUEST:
+        draft.profileImgUploadLoading = true;
+        draft.profileImgUploadDone = false;
+        draft.profileImgUploadError = null;
+        break;
+      case UPLOAD_PROFILE_IMG_SUCCESS:
+        draft.profileImgUploadLoading = false;
+        draft.profileImgUploadDone = true;
+        break;
+      case UPLOAD_PROFILE_IMG_FAILRE:
+        draft.profileImgUploadLoading = false;
+        draft.profileImgUploadError = action.error;
         break;
       default:
         return state;

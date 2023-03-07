@@ -1,9 +1,38 @@
 const express = require("express");
-const { User, Block } = require("../models");
+const { User, Block, PhotoProfile } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 const router = express.Router();
 const bcrypt = require("bcrypt"); //비밀번호 암호화
 const passport = require("passport");
+const path = require('path');
+const multer = require('multer');
+const fs = require('fs');
+const { uuid } = require('uuidv4');
+
+const defaultImagePath = "/img/noImg.svg";
+
+try{
+  fs.accessSync('uploads');
+}catch(error){
+  console.log('uploads 폴더가 없으므로 생성합니다.');
+  fs.mkdirSync('uploads');
+}
+
+
+//upload
+const upload = multer({
+  storage: multer.diskStorage({
+      destination(req, file, done) {
+          done(null, 'uploads');   //uploads라는 폴더에 업로드.
+      },
+      filename(req, file, done) {
+          const ext = path.extname(file.originalname);            //확장자 추출 (png)
+          const basename = path.basename(file.originalname, ext); //파일명.png
+          done(null, uuid() + Date.now() + ext);                //파일명_123421424.png
+      },
+  }),
+  limits: { fileSize: 5 * 1024 * 1024 },      //5MB
+});
 
 //아이디 중복 체크
 router.post("/duplicatechkid", isNotLoggedIn, async (req, res, next) => {
@@ -108,6 +137,7 @@ router.post("/logout", isLoggedIn, async (req, res) => {
     if (err) {
       res.redirect("/");
     } else {
+      res.clearCookie('connect.sid');
       res.status(200).send("server ok: 로그아웃 완료");
     }
   });
@@ -123,11 +153,28 @@ router.post("/userinfo", isLoggedIn, async (req, res, next) => {
     const plans = await Block.findAll({
       where: {
         UserId: req.user.userid, //middleware 에서 가져옴
+        
       },
       attributes: {
         exclude: ["id", "type", "typeNum", "day", "date"],
       },
     });
+
+    const userPhoto = await PhotoProfile.findOne({
+      where : { userId : req.user.userid },
+      attributes : ["src"]
+    });
+
+    //등록 된 프로필 이미지가 없을 경우
+    let src = "";
+    let srcYn = ""
+    if(userPhoto == null) {
+      src = path.posix.join(__dirname,"../../", defaultImagePath);
+      srcYn = 'N';
+    }else{
+      src = userPhoto.src;
+      srcYn = "Y";
+    }
     // console.log("============plans", plans);
     const finishedLen =
       plans.length > 0 ? plans.map((p) => p.isFinished == true).length : 0;
@@ -136,6 +183,8 @@ router.post("/userinfo", isLoggedIn, async (req, res, next) => {
     const result = {
       userid: req.user.userid,
       nickname: req.user.nickname,
+      photoProfile : src,
+      srcYn ,
       plans: {
         totalPlans: plans.length,
         successRate:
@@ -161,12 +210,8 @@ router.post("/modify", isLoggedIn, async (req, res, next) => {
     let result = {};
 
     //닉네임만 변경 시
-    if (
-      req.body.passwordBefore == "" ||
-      req.body.passwordNew == "" ||
-      req.body.passwordNewChk == ""
-    ) {
-      //비밀번호 업데이트
+    if ( req.body.passwordBefore == "" ||  req.body.passwordNew == "" ||  req.body.passwordNewChk == "" ) {
+    
       await User.update(
         {
           nickname: req.body.userNickname,
@@ -177,19 +222,25 @@ router.post("/modify", isLoggedIn, async (req, res, next) => {
       result.nickname = req.body.userNickname;
       return res.status(200).json(result);
     } else {
-      const hashedPassword = await bcrypt.hash(req.body.passwordBefore, 12);
-      // const hashedPasswordNew = await bcrypt.hash(req.body.passwordNew, 12);
-
-      console.log("req.user.password=============", req.user.password);
-      console.log("hashedPassword=============", hashedPassword);
-
-      if (req.body.passwordBefore !== req.user.password) {
-        result.beforePwChk = "N";
-        return res.status(202).json(result);
-      } else {
-        result.beforePwChk = "Y";
-        console.log("==========okok!!");
-        // return res.status(200).json(result);
+      //비밀번호 업데이트
+      if(req.body.passwordNew == req.body.passwordNewChk){
+        let pwChk = await bcrypt.compare(req.body.passwordBefore, req.user.password);
+        if (pwChk) {
+          const hashedPassword = await bcrypt.hash(req.body.passwordNew, 12);
+          result.beforePwChk = "Y";
+          console.log("==========okok!!");
+          await User.update(
+            {
+              nickname: req.body.userNickname,
+              password: hashedPassword,
+            },
+            { where: { userid: req.user.userid } }
+          );
+          return res.status(200).json(result);
+        } else {
+          result.beforePwChk = "N";
+          return res.status(202).json(result);
+        }
       }
     }
   } catch (err) {
@@ -198,4 +249,68 @@ router.post("/modify", isLoggedIn, async (req, res, next) => {
   }
 });
 
+
+//유저 프로필 이미지 파일 등록
+router.post("/image", isLoggedIn, upload.single('image'), async (req, res, next) => {
+
+  console.log(req.file);
+  const id = uuid();
+  const src = `upload/${req.file.filename}`;
+  await PhotoProfile.create({
+    id,
+    src,
+    userId : req.user.userid,
+  });
+
+  res.status(200).json({
+    state : 200,
+    file : req.file,
+  }); //어디로 업로드되었는지 프론트로 넘겨준다.
+});
+
 module.exports = router;
+
+  // try{
+  //   //이미지 추가
+  //   if(req.body.file){
+  //     const [img, created] = await PhotoProfile.findOrCreate({
+  //       where : { userId : req.user.userid },
+  //       defaults : {
+  //         src : req.body.file
+  //       }
+  //     });
+
+  //     if(created){
+  //         //파일 새로 생성
+  //     }else{  
+  //       // 이미 존재할 경우
+  //       await PhotoProfile.update({
+  //         src : req.body.file,
+  //       },{where : 
+  //         {userId : req.user.userid , }
+  //       });
+  //     }
+
+  //     const userPhoto = await PhotoProfile.findOne({
+  //       where : { userId : req.user.userid },
+  //       attributes : ["src"]
+  //     });
+  
+  //     //등록 된 프로필 이미지가 없을 경우
+  //     let src = "";
+  //     let srcYn = ""
+  //     if(userPhoto == null) {
+  //       src = path.posix.join(__dirname,"../../", defaultImagePath);
+  //       srcYn = 'N';
+  //     }else{
+  //       src = userPhoto.src;
+  //       srcYn = "Y";
+  //     }
+
+  //     res.status(200).json({});
+
+  //   }
+  // }catch(err){
+  //   console.error(err);
+  //   next(err);
+  // }
