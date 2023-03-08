@@ -27,6 +27,7 @@ const UserProfileStyle = styled.article`
       height: 85px;
       border-radius: 50%;
       overflow: hidden;
+      border: 1px solid var(--color-f0f0f0);
       img {
         position: absolute;
         top: 50%;

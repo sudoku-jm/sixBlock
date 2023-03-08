@@ -4,34 +4,47 @@ const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 const router = express.Router();
 const bcrypt = require("bcrypt"); //비밀번호 암호화
 const passport = require("passport");
-const path = require('path');
-const multer = require('multer');
-const fs = require('fs');
-const { uuid } = require('uuidv4');
+const path = require("path");
+const multer = require("multer");
+const fs = require("fs");
+const { v4 } = require("uuid");
 
 const defaultImagePath = "/img/noImg.svg";
 
-try{
-  fs.accessSync('uploads');
-}catch(error){
-  console.log('uploads 폴더가 없으므로 생성합니다.');
-  fs.mkdirSync('uploads');
+try {
+  fs.accessSync("uploads");
+} catch (error) {
+  console.log("uploads 폴더가 없으므로 생성합니다.");
+  fs.mkdirSync("uploads");
 }
 
-
 //upload
+const storage = multer.diskStorage({
+  destination(req, file, done) {
+    done(null, "uploads"); //uploads라는 폴더에 업로드.
+  },
+  filename(req, file, done) {
+    const ext = path.extname(file.originalname); //확장자 추출 (png)
+    const basename = path.basename(file.originalname, ext); //파일명.png
+    done(null, v4() + Date.now() + ext); //파일명_123421424.png
+  },
+});
+const fileFilter = (req, file, done) => {
+  // 이미지 파일인지 확인
+  if (file.mimetype.startsWith("image/")) {
+    done(null, true);
+  } else {
+    // 이미지 파일이 아닐 경우 거부
+    const error = new Error("이미지 파일만 업로드 가능합니다.");
+    error.status = 400;
+    done(error, false);
+  }
+};
+
 const upload = multer({
-  storage: multer.diskStorage({
-      destination(req, file, done) {
-          done(null, 'uploads');   //uploads라는 폴더에 업로드.
-      },
-      filename(req, file, done) {
-          const ext = path.extname(file.originalname);            //확장자 추출 (png)
-          const basename = path.basename(file.originalname, ext); //파일명.png
-          done(null, uuid() + Date.now() + ext);                //파일명_123421424.png
-      },
-  }),
-  limits: { fileSize: 5 * 1024 * 1024 },      //5MB
+  storage: storage,
+  fileFilter: fileFilter,
+  limits: { fileSize: 5 * 1024 * 1024 }, //5MB
 });
 
 //아이디 중복 체크
@@ -137,7 +150,7 @@ router.post("/logout", isLoggedIn, async (req, res) => {
     if (err) {
       res.redirect("/");
     } else {
-      res.clearCookie('connect.sid');
+      res.clearCookie("connect.sid");
       res.status(200).send("server ok: 로그아웃 완료");
     }
   });
@@ -153,7 +166,6 @@ router.post("/userinfo", isLoggedIn, async (req, res, next) => {
     const plans = await Block.findAll({
       where: {
         UserId: req.user.userid, //middleware 에서 가져옴
-        
       },
       attributes: {
         exclude: ["id", "type", "typeNum", "day", "date"],
@@ -161,17 +173,17 @@ router.post("/userinfo", isLoggedIn, async (req, res, next) => {
     });
 
     const userPhoto = await PhotoProfile.findOne({
-      where : { userId : req.user.userid },
-      attributes : ["src"]
+      where: { userId: req.user.userid },
+      attributes: ["src"],
     });
 
     //등록 된 프로필 이미지가 없을 경우
     let src = "";
-    let srcYn = ""
-    if(userPhoto == null) {
-      src = path.posix.join(__dirname,"../../", defaultImagePath);
-      srcYn = 'N';
-    }else{
+    let srcYn = "";
+    if (userPhoto == null) {
+      src = path.posix.join(__dirname, "../../", defaultImagePath);
+      srcYn = "N";
+    } else {
       src = userPhoto.src;
       srcYn = "Y";
     }
@@ -183,8 +195,8 @@ router.post("/userinfo", isLoggedIn, async (req, res, next) => {
     const result = {
       userid: req.user.userid,
       nickname: req.user.nickname,
-      photoProfile : src,
-      srcYn ,
+      photoProfile: src,
+      srcYn,
       plans: {
         totalPlans: plans.length,
         successRate:
@@ -210,8 +222,11 @@ router.post("/modify", isLoggedIn, async (req, res, next) => {
     let result = {};
 
     //닉네임만 변경 시
-    if ( req.body.passwordBefore == "" ||  req.body.passwordNew == "" ||  req.body.passwordNewChk == "" ) {
-    
+    if (
+      req.body.passwordBefore == "" ||
+      req.body.passwordNew == "" ||
+      req.body.passwordNewChk == ""
+    ) {
       await User.update(
         {
           nickname: req.body.userNickname,
@@ -223,8 +238,11 @@ router.post("/modify", isLoggedIn, async (req, res, next) => {
       return res.status(200).json(result);
     } else {
       //비밀번호 업데이트
-      if(req.body.passwordNew == req.body.passwordNewChk){
-        let pwChk = await bcrypt.compare(req.body.passwordBefore, req.user.password);
+      if (req.body.passwordNew == req.body.passwordNewChk) {
+        let pwChk = await bcrypt.compare(
+          req.body.passwordBefore,
+          req.user.password
+        );
         if (pwChk) {
           const hashedPassword = await bcrypt.hash(req.body.passwordNew, 12);
           result.beforePwChk = "Y";
@@ -249,68 +267,88 @@ router.post("/modify", isLoggedIn, async (req, res, next) => {
   }
 });
 
-
 //유저 프로필 이미지 파일 등록
-router.post("/image", isLoggedIn, upload.single('image'), async (req, res, next) => {
+router.post( "/image",  isLoggedIn,  upload.single("image"),  async (req, res, next) => {
+    console.log(req.file);
+    res.status(200).json({
+      state: 200,
+      file: req.file,
+    }); //어디로 업로드되었는지 프론트로 넘겨준다.
+    try {
+      const src = req.file.filename;
 
-  console.log(req.file);
-  const id = uuid();
-  const src = `upload/${req.file.filename}`;
-  await PhotoProfile.create({
-    id,
-    src,
-    userId : req.user.userid,
-  });
+      const [img, created] = await PhotoProfile.findOrCreate({
+        where: { userId: req.user.userid },
+        defaults: {
+          src: src,
+        },
+      });
 
-  res.status(200).json({
-    state : 200,
-    file : req.file,
-  }); //어디로 업로드되었는지 프론트로 넘겨준다.
-});
+      if (created) {
+        //파일 새로 생성
+        // await PhotoProfile.create({
+        //   src: src,
+        //   userId: req.user.userid,
+        // });
+      } else {
+        // 이미 존재할 경우
+        await PhotoProfile.update(
+          {
+            src: src,
+          },
+          { where: { userId: req.user.userid } }
+        );
+      }
+    } catch (err) {
+      console.error(err);
+      next(err);
+    }
+  }
+);
 
 module.exports = router;
 
-  // try{
-  //   //이미지 추가
-  //   if(req.body.file){
-  //     const [img, created] = await PhotoProfile.findOrCreate({
-  //       where : { userId : req.user.userid },
-  //       defaults : {
-  //         src : req.body.file
-  //       }
-  //     });
+// try{
+//   //이미지 추가
+//   if(req.body.file){
+//     const [img, created] = await PhotoProfile.findOrCreate({
+//       where : { userId : req.user.userid },
+//       defaults : {
+//         src : req.body.file
+//       }
+//     });
 
-  //     if(created){
-  //         //파일 새로 생성
-  //     }else{  
-  //       // 이미 존재할 경우
-  //       await PhotoProfile.update({
-  //         src : req.body.file,
-  //       },{where : 
-  //         {userId : req.user.userid , }
-  //       });
-  //     }
+//     if(created){
+//         //파일 새로 생성
+//     }else{
+//       // 이미 존재할 경우
+//       await PhotoProfile.update({
+//         src : req.body.file,
+//       },{where :
+//         {userId : req.user.userid , }
+//       });
+//     }
 
-  //     const userPhoto = await PhotoProfile.findOne({
-  //       where : { userId : req.user.userid },
-  //       attributes : ["src"]
-  //     });
-  
-  //     //등록 된 프로필 이미지가 없을 경우
-  //     let src = "";
-  //     let srcYn = ""
-  //     if(userPhoto == null) {
-  //       src = path.posix.join(__dirname,"../../", defaultImagePath);
-  //       srcYn = 'N';
-  //     }else{
-  //       src = userPhoto.src;
-  //       srcYn = "Y";
-  //     }
+//     const userPhoto = await PhotoProfile.findOne({
+//       where : { userId : req.user.userid },
+//       attributes : ["src"]
+//     });
 
-  //     res.status(200).json({});
+//     //등록 된 프로필 이미지가 없을 경우
+//     let src = "";
+//     let srcYn = ""
+//     if(userPhoto == null) {
+//       src = path.posix.join(__dirname,"../../", defaultImagePath);
+//       srcYn = 'N';
+//     }else{
+//       src = userPhoto.src;
+//       srcYn = "Y";
+//     }
 
-  //   }
-  // }catch(err){
-  //   console.error(err);
-  //   next(err);
-  // }
+//     res.status(200).json({});
+
+//   }
+// }catch(err){
+//   console.error(err);
+//   next(err);
+// }

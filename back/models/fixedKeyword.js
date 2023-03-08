@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
-        autoIncremenet: false,
+        autoIncrement: false,
       },
       fixedKeyword: {
         type: DataTypes.STRING(50),

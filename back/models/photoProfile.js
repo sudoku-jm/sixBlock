@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
-        autoIncremenet: false,
+        autoIncrement: true,
       },
       src: {
         type: DataTypes.STRING(200), //이미지 URL 경로는 길어질 수 있음.
@@ -24,7 +24,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   PhotoProfile.associate = (db) => {
-    db.PhotoProfile.belongsTo(db.User,{foreignKey: 'userId', sourceKey : 'userid'});
+    db.PhotoProfile.belongsTo(db.User, {
+      foreignKey: "userId",
+      sourceKey: "userid",
+    });
   };
   return PhotoProfile;
 };
