@@ -39,7 +39,7 @@ const SignUpForm = () => {
       setUserPasswordChk("");
       setTerm(false);
       setErrorMsg({});
-      // Router.push("/");
+      Router.push("/");
     }
   }, [signupDone]);
 

@@ -1,5 +1,5 @@
 {
-  "parser": "babel-eslint", 
+  "parser": "babel-eslint", //bable이 해석해서 최신문법도 에러를 발생시키지 않게 한다.
   "parserOptions": {
     "ecmaVersion": 2020,
     "sourceType": "module",
@@ -12,9 +12,12 @@
     "node": true,
     "es6" : true
   },
+  // "extends": ["eslint:recommended", "plugin:react/recommended"],
   "extends": [
     "airbnb"
+    // "plugin:prettier/recommended"
   ],    //airbnb가 스타일 규칙을 엄격하게 규제한다.
+  // "plugins": ["import", "react-hooks"],
   "plugins": [
     "import",
     "react-hooks",
@@ -24,6 +27,7 @@
     "jsx-a11y/label-has-associated-control": "off",
     "jsx-a11y/anchor-is-valid": "off",
     "no-console": "off",
+    "no-alert":"off",
     "no-underscore-dangle": "off",
     "react/forbid-prop-types": "off",
     "react/prop-types": "off",
@@ -41,6 +45,8 @@
     "jsx-a11y/no-noninteractive-element-interactions" : "off",
     "jsx-a11y/click-events-have-key-events" : "off",
     "eslint no-use-before-define" : "off",
-    "default-param-last": "off"
+    "default-param-last": "off",
+    "max-len" : "off",
+    "react/jsx-props-no-spreading" : "off"
   }
 }

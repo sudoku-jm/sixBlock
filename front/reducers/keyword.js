@@ -1,5 +1,6 @@
 import { dummyKeywordList } from "../dummy/dummyData";
-import produce from "immer";
+// import produce from "immer";
+import produce from '../util/produce';
 
 const initialState = {
   keywordList: dummyKeywordList,

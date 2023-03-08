@@ -6,7 +6,9 @@ const AppLayout = ({ children }) => {
   return (
     <>
       <GlobalStyle />
-      <ContainerStyle>{children}</ContainerStyle>
+      <ContainerStyle>
+        {children}
+      </ContainerStyle>
     </>
   );
 };

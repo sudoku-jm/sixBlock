@@ -1,31 +1,31 @@
 import React, { useEffect } from "react";
 import { END } from 'redux-saga';
 import Router from "next/router";
-import { useSelector } from "react-redux";
 import AppLayout from "../components/AppLayout";
 import UserPlanerStatus from "../components/UserPlanerStatus";
 import PhotoProfile from "../components/PhotoProfile";
 import ProfileInfo from "../components/ProfileInfo";
 import Menu from "../components/Menu";
-import { LOAD_USER_INFO_REQUEST } from "../reducers/user";
+import { useDispatch, useSelector } from "react-redux";
+import { LOAD_PROFILE_INFO_REQUEST, LOAD_USER_INFO_REQUEST } from "../reducers/user";
 import { UserProfileStyle } from "../style/UserStyle";
 import wrapper from "../store/configureStore";
 import axios from "axios";
 const mypage = () => {
   const { user } = useSelector((state) => state.user);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   //임시(클라이언트 사이드 랜더링)
-  useEffect(() => {
-    if (!(user && user.userid) && user == null) {
-      Router.push("/");
-    }
-    // if (user && user.userid) {
-    //   dispatch({
-    //     type: LOAD_USER_INFO_REQUEST,
-    //     data: { userid: user.userid },
-    //   });
-    // }
-  }, [user && user.userid]);
+  // useEffect(() => {
+  //   if (!(user && user.userid) && user == null) {
+  //     Router.push("/");
+  //   }
+  //   if (user && user.userid) {
+  //     dispatch({
+  //       type: LOAD_PROFILE_INFO_REQUEST,
+  //       data: { userid: user.userid },
+  //     });
+  //   }
+  // }, [user && user.userid]);
 
   return (
     <AppLayout>
@@ -54,8 +54,8 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
     axios.defaults.headers.Cookie = cookie;
   }
 
-  context.store. dispatch({
-    type: LOAD_USER_INFO_REQUEST,
+  context.store.dispatch({
+    type: LOAD_PROFILE_INFO_REQUEST,
   });
 
   context.store.dispatch(END);
