@@ -4,9 +4,10 @@ import {
   DUPLICATE_CHECK_ID_FAILRE,
   DUPLICATE_CHECK_ID_REQUEST,
   DUPLICATE_CHECK_ID_SUCCESS,
-  LOAD_USER_INFO_FAILURE,
+  LOAD_PROFILE_INFO_FAILURE,
+  LOAD_PROFILE_INFO_REQUEST,
+  LOAD_PROFILE_INFO_SUCCESS,
   LOAD_USER_INFO_REQUEST,
-  LOAD_USER_INFO_SUCCESS,
   LOGOUT_FAILRE,
   LOGOUT_REQUEST,
   LOGOUT_SUCCESS,
@@ -27,9 +28,9 @@ import {
 
 /*===========회원정보========== */
 function loadUserInfoAPI() {
-  return axios.post("/user/userinfo");
+  return axios.get("/user");
 }
-function* loadUserInfo(action) {
+function* loadUserInfo() {
   try {
     const result = yield call(loadUserInfoAPI);
     console.log("loadUserInfoAPI result", result);
@@ -41,6 +42,26 @@ function* loadUserInfo(action) {
     console.error(err);
     yield put({
       type: LOAD_USER_INFO_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+/*===========회원프로필정보========== */
+function loadUserProfileInfoAPI() {
+  return axios.post("/user/userinfo");
+}
+function* loadUserProfileInfo() {
+  try {
+    const result = yield call(loadUserProfileInfoAPI);
+    console.log("loadUserProfileInfoAPI result", result);
+    yield put({
+      type: LOAD_PROFILE_INFO_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_PROFILE_INFO_FAILURE,
       error: err.response.data,
     });
   }
@@ -178,7 +199,7 @@ function uploadProfilePhotoAPI(data) {
 function* uploadProfilePhoto(action){
   try{
     const result = yield call(uploadProfilePhotoAPI ,action.data);
-    // console.log("result uploadProfilePhotoAPI",result);
+    console.log("result uploadProfilePhotoAPI",result);
     yield put({
       type : UPLOAD_PROFILE_IMG_SUCCESS,
       data : result.data
@@ -197,7 +218,9 @@ function* uploadProfilePhoto(action){
 function* watchLoadUserInfo() {
   yield takeLatest(LOAD_USER_INFO_REQUEST, loadUserInfo);
 }
-
+function* watchLoadUserProfileInfo() {
+  yield takeLatest(LOAD_PROFILE_INFO_REQUEST, loadUserProfileInfo);
+}
 function* watchSignup() {
   yield takeLatest(SIGNUP_REQUEST, signup);
 }
@@ -218,7 +241,8 @@ function* watchUploadProfilePhoto() {
 }
 
 export default function* userSaga() {
-  yield all([fork(watchLoadUserInfo)]);
+  yield all([fork(watchLoadUserInfo)])
+  yield all([fork(watchLoadUserProfileInfo)]);
   yield all([fork(watchSignup)]);
   yield all([fork(watchDuplicateCheckId)]);
   yield all([fork(watchLogin)]);

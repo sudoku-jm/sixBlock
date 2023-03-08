@@ -47,6 +47,26 @@ const upload = multer({
   limits: { fileSize: 5 * 1024 * 1024 }, //5MB
 });
 
+//유저정보 불러오기
+router.get('/', async (req, res,next) => {  //GET /user
+  try {
+    if(req.user){  
+      const fullUserWithoutPassword = await User.findOne({
+        where : { userid : req.user.id },
+        attributes : {
+            exclude : ['password']
+        }
+      });
+      res.status(200).json(fullUserWithoutPassword);
+    }else{
+      res.status(200).json(null);
+    }
+  }catch(err){
+    console.error(err);
+    next(err);
+  }
+});
+
 //아이디 중복 체크
 router.post("/duplicatechkid", isNotLoggedIn, async (req, res, next) => {
   // user/duplicatechkid
@@ -272,7 +292,7 @@ router.post( "/image",  isLoggedIn,  upload.single("image"),  async (req, res, n
     console.log(req.file);
     res.status(200).json({
       state: 200,
-      file: req.file,
+      file: req.file.filename,
     }); //어디로 업로드되었는지 프론트로 넘겨준다.
     try {
       const src = req.file.filename;
@@ -307,48 +327,3 @@ router.post( "/image",  isLoggedIn,  upload.single("image"),  async (req, res, n
 );
 
 module.exports = router;
-
-// try{
-//   //이미지 추가
-//   if(req.body.file){
-//     const [img, created] = await PhotoProfile.findOrCreate({
-//       where : { userId : req.user.userid },
-//       defaults : {
-//         src : req.body.file
-//       }
-//     });
-
-//     if(created){
-//         //파일 새로 생성
-//     }else{
-//       // 이미 존재할 경우
-//       await PhotoProfile.update({
-//         src : req.body.file,
-//       },{where :
-//         {userId : req.user.userid , }
-//       });
-//     }
-
-//     const userPhoto = await PhotoProfile.findOne({
-//       where : { userId : req.user.userid },
-//       attributes : ["src"]
-//     });
-
-//     //등록 된 프로필 이미지가 없을 경우
-//     let src = "";
-//     let srcYn = ""
-//     if(userPhoto == null) {
-//       src = path.posix.join(__dirname,"../../", defaultImagePath);
-//       srcYn = 'N';
-//     }else{
-//       src = userPhoto.src;
-//       srcYn = "Y";
-//     }
-
-//     res.status(200).json({});
-
-//   }
-// }catch(err){
-//   console.error(err);
-//   next(err);
-// }

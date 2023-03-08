@@ -94,16 +94,16 @@ const LoginForm = () => {
       </div>
 
       <div className="form-btn form-btn-account col2">
-        <Link href="/findAccount">
+        {/* <Link href="/findAccount">
           <a title="페이지이동" className="btnS">
             아이디 찾기
           </a>
-        </Link>
-        <Link href="/findAccount">
+        </Link> */}
+        {/* <Link href="/findAccount">
           <a title="페이지이동" className="btnS">
             비밀번호 찾기
           </a>
-        </Link>
+        </Link> */}
       </div>
     </FormStyle>
   );

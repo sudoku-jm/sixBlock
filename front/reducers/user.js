@@ -2,9 +2,12 @@ import produce from "immer";
 
 const initialState = {
   user: null,
-  loadUserInfoLoading: false, //유저 정보 가져오기
+  loadUserInfoLoading: false, //유저 프로필 정보 가져오기
   loadUserInfoDone: false,
   loadUserInfoError: null,
+  loadProfileInfoLoading: false, //유저 프로필 정보 가져오기
+  loadProfileInfoDone: false,
+  loadProfileInfoError: null,
   signupLoading: false, //회원가입
   signupDone: false,
   signupError: null,
@@ -27,10 +30,15 @@ const initialState = {
 
 };
 
-//회원정보
-export const LOAD_USER_INFO_SUCCESS = "LOAD_USER_INFO_SUCCESS";
+//회원 기본정보
 export const LOAD_USER_INFO_REQUEST = "LOAD_USER_INFO_REQUEST";
+export const LOAD_USER_INFO_SUCCESS = "LOAD_USER_INFO_SUCCESS";
 export const LOAD_USER_INFO_FAILURE = "LOAD_USER_INFO_FAILURE";
+
+//회원정보 프로필,마이페이지
+export const LOAD_PROFILE_INFO_SUCCESS = "LOAD_PROFILE_INFO_SUCCESS";
+export const LOAD_PROFILE_INFO_REQUEST = "LOAD_PROFILE_INFO_REQUEST";
+export const LOAD_PROFILE_INFO_FAILURE = "LOAD_PROFILE_INFO_FAILURE";
 
 //회원가입
 export const SIGNUP_REQUEST = "SIGNUP_REQUEST";
@@ -87,12 +95,29 @@ const reducer = (state = initialState, action) => {
         draft.loadUserInfoLoading = false;
         draft.loadUserInfoDone = true;
         draft.user = action.data;
-        draft.user.srcYn = action.data.srcYn;
         break;
       case LOAD_USER_INFO_FAILURE:
         draft.loadUserInfoLoading = false;
         draft.loadUserInfoDone = false;
         draft.loadUserInfoError = action.error;
+        break;
+      //================회원프로필정보
+      case LOAD_PROFILE_INFO_REQUEST:
+        draft.loadProfileInfoLoading = true;
+        draft.loadProfileInfoDone = false;
+        draft.loadProfileInfoError = null;
+        draft.modifyUserDone = false;
+        break;
+      case LOAD_PROFILE_INFO_SUCCESS:
+        draft.loadProfileInfoLoading = false;
+        draft.loadProfileInfoDone = true;
+        draft.user = action.data;
+        draft.user.srcYn = action.data.srcYn;
+        break;
+      case LOAD_PROFILE_INFO_FAILURE:
+        draft.loadProfileInfoLoading = false;
+        draft.loadProfileInfoDone = false;
+        draft.loadProfileInfoError = action.error;
         break;
       //================회원가입
       case SIGNUP_REQUEST:
@@ -185,6 +210,7 @@ const reducer = (state = initialState, action) => {
       case UPLOAD_PROFILE_IMG_SUCCESS:
         draft.profileImgUploadLoading = false;
         draft.profileImgUploadDone = true;
+        draft.user.photoProfile = action.data.file;
         break;
       case UPLOAD_PROFILE_IMG_FAILRE:
         draft.profileImgUploadLoading = false;

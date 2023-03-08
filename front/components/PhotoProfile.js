@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { TiImage,TiImageOutline } from "react-icons/ti";
-import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { UPLOAD_PROFILE_IMG_REQUEST } from "../reducers/user";
+import { backUrl } from '../config/config';
 
 const PhotoProfile = ({ page }) => {
   const dispatch = useDispatch();
@@ -64,7 +64,7 @@ const PhotoProfile = ({ page }) => {
         />
         <a title="" className="photo">
         {srcYn == "Y" ?  
-          <img src={photoProfile} alt="" /> 
+          <img src={`${backUrl}/uploads/${photoProfile}`} alt="" /> 
         : 
           <TiImageOutline style={styleIconNoImage}/>
         }

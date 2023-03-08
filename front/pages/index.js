@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { TiCalendar, TiPlus } from "react-icons/ti";
 import { useDispatch, useSelector } from "react-redux";
+import { END } from 'redux-saga';
 import AppLayout from "../components/AppLayout";
 import DayBlock from "../components/block/DayBlock";
 import MonthBlock from "../components/block/MonthBlock";
@@ -17,6 +18,8 @@ import {
   LOAD_MONTH_BLOCK_REQUEST,
   LOAD_WEEK_BLOCK_REQUEST,
 } from "../reducers/block";
+import wrapper from "../store/configureStore";
+import axios from "axios";
 
 const Home = () => {
   const { user } = useSelector((state) => state.user);
@@ -114,5 +117,17 @@ const Home = () => {
     </AppLayout>
   );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
+  const cookie = context.req ? context.req.headers.cookie : '';
+
+  axios.defaults.headers.Cookie = '';
+  if (context.req && cookie) {
+    axios.defaults.headers.Cookie = cookie;
+  }
+
+  context.store.dispatch(END);
+  await context.store.sagaTask.toPromise();
+});
 
 export default Home;
