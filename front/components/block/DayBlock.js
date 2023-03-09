@@ -4,25 +4,37 @@ import { DayBlockContainerEl } from "../../style/BlockStyle";
 import Day from "./Day";
 
 const DayBlock = () => {
-  const { dayBlock } = useSelector((state) => state.block);
-  // console.log("dayBlock", dayBlock);
+  const { dayBlock, blockCont } = useSelector((state) => state.block);
+  const dateArr = Array.from({ length: 5 }, (v, i) => blockCont);
+  console.log("dayBlock", dateArr, dayBlock, blockCont);
 
   return (
     <>
-      {dayBlock &&
-        dayBlock.map((dayBlocks) => {
-          const { type, blockData } = dayBlocks;
-          return (
-            <DayBlockContainerEl key={type}>
-              <h3>{type}</h3>
-              <div>
-                {blockData.map((day) => {
-                  return <Day key={day.seq} day={day} dayType={type} />;
-                })}
-              </div>
-            </DayBlockContainerEl>
-          );
-        })}
+      {dayBlock && (
+        <DayBlockContainerEl key={1}>
+          {dateArr.map((idx, bCont) => {
+            console.log("???");
+            const { id, isFinished, userId, DatetimeId, CodeName, KeywordId } = bCont;
+
+            return (
+              <>
+                <h3>aasdfasdfasdf</h3>
+                <div>
+                  <Day key={idx} day={1} dayType={1} />
+                </div>
+              </>
+            );
+            // <DayBlockContainerEl key={type}>
+            //   <h3>{type}</h3>
+            //   <div>
+            //     {blockData.map((day) => {
+            //       return <Day key={day.seq} day={day} dayType={type} />;
+            //     })}
+            //   </div>
+            // </DayBlockContainerEl>
+          })}
+        </DayBlockContainerEl>
+      )}
     </>
   );
 };

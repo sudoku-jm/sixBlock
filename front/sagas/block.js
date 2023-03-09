@@ -19,6 +19,7 @@ function* loadDayBlock(action) {
     console.log(result);
     yield put({
       type: LOAD_DAY_BLOCK_SUCCESS,
+      data: result.data,
     });
   } catch (err) {
     yield put({

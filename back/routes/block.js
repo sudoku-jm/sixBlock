@@ -11,28 +11,45 @@ router.post("/day", isLoggedIn, async (req, res, next) => {
     const m = moment(curDate);
     const dateSeqObj = await Datetime.findOne({
       where: {
-        full_date: curDate,
-      },
-      attributes: {
-        exclude: ["updatedAt", "createdAt"],
-      },
-    });
-    const dateSeq = dateSeqObj.Datetime;
-
-    const dateArr = await Block.findAll({
-      where: {
-        dayId: dateSeq,
-        userid : req.user.id, //middleware 에서 가져옴
-      },
-      attributes: {
-        exclude: ["updatedAt", "createdAt"],
+        fullDate: curDate,
       },
     });
 
-    returnData = [
-      ...dateArr,
+    //해당 날짜가 속해있는 weekid 와 같은 date들을 가져와서 배열을 만들어 주고 같은 날짜가 있으면 데이터 넣어주기. 
+    const weekidArr = Datetime.findAll({
+      where : {
+        weekid : dateSeqObj.weekid
+      }
+    })
 
-    ]
+    returnData = weekidArr.map(dateObj => {
+      const {id, fullDate, year, month, date, day, week, weekid} = dateObj
+      const GetdateObj =  Block.findOne({
+        where: {
+          DatetimeId: id,
+          userId: req.user.id,
+        },
+        attributes: {
+          exclude: ["updatedAt", "createdAt"],
+        },
+      });
+      if (GetdateObj) {
+        return GetdateObj;
+      } else {
+        return {
+          id: "",
+          isFinished: "",
+          userId: "",
+          DatetimeId: fullDate,
+          CodeName: "",
+          KeywordId: "",
+        };
+      }
+    })
+    // returnData = [
+    //   ...dateArr,
+
+    // ]
 
     return res.status(200).send(returnData);
 

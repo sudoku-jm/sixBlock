@@ -13,9 +13,51 @@ import Checkbox from "../input/Checkbox";
 import DateSelect from "../input/DateSelect";
 import Selectbox from "../input/Selectbox";
 const KeywordModal = ({ type, blockData, setIsModalOpen }) => {
-  console.log("keywordmodal================");
+  console.log("keywordmodal================", type, blockData);
 
- 
+  const dispatch = useDispatch();
+
+  const { blockArr, weekBlock } = useSelector((state) => state.block);
+
+  //input 시 내용 저장
+  const [currentBlock, setCurrentBlock] = useState(
+    type === "month"
+      ? weekBlock
+          .find((d) => d.date === blockData)
+          ?.weekData.find((w) => w.date === blockData)
+          ?.blockData.find((b) => b.date === blockData)
+      : blockData
+  );
+
+  useEffect(()=>{console.log("curbLOCK", currentBlock)},[currentBlock])
+  
+  const handleCurrentBlock = useCallback(
+    (e, text, nameType) => {
+      console.log("handlecurrentblock", e, text)
+      if (text) {
+        setCurrentBlock({
+          ...currentBlock,
+          [nameType]: text.replace(/[0-9]/g, ""),
+        });
+      } else {
+        const { name, value, checked } = e.target;
+        setCurrentBlock({
+          ...currentBlock,
+          [name]: name === "isFinished" ? checked : value,
+        });
+      }
+    },
+    [currentBlock]
+  );
+
+  const [isDatePopOpen, setIsDatePopOpen] = useState(false);
+
+  const [isKeywordPopOpen, setIsKeywordPopOpen] = useState(false);
+
+  const setCurrentBlockAction = useCallback(() => {
+    // dispatch(handleDayBlock(currentBlock));
+    setIsModalOpen(false);
+  }, [currentBlock]);
 
   return (
     <>
@@ -39,19 +81,20 @@ const KeywordModal = ({ type, blockData, setIsModalOpen }) => {
                 <input
                   type="text"
                   name="content"
-                  value={''}
-                  onClick={()=>console.log("click")}
+                  value={currentBlock.content}
+                  onClick={()=>setIsKeywordPopOpen(true)}
                   onChange={(e) => {
-                    console.log("e", e.target.value)
+                    handleCurrentBlock(e, e.target.value, 'content');
+                    setIsKeywordPopOpen(true);
                   }}
                 />
-                {/* {isKeywordPopOpen && (
+                {isKeywordPopOpen && (
                   <KeywordSelectPop
                     text={currentBlock.content}
                     handleCurrentBlock={handleCurrentBlock}
                     setIsKeywordPopOpen={setIsKeywordPopOpen}
                   />
-                )} */}
+                )}
               </div>
             </div>
 
@@ -61,14 +104,15 @@ const KeywordModal = ({ type, blockData, setIsModalOpen }) => {
                 Date
               </h5>
               <div>
-                <span>{'2023-02-27'}</span>
-                <TiCalendar />
-                {/* {isDatePopOpen && (
+                <span>{currentBlock.date}</span>
+                <TiCalendar onClick={() => setIsDatePopOpen((prev) => !prev)} />
+                {isDatePopOpen && (
                   <DateSelect
-                    date={'2023-02-27'}
-                    
+                    date={currentBlock.date}
+                    dateArr={[]}
+                    setIsPopOpen={setIsDatePopOpen}
                   />
-                )} */}
+                )}
               </div>
             </div>
 
@@ -78,14 +122,19 @@ const KeywordModal = ({ type, blockData, setIsModalOpen }) => {
                 <Selectbox
                   type={"block"}
                   disabled={true}
+                  defaultValue={`${currentBlock.type}${currentBlock.typeNum}`}
+                  selectList={blockArr}
+                  onChange={(text) => {
+                    handleCurrentBlock(null, text, 'type');
+                  }}
                 />
               </div>
             </div>
             <div className="modal_content_each">
               <Checkbox
-                checked={true}
+                checked={currentBlock.isFinished}
                 onChange={(e) => {
-                  console.log("Ee")
+                  handleCurrentBlock(e);
                 }}
                 name="isFinished"
                 text="Done"
@@ -96,7 +145,7 @@ const KeywordModal = ({ type, blockData, setIsModalOpen }) => {
           <div className="modal_btm">
             <button
               className="btnM btnRound btn-primary"
-              
+              onClick={setCurrentBlockAction}
             >
               Apply
             </button>

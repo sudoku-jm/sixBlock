@@ -5,22 +5,32 @@ const initialState = {
   getDayBlockLoading: false,
   getDayBlockDone: false,
   getDayBlockError: false,
-  dayBlock : [],
+  dayBlock: [],
   //주 블록 가져오기
   getWeekBlockLoading: false,
   getWeekBlockDone: false,
   getWeekBlockError: false,
-  weekBlock : [],
+  weekBlock: [],
   //월 블록 가져오기
   getMonthBlockLoading: false,
   getMonthBlockDone: false,
   getMonthBlockError: false,
-  monthBlock : [],
+  monthBlock: [],
   //블록 1개 추가 / 수정 / 삭제하기
   modifyDayBlockLoading: false,
   modifyDayBlockDone: false,
   modifyDayBlockError: false,
 
+  blockCont : 
+    {
+      id: 0,
+      isFinished: "N",
+      userId : "",
+      DatetimeId: "",
+      CodeName: "",
+      KeywordId: "",
+    }
+  ,
   blockArr: [
     "Morning1",
     "Morning2",
@@ -52,13 +62,13 @@ export const MODIFY_DAY_BLOCK_FAILURE = "MODIFY_DAY_BLOCK_FAILURE";
 
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
-
     switch (action.type) {
       //=================일 블록
       case LOAD_DAY_BLOCK_REQUEST:
         draft.getDayBlockLoading = true;
         draft.getDayBlockDone = false;
         draft.getDayBlockError = null;
+        draft.curDate = action.data.curDate;
         break;
       case LOAD_DAY_BLOCK_SUCCESS:
         draft.getDayBlockLoading = false;

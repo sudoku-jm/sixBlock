@@ -43,34 +43,34 @@ const Home = () => {
 
   useEffect(() => {
     if (user && user.userid) {
-      // getBlockData();
+      getBlockData();
     }
   }, [type, user && user.userid]);
 
-  // const getBlockData = useCallback(() => {
-  //   if (type === "일간") {
-  //     dispatch({
-  //       type: LOAD_DAY_BLOCK_REQUEST,
-  //       data: {
-  //         curDate: curDate,
-  //       },
-  //     });
-  //   } else if (type === "주간") {
-  //     dispatch({
-  //       type: LOAD_WEEK_BLOCK_REQUEST,
-  //       data: {
-  //         curDate: curDate,
-  //       },
-  //     });
-  //   } else if (type === "월간") {
-  //     dispatch({
-  //       type: LOAD_MONTH_BLOCK_REQUEST,
-  //       data: {
-  //         curDate: curDate,
-  //       },
-  //     });
-  //   }
-  // }, [type]);
+  const getBlockData = useCallback(() => {
+    if (type === "일간") {
+      dispatch({
+        type: LOAD_DAY_BLOCK_REQUEST,
+        data: {
+          curDate: curDate,
+        },
+      });
+    } else if (type === "주간") {
+      dispatch({
+        type: LOAD_WEEK_BLOCK_REQUEST,
+        data: {
+          curDate: curDate,
+        },
+      });
+    } else if (type === "월간") {
+      dispatch({
+        type: LOAD_MONTH_BLOCK_REQUEST,
+        data: {
+          curDate: curDate,
+        },
+      });
+    }
+  }, [type]);
 
   return (
     <AppLayout>
