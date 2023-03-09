@@ -68,19 +68,19 @@ export const UPLOAD_PROFILE_IMG_REQUEST = "UPLOAD_PROFILE_IMG_REQUEST";
 export const UPLOAD_PROFILE_IMG_SUCCESS = "UPLOAD_PROFILE_IMG_SUCCESS";
 export const UPLOAD_PROFILE_IMG_FAILRE = "UPLOAD_PROFILE_IMG_FAILRE";
 
-const dummuUser = (data) => ({
+// const dummuUser = (data) => ({
   // id: "jm1234",
   // nickname: "정미니",
   // password: null,
   // email: "jm91@bodyfriend.co.kr",
   // photoProfile:
-  //   "https://images.unsplash.com/photo-1661956602116-aa6865609028?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&q=80",
+  //   "https://localhost:5500/upload/img.png",
   // plans: {
   //   totalPlans: 300,
   //   successRate: 100,
   //   topKeywords: ["운동", "회사", "독서", "학원", "친구약속"],
   // },
-});
+// });
 
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
