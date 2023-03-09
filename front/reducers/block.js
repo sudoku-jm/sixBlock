@@ -1,6 +1,8 @@
 import produce from "immer";
 
 const initialState = {
+  //type
+  blockType : "일간",
   //일 블록 가져오기
   getDayBlockLoading: false,
   getDayBlockDone: false,
@@ -30,8 +32,22 @@ const initialState = {
     "Dinner2",
   ],
   dateArr: [],
-  curDate: "2023-02-20",
+  curDate: "2023-03-09",
 };
+
+//dayBlock
+const dummyDayBlock = (data) => ({
+  type : "일간",
+  blockData : [
+    { id : 1,  isFinished : 'N',  date : '2023-03-09',  keyword : '키워드', code : 'm1'},
+    { id : 1,  isFinished : 'N',  date : '2023-03-09',  keyword : '키워드', code : 'm1'},
+    { id : 1,  isFinished : 'N',  date : '2023-03-09',  keyword : '키워드', code : 'm1'},
+    { id : 1,  isFinished : 'N',  date : '2023-03-09',  keyword : '키워드', code : 'm1'},
+    { id : 1,  isFinished : 'N',  date : '2023-03-09',  keyword : '키워드', code : 'm1'},
+    { id : 1,  isFinished : 'N',  date : '2023-03-09',  keyword : '키워드', code : 'm1'},
+  ],
+
+});
 
 //일 블록 가져오기
 export const LOAD_DAY_BLOCK_REQUEST = "LOAD_DAY_BLOCK_REQUEST";
@@ -63,7 +79,8 @@ const reducer = (state = initialState, action) => {
       case LOAD_DAY_BLOCK_SUCCESS:
         draft.getDayBlockLoading = false;
         draft.getDayBlockDone = true;
-        draft.dayBlock = action.data;
+        draft.dayBlock = dummyDayBlock();
+        draft.blockType = "일간";
         break;
       case LOAD_DAY_BLOCK_FAILURE:
         draft.getDayBlockLoading = false;

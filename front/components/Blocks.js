@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { TiCalendar, TiPlus } from "react-icons/ti";
 import DayBlock from "../components/block/DayBlock";
@@ -15,9 +15,9 @@ import {
 } from "../reducers/block";
 const Blocks = () => {
   const { user } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
-    //오늘 날짜
+  //오늘 날짜
   const { curDate, dateArr } = useSelector((state) => state.block);
+  const dispatch = useDispatch();
 
     //날짜 팝업
   const [isPopOpen, setIsPopOpen] = useState(false);
@@ -27,57 +27,52 @@ const Blocks = () => {
   
   const [type, setType] = useState("일간");
     
-  // useEffect(() => {
-    // if (user && user.userid) {
-      // getBlockData();
-    // }
-    // if (user && user.userid) {
-    //   dispatch({
-    //     type: LOAD_PROFILE_INFO_REQUEST,
-    //     data: { userid: user.userid },
-    //   });
-    // }
-  // }, [type, user && user.userid]);
+  useEffect(() => {
+    if (user && user.userid) {
+      getBlockData();
+    }
+  }, [type, user && user.userid]);
 
-  // const getBlockData = useCallback(() => {
-  //   if (type === "일간") {
-  //     dispatch({
-  //       type: LOAD_DAY_BLOCK_REQUEST,
-  //       data: {
-  //         curDate: curDate,
-  //       },
-  //     });
-  //   } else if (type === "주간") {
-  //     dispatch({
-  //       type: LOAD_WEEK_BLOCK_REQUEST,
-  //       data: {
-  //         curDate: curDate,
-  //       },
-  //     });
-  //   } else if (type === "월간") {
-  //     dispatch({
-  //       type: LOAD_MONTH_BLOCK_REQUEST,
-  //       data: {
-  //         curDate: curDate,
-  //       },
-  //     });
-  //   }
-  // }, [type]);
-    const selectType = useCallback((typeValue) => {
-      setType(typeValue);
-    }, []);
+  const getBlockData = useCallback(() => {
+    if (type === "일간") {
+      dispatch({
+        type: LOAD_DAY_BLOCK_REQUEST,
+        data: {
+          curDate: curDate,
+        },
+      });
+    } else if (type === "주간") {
+      dispatch({
+        type: LOAD_WEEK_BLOCK_REQUEST,
+        data: {
+          curDate: curDate,
+        },
+      });
+    } else if (type === "월간") {
+      dispatch({
+        type: LOAD_MONTH_BLOCK_REQUEST,
+        data: {
+          curDate: curDate,
+        },
+      });
+    }
+  }, [type]);
+
+  const selectType = useCallback((typeValue) => {
+    setType(typeValue);
+  }, []);
   
 
   return (
     <>
-       {/* <SelectTitleEl className="select_text">
+       <SelectTitleEl className="select_text">
             <SelectBox
               type={"inline"}
               defaultValue={type}
               selectList={["일간", "주간", "월간"]}
               onChange={selectType}
             />
-            <div className="title_icon">
+            {/* <div className="title_icon">
               <TiPlus onClick={() => setIsKeywordPopOpen((prev) => !prev)} />
 
               {type !== "월간" && (
@@ -91,15 +86,16 @@ const Blocks = () => {
                   setIsPopOpen={setIsPopOpen}
                 />
               )}
-            </div>
-          </SelectTitleEl> */}
-          {type === "일간" ? (
+            </div> */}
+          </SelectTitleEl>
+          <DayBlock />
+          {/* {type === "일간" ? (
             <DayBlock />
           ) : type === "주간" ? (
             <WeekBLock />
           ) : (
             <MonthBlock />
-          )}
+          )} */}
     </>
   );
 };

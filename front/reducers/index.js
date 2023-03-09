@@ -10,7 +10,7 @@ import keyword from "./keyword";
 const rootReducer = (state, action) => {
   switch (action.type) {
     case HYDRATE:
-      console.log('HYDRATE', HYDRATE);
+      // console.log('HYDRATE', HYDRATE);
       return action.payload;
     default:
       const combineReducer = combineReducers({

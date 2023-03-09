@@ -16,7 +16,6 @@ function* loadDayBlock(action) {
     console.log("action loadDayBlock", action.data);
     const result = yield call(loadDayBlockAPI, action.data);
     console.log("=========================loadDayBlockAPI result", result);
-    console.log(result);
     yield put({
       type: LOAD_DAY_BLOCK_SUCCESS,
     });

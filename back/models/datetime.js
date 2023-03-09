@@ -2,8 +2,8 @@ module.exports = (sequelize, DataTypes) => {
   const Datetime = sequelize.define(
     "Datetime",
     {
-      fullDate: {
-        type: DataTypes.STRING(50),
+      fullDate: {                 //날짜
+        type: DataTypes.STRING(20),
         allowNull: false,
         unique: true,
       },
@@ -15,20 +15,12 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(2),
         allowNull: true,
       },
-      date: {
-        type: DataTypes.STRING(2),
-        allowNull: true,
-      },
       day: {
         type: DataTypes.STRING(2),
         allowNull: true,
       },
-      week: {
+      week: {                     //주차
         type: DataTypes.STRING(2),
-        allowNull: true,
-      },
-      weekId: {
-        type: DataTypes.STRING(6),
         allowNull: true,
       },
       d_delYn: {

@@ -11,10 +11,12 @@ const KeywordRouter = require("./routes/keyword");
 const db = require("./models");
 const passportConfig = require("./passport");
 
+const addDateTime = require("./schedule/addDateTime");
 // env 파일 연결 들고오기
 dotenv.config();
 
 const app = express();
+const PORT = 5500;
 
 db.sequelize
   .sync()
@@ -23,6 +25,11 @@ db.sequelize
   })
   .catch(console.error);
 
+
+  // 배치 프로그램
+  // 24시에 실행될 함수
+  addDateTime();
+  
 //패스포트 연결
 passportConfig();
 
@@ -59,6 +66,6 @@ app.use("/block", BlockRouter);
 8;
 app.use("/user", UserRouter);
 
-app.listen(5500, () => {
+app.listen(PORT, () => {
   console.log("server test 🧨");
 });
