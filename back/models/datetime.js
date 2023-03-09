@@ -7,20 +7,28 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
       },
-      year: {
+      year: {                     // 년
         type: DataTypes.STRING(4),
         allowNull: true,
       },
-      month: {
+      month: {                    //월
         type: DataTypes.STRING(2),
         allowNull: true,
       },
-      day: {
+      date: {                     // 일
         type: DataTypes.STRING(2),
         allowNull: true,
       },
-      week: {                     //주차
+      day: {                      // 요일 
         type: DataTypes.STRING(2),
+        allowNull: true,
+      },
+      week: {                     // 주차
+        type: DataTypes.STRING(2),
+        allowNull: true,
+      },
+      weekId: {                   // 년 + 주차
+        type: DataTypes.STRING(6),
         allowNull: true,
       },
       d_delYn: {

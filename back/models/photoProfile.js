@@ -1,7 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const PhotoProfile = sequelize.define(
-    "PhotoProfile",
-
+  const PhotoProfile = sequelize.define( "PhotoProfile",
     {
       id: {
         type: DataTypes.INTEGER,

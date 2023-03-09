@@ -308,17 +308,13 @@ router.post( "/image",  isLoggedIn,  upload.single("image"),  async (req, res, n
 
       const [img, created] = await PhotoProfile.findOrCreate({
         where: { userId: req.user.userid },
-        defaults: {
+        defaults: {   //기본 생성
           src: src,
         },
       });
 
       if (created) {
         //파일 새로 생성
-        // await PhotoProfile.create({
-        //   src: src,
-        //   userId: req.user.userid,
-        // });
       } else {
         // 이미 존재할 경우
         await PhotoProfile.update(

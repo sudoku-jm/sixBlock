@@ -39,18 +39,18 @@ router.post("/day", isLoggedIn, async (req, res, next) => {
 
     // }
 
-    const dateArr = await Block.findAll({
-      where: {
-        dayId: dateSeq,
-        userid : req.user.id, //middleware 에서 가져옴
-      },
-      attributes: {
-        exclude: ["updatedAt", "createdAt"],
-        include : [
-          model : 
-        ]
-      },
-    });
+    // const dateArr = await Block.findAll({
+    //   where: {
+    //     dayId: dateSeq,
+    //     userid : req.user.id, //middleware 에서 가져옴
+    //   },
+    //   attributes: {
+    //     exclude: ["updatedAt", "createdAt"],
+    //     include : [
+    //       model : 
+    //     ]
+    //   },
+    // });
 
     if(dateArr){
 

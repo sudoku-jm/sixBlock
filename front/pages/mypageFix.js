@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AppLayout from "../components/AppLayout";
 import Menu from "../components/Menu";
 import { END } from 'redux-saga';
@@ -9,9 +9,15 @@ import UserProfileFixForm from "../components/UserProfileFixForm";
 import { UserProfileStyle } from "../style/UserStyle";
 import PhotoProfile from "../components/PhotoProfile";
 import { useSelector } from "react-redux";
+import { Router } from "next/router";
 const mypageFix = () => {
   const { user } = useSelector((state) => state.user);
   const { id } = user;
+  useEffect(() => {
+    if (!(user && user.userid) && user == null) {
+      Router.push("/");
+    }
+  }, [user && user.userid]);
   return (
     <AppLayout>
       <h1 className="hdtxt">내 정보 수정</h1>
