@@ -51,7 +51,6 @@ const upload = multer({
 router.get('/', async (req, res,next) => {  //GET /user
   console.log('/user',req.headers);
   try {
-    console.log("==================오니????")
     if(req.user){  
       const fullUserWithoutPassword = await User.findOne({
         where : { userid : req.user.userid },
@@ -60,7 +59,8 @@ router.get('/', async (req, res,next) => {  //GET /user
         },
         include : [{
           model : Block
-        }]
+        },
+        ]
       });
       res.status(200).json(fullUserWithoutPassword);
     }else{
@@ -170,15 +170,19 @@ router.post("/login", isNotLoggedIn, async (req, res, next) => {
 //로그아웃
 router.post("/logout", isLoggedIn, async (req, res) => {
   console.log("===========logout!!");
-  req.logout((err) => {
-    req.session.destroy();
-    if (err) {
-      res.redirect("/");
-    } else {
-      res.clearCookie("connect.sid");
-      res.status(200).send("server ok: 로그아웃 완료");
-    }
-  });
+  // req.logout((err) => {
+  //   req.session.destroy();
+  //   if (err) {
+  //     res.redirect("/");
+  //   } else {
+  //     res.clearCookie("connect.sid");
+  //     res.status(200).send("server ok: 로그아웃 완료");
+  //   }
+  // });
+  req.logout();
+  req.session.destroy();
+  res.clearCookie("connect.sid");
+  res.status(200).json("server ok: 로그아웃 완료");
 });
 
 //마이페이지 > 유저정보 더 불러오기

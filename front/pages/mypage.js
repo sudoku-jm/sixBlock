@@ -15,17 +15,17 @@ const mypage = () => {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   //임시(클라이언트 사이드 랜더링)
-  // useEffect(() => {
-  //   if (!(user && user.userid) && user == null) {
-  //     Router.push("/");
-  //   }
-  //   if (user && user.userid) {
-  //     dispatch({
-  //       type: LOAD_PROFILE_INFO_REQUEST,
-  //       data: { userid: user.userid },
-  //     });
-  //   }
-  // }, [user && user.userid]);
+  useEffect(() => {
+    if (!(user && user.userid) && user == null) {
+      Router.push("/");
+    }
+    // if (user && user.userid) {
+    //   dispatch({
+    //     type: LOAD_PROFILE_INFO_REQUEST,
+    //     data: { userid: user.userid },
+    //   });
+    // }
+  }, [user && user.userid]);
 
   return (
     <AppLayout>

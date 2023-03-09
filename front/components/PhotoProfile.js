@@ -10,6 +10,8 @@ const PhotoProfile = ({ page }) => {
   const { photoProfile , srcYn, profileUploadDone } = user;
   const inputFile = useRef(null);
 
+  console.log('photoProfile',photoProfile)
+
   useEffect(() => {
     if(profileUploadDone){
       dispatch({
