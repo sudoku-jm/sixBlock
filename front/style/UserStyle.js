@@ -109,6 +109,11 @@ const UserPlanerDashboardStyle = styled.article`
             font-size: 2.5rem;
             color: var(--color-primary);
           }
+          span{
+            padding:0 0.3rem 0 0;
+            font-weight: 700;
+            color: var(--color-secondary);
+          }
         }
       }
       .list-keyword {
@@ -120,6 +125,11 @@ const UserPlanerDashboardStyle = styled.article`
           padding: 1rem 2rem 1rem 4rem;
           color: var(--color-black333);
           text-indent: -2rem;
+          i{
+            padding-left:1rem;
+            color:var(--color-secondary);
+            font-size:1.4rem;
+          }
           &:first-child {
             background: var(--color-primary-op2);
             border-radius: 1.2rem;

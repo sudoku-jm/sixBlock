@@ -3,16 +3,17 @@ import { PageTitle2 } from "../style/AppCommonStyle";
 import { UserPlanerDashboardStyle } from "../style/UserStyle";
 import PropTypes from "prop-types";
 const UserPlanerStatus = ({ plans }) => {
-  const { totalPlans, successRate, topKeywords } = plans || {};
+  const { totalPlans,finishedPlans, successRate, top5 } = plans || {};
   return (
     <UserPlanerDashboardStyle>
       <PageTitle2>나의 플래너</PageTitle2>
       <div className="planer-dashboard">
         <div className="status-cnt">
           <div className="status-box">
-            <h4>총 플래너 개수</h4>
+            <h4>총 플래너 성공 개수</h4>
             <p>
-              <em>{totalPlans}</em>건
+              <em>{finishedPlans}</em> / 
+              <span>{totalPlans}</span> 건
             </p>
           </div>
           <div className="status-box">
@@ -25,10 +26,11 @@ const UserPlanerStatus = ({ plans }) => {
         <div className="list-keyword">
           <h4>TOP 키워드</h4>
           <ol>
-            {topKeywords?.map((keyword) => {
+            {top5?.map((t) => {
               return (
-                <li key={keyword}>
-                  <span>{keyword}</span>
+                <li key={t.keyword}>
+                  <span>{t.keyword}</span>
+                  <i>({t.cnt}회)</i>
                 </li>
               );
             })}

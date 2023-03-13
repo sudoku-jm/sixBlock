@@ -1,5 +1,5 @@
 const express = require("express");
-const { User, Block, PhotoProfile } = require("../models");
+const { User, Block, PhotoProfile, Keyword } = require("../models");
 const { isLoggedIn, isNotLoggedIn } = require("./middlewares");
 const router = express.Router();
 const bcrypt = require("bcrypt"); //비밀번호 암호화
@@ -8,6 +8,7 @@ const path = require("path");
 const multer = require("multer");
 const fs = require("fs");
 const { v4 } = require("uuid");
+const { Op } = require("sequelize");
 
 const defaultImagePath = "/img/noImg.svg";
 
@@ -193,12 +194,14 @@ router.post("/userinfo", isLoggedIn, async (req, res, next) => {
     }
 
     const plans = await Block.findAll({
+      raw : true,
       where: {
         UserId: req.user.userid, //middleware 에서 가져옴
+        KeywordId : {
+          [Op.not] : null       // 키워드 있는 것 만 
+        }
       },
-      attributes: {
-        exclude: ["id", "type", "typeNum", "day", "date"],
-      },
+      attributes: ["isFinished","KeywordId"],
     });
 
     const userPhoto = await PhotoProfile.findOne({
@@ -206,34 +209,78 @@ router.post("/userinfo", isLoggedIn, async (req, res, next) => {
       attributes: ["src"],
     });
 
-    //등록 된 프로필 이미지가 없을 경우
+    
+    // 사용자 프로필 src ================================================
     let src = "";
     let srcYn = "";
-    if (userPhoto == null) {
+    if (userPhoto == null) {  //등록 된 프로필 이미지가 없을 경우
       src = path.posix.join(__dirname, "../../", defaultImagePath);
       srcYn = "N";
-    } else {
+    } else {                  //프로필 있는 경우
       src = userPhoto.src;
       srcYn = "Y";
     }
-    // console.log("============plans", plans);
-    const finishedLen =
-      plans.length > 0 ? plans.map((p) => p.isFinished == true).length : 0;
-    const topKeyword = ["키워드1", "키워드2", "키워드3", "키워드4", "키워드5"];
 
+    // 탑5 키워드 추출 ===================================================
+    const myKeywords = plans.map((p) => p.KeywordId);
+    const counts = {};
+    //
+    for (let i = 0; i < myKeywords.length; i++) {
+      const element = myKeywords[i];   
+      if (counts[element]) {            //기존에 있었다면 +1
+        counts[element]++;              
+      } else {    //첫 등장
+        counts[element] = 1;            
+      }
+    }
+    
+    // 등장 횟수를 기준으로 내림차순으로 정렬.
+    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+
+    // 상위 5개만 추출.
+    const myKeywordSlice = sorted.slice(0,5);   // [ [ '키워드아이디', 횟수 ], [ '53', 2 ] ] 형태로 내려옴
+    let top5 = [];
+    for(let i = 0; i < myKeywordSlice.length; i++){
+
+      const result = await Keyword.findOne({
+        where: { id: myKeywordSlice[i][0] },
+        attributes: ["keyword"],
+      });
+
+      top5.push({
+        [`top${i + 1}`] : result.keyword,
+        keyword : result.keyword,
+        cnt : myKeywordSlice[i][1]
+      });
+      
+    }
+    console.log('top5??',top5)
+
+    // const top5 = myKeywordSlice.map(([val, cnt], index) => ({
+    //   [`top${index + 1}`] : val,
+    //   count : cnt,
+    // }) );
+    
+    // // 결과를 출력합니다.
+    // console.log('top5',top5); 
+    
+
+
+    const finishedLen = plans.length > 0 ? plans.filter((p) => p.isFinished === 'Y').length : 0;    //완료 된 블록.
+    const successPercent = plans.length > 0 ? ((finishedLen / plans.length) * 100).toFixed(1) : 0; // 성공개수/전체개수 * 100
+
+    console.log('완료된 플랜 갯수',finishedLen)
     const result = {
       userid: req.user.userid,
       nickname: req.user.nickname,
       photoProfile: src,
       srcYn,
       plans: {
-        totalPlans: plans.length,
-        successRate:
-          plans.length > 0
-            ? parseInt((finishedLen / plans.length) * 100, 10)
-            : 0, //성공개수/전체개수 * 100
-        topKeywords: topKeyword,
-      },
+        totalPlans: plans.length,     //전체 블록 수
+        finishedPlans : finishedLen,  //완료한 블록 수
+        successRate : successPercent,  //성공개수/전체개수 * 100
+        top5 : top5,            
+      },    
     };
 
     // console.log("=============result", result);
