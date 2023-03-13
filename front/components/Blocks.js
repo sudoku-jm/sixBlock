@@ -8,6 +8,7 @@ import SelectBox from "../components/input/Selectbox";
 import DateSelect from "../components/input/DateSelect";
 import { SelectTitleEl } from "../style/BlockStyle";
 import KeywordModal from "../components/block/KeywordModal";
+import moment from "moment";
 import {
   LOAD_DAY_BLOCK_REQUEST,
   LOAD_MONTH_BLOCK_REQUEST,
@@ -25,33 +26,69 @@ const Blocks = () => {
   const [isKeywordPopOpen, setIsKeywordPopOpen] = useState(false);
   
   const [type, setType] = useState("일간");
-    
+  const [dateValue, onChangeDate] = useState(curDate ? new Date(curDate) : new Date());
+  const [getData, setGetData] = useState(false);
+
   useEffect(() => {
     if (user && user.userid) {
       getBlockData();
     }
   }, [type, user && user.userid]);
 
+  useEffect(() => {
+    if(getData){
+      console.log('dateValue',dateValue)
+      const date = moment(dateValue).format("YYYY-MM-DD")
+      if (type === "일간") {
+          dispatch({
+            type: LOAD_DAY_BLOCK_REQUEST,
+            data: {
+              curDate: date
+            },
+          });
+      }
+
+      setGetData(false);
+    }
+
+  },[dateValue])
+
+  const onDateClick = useCallback(() =>{
+    setGetData(true);
+  },[])
+
+  // const onDateSelect = useCallback(() => {
+  //   console.log('onDateSelect',onDateSelect)
+  //   if (type === "일간") {
+  //     dispatch({
+  //       type: LOAD_DAY_BLOCK_REQUEST,
+  //       data: {
+  //         curDate: moment(dateValue).format("YYYY-MM-DD"),
+  //       },
+  //     });
+  //   }
+  // },[]);
+
   const getBlockData = useCallback(() => {
     if (type === "일간") {
       dispatch({
         type: LOAD_DAY_BLOCK_REQUEST,
         data: {
-          curDate: curDate,
+          curDate: moment(dateValue).format("YYYY-MM-DD"),
         },
       });
     } else if (type === "주간") {
       dispatch({
         type: LOAD_WEEK_BLOCK_REQUEST,
         data: {
-          curDate: curDate,
+          curDate: dateValue,
         },
       });
     } else if (type === "월간") {
       dispatch({
         type: LOAD_MONTH_BLOCK_REQUEST,
         data: {
-          curDate: curDate,
+          curDate: dateValue,
         },
       });
     }
@@ -80,9 +117,11 @@ const Blocks = () => {
               )}
               {isPopOpen && (
                 <DateSelect
-                  date={curDate}
+                  date={dateValue}
                   dateArr={dateArr}
                   setIsPopOpen={setIsPopOpen}
+                  onChangeDate={onChangeDate}
+                  onDateClick={onDateClick}
                 />
               )}
             </div>

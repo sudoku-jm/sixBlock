@@ -32,8 +32,6 @@ const Day = ({day}) => {
   };
   
   const dispatchInsert = (val,checked) => {
-    console.log('checked',checked)
-  
     dispatch({
       type : INSERT_DAY_BLOCK_REQUEST,
       data : {

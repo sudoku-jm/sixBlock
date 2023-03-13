@@ -1,5 +1,5 @@
 const express = require("express");
-const { User, Block, Datetime, Code, Keyword } = require("../models"); //DB 가져오기
+const { User, Block, Datetime, Code, Keyword, Sequelize } = require("../models"); //DB 가져오기
 const { isLoggedIn } = require("./middlewares");
 const router = express.Router();
 const moment = require("moment");
@@ -20,7 +20,6 @@ router.post("/insertday", isLoggedIn, async (req, res, next) => {
       attributes : ["id"]
     });
 
-    console.log('========?dateInfo',dateInfo)
 
      // Code 아이디 전체 가지고 오기 CodeName
     const codes = await Code.findAll({
@@ -96,8 +95,13 @@ router.post("/insertday", isLoggedIn, async (req, res, next) => {
       updateBlock(code,keywordInfo.id)
     }else{
       //새로 만드는 키워드
-      const keyId = await createKeyword();
-      updateBlock(code,keyId);
+      if(keyword !== ""){
+        const keyId = await createKeyword();
+        updateBlock(code,keyId);
+      }else{
+        updateBlock(code,null);
+
+      }
     }
 
     res.status(200).send('ok');
@@ -118,9 +122,6 @@ router.post("/day", isLoggedIn, async (req, res, next) => {
     const month = (today.getMonth() + 1) >= 10 ? (today.getMonth() + 1) : '0'+ (today.getMonth() + 1) ;
     const day = (today.getDate()) >= 10 ? today.getDate() : '0' + today.getDate();
 
-    console.log('curDate',curDate)
-    console.log('${year}-${month}-${day}',`${year}-${month}-${day}`);
-
     // 날짜 아이디.DatetimeId
     const dateInfo = await Datetime.findOne({    
       where : { fullDate : curDate ? curDate : `${year}-${month}-${day}`},
@@ -139,19 +140,32 @@ router.post("/day", isLoggedIn, async (req, res, next) => {
         DateTimeId : dateInfo.id,
       },
       paranoid : false, 
+      attributes : {
+        exclude : ["KeywordId","DatetimeId","b_delYn","deletedAt","createdAt"],
+      },
+      order:[ 
+          ['CodeName', 'DESC'],
+          [Sequelize.literal(`CASE 
+            WHEN CodeName = 'm1' THEN 1
+            WHEN CodeName = 'm2' THEN 2
+            WHEN CodeName = 'a1' THEN 3
+            WHEN CodeName = 'a2' THEN 4
+            WHEN CodeName = 'd1' THEN 5
+            WHEN CodeName = 'd2' THEN 6
+          END`), 'DESC']
+        ],
       include : [{
         model : Keyword,
         attributes: ["keyword"]
       },{
         model : Datetime,
         attributes : ["fullDate"]
-      },{
+      },{ 
         model : Code,
         attributes : ["desc1","name"]
       }]
     });
-    
-    console.log('dayBlock',dayBlock)
+
 
     const result = {};
 
@@ -174,17 +188,17 @@ router.post("/day", isLoggedIn, async (req, res, next) => {
         }
         result.blockData.push(obj)
       }
-      console.log("=1111111")
+
+      result.blockData.sort((a, b) => {
+        const order = {m1: 1, m2: 2, a1: 3, a2: 4, d1: 5, d2: 6}
+        return order[a.CodeName] - order[b.CodeName]
+      })
       return res.status(200).send(result);
     }else{
       result.blockData = dayBlock;      
-      console.log("=222222")
       return res.status(200).send(result);
     }
 
-
-
-    
   } catch (err) {
     console.error(err);
     next(err);
