@@ -10,6 +10,7 @@ export const DayBlockContainerEl = styled.div`
   }
   & > div {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     margin: 5px 0 20px;
@@ -17,10 +18,12 @@ export const DayBlockContainerEl = styled.div`
 `;
 
 export const DayBlockEl = styled.div`
+  position: relative;
   display: flex;
   justify-content: space-between;
   position: relative;
-  width: 48.5%;
+  margin:10px 0;
+  width: calc(50% - 10px);
   padding: 30px 20px;
   border-radius: 15px;
   background-color: ${(props) =>
@@ -34,32 +37,34 @@ export const DayBlockEl = styled.div`
 `;
 
 export const CheckboxEl = styled.div`
+  position: absolute;
+  top:50%;
+  right:20px;
+  transform:translateY(-50%);
+  width:30px;
+  height:30px;
   label {
-    position: relative;
-    padding-right: ${(props) => (props.isText ? "0" : "40px")};
-    display: ${(props) => (props.isText ? "flex" : "block")};
-    justify-content: center;
     line-height: 1.7;
+    position: relative;
+    display: block;
     &::before {
       content: "";
       position: absolute;
-      top: ${(props) => (props.isText ? "0" : "-9px")};
-      left: ${(props) => (props.isText ? "-85%" : "0")};
       border: 4px dashed var(--color-c2c2c5);
-      width: 30px;
-      height: 30px;
+      width:25px;
+      height:25px;
       border-radius: 50%;
     }
     &::after {
       content: "";
-      position: ${(props) => (props.isText ? "relative" : "absolute")};
     }
     .check_icon {
       content: "";
       position: absolute;
-      top: ${(props) => (props.isText ? "4px" : "-5px")};
-      left: ${(props) => (props.isText ? "-75%" : "4px")};
-      font-size: 30px;
+      top:3px;
+      left:50%;
+      transform: translateX(-50%);
+      font-size: 25px;
       color: var(--color-c2c2c5);
     }
     span {
@@ -74,6 +79,8 @@ export const CheckboxEl = styled.div`
     margin: 0;
     padding: 0;
     overflow: hidden;
+    position: absolute;
+    left:-9999px;
   }
   input[type="checkbox"]:checked + label {
     &::before {

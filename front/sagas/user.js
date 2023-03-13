@@ -42,10 +42,10 @@ function* loadUserInfo() {
     });
   } catch (err) {
     console.error(err);
-    yield put({
-      type: LOAD_USER_INFO_FAILURE,
-      error: err.response.data,
-    });
+    // yield put({
+    //   type: LOAD_USER_INFO_FAILURE,
+    //   error: err.response.data,
+    // });
   }
 }
 /*===========회원프로필정보========== */

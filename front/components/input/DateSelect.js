@@ -12,21 +12,19 @@ const DateSelect = ({ date, dateArr, setIsPopOpen, onChange }) => {
       <CalendarContEl>
         <Calendar
           value={new Date(date)}
-          onChange={(date) => {
-            onChange(date);
-          }}
           formatDay={(locale, date) => moment(date).format("DD")}
-          tileContent={(date, view) => {
-            if (
-              dateArr.find((d) => d === moment(date.date).format("YYYY-MM-DD"))
-            ) {
-              return (
-                <div className="dot_container">
-                  <div className="dot"></div>
-                </div>
-              );
-            }
-          }}
+          
+          // tileContent={(date, view) => {
+          //   if (
+          //     dateArr.find((d) => d === moment(date.date).format("YYYY-MM-DD"))
+          //   ) {
+          //     return (
+          //       <div className="dot_container">
+          //         <div className="dot"></div>
+          //       </div>
+          //     );
+          //   }
+          // }}
         />
       </CalendarContEl>
     </>

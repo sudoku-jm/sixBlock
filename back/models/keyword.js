@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
-        autoIncrement: false,
+        autoIncrement: true,
       },
       keyword: {
         type: DataTypes.STRING(50), //50글자이하 제한

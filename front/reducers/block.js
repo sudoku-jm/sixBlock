@@ -2,11 +2,14 @@ import produce from "immer";
 
 const initialState = {
   //type
-  blockType : "일간",
+  blockType : "",
   //일 블록 가져오기
   getDayBlockLoading: false,
   getDayBlockDone: false,
   getDayBlockError: false,
+  insertDayBlockLoading: false,
+  insertDayBlockDone: false,
+  insertDayBlockError: false,
   dayBlock : [],
   //주 블록 가져오기
   getWeekBlockLoading: false,
@@ -32,27 +35,28 @@ const initialState = {
     "Dinner2",
   ],
   dateArr: [],
-  curDate: "2023-03-09",
+  curDate: "",
 };
 
 //dayBlock
-const dummyDayBlock = (data) => ({
-  type : "일간",
-  blockData : [
-    { id : 1,  isFinished : 'N',  date : '2023-03-09',  keyword : '키워드', code : 'm1'},
-    { id : 1,  isFinished : 'N',  date : '2023-03-09',  keyword : '키워드', code : 'm1'},
-    { id : 1,  isFinished : 'N',  date : '2023-03-09',  keyword : '키워드', code : 'm1'},
-    { id : 1,  isFinished : 'N',  date : '2023-03-09',  keyword : '키워드', code : 'm1'},
-    { id : 1,  isFinished : 'N',  date : '2023-03-09',  keyword : '키워드', code : 'm1'},
-    { id : 1,  isFinished : 'N',  date : '2023-03-09',  keyword : '키워드', code : 'm1'},
-  ],
+// const dummyDayBlock = {
+//   type : "일간",
+//   curDate : "2023-03-13",
+//   blockData : [
+//     { id : 1,  isFinished : 'N',  date : '2023-03-13',  keyword : '키워드1', code : 'm1'},
+//   ],
 
-});
+// };
 
 //일 블록 가져오기
 export const LOAD_DAY_BLOCK_REQUEST = "LOAD_DAY_BLOCK_REQUEST";
 export const LOAD_DAY_BLOCK_SUCCESS = "LOAD_DAY_BLOCK_SUCCESS";
 export const LOAD_DAY_BLOCK_FAILURE = "LOAD_DAY_BLOCK_FAILURE";
+
+export const INSERT_DAY_BLOCK_REQUEST = "INSERT_DAY_BLOCK_REQUEST";
+export const INSERT_DAY_BLOCK_SUCCESS = "INSERT_DAY_BLOCK_SUCCESS";
+export const INSERT_DAY_BLOCK_FAILURE = "INSERT_DAY_BLOCK_FAILURE";
+
 //주 블록 가져오기
 export const LOAD_WEEK_BLOCK_REQUEST = "LOAD_WEEK_BLOCK_REQUEST";
 export const LOAD_WEEK_BLOCK_SUCCESS = "LOAD_WEEK_BLOCK_SUCCESS";
@@ -71,6 +75,21 @@ const reducer = (state = initialState, action) => {
 
     switch (action.type) {
       //=================일 블록
+      case INSERT_DAY_BLOCK_REQUEST:
+        draft.insertDayBlockLoading = true;
+        draft.insertDayBlockDone = false;
+        draft.insertDayBlockError = null;
+        break;
+      case INSERT_DAY_BLOCK_SUCCESS:
+        draft.insertDayBlockLoading = false;
+        draft.insertDayBlockDone = true;
+        break;
+      case INSERT_DAY_BLOCK_FAILURE:
+        draft.insertDayBlockLoading = false;
+        draft.insertDayBlockDone = false;
+        draft.insertDayBlockError = action.error;
+        break;
+      //=================일 블록
       case LOAD_DAY_BLOCK_REQUEST:
         draft.getDayBlockLoading = true;
         draft.getDayBlockDone = false;
@@ -79,8 +98,9 @@ const reducer = (state = initialState, action) => {
       case LOAD_DAY_BLOCK_SUCCESS:
         draft.getDayBlockLoading = false;
         draft.getDayBlockDone = true;
-        draft.dayBlock = dummyDayBlock();
-        draft.blockType = "일간";
+        draft.dayBlock = action.data.blockData;
+        draft.blockType = action.data.type;
+        draft.curDate = action.data.curDate;
         break;
       case LOAD_DAY_BLOCK_FAILURE:
         draft.getDayBlockLoading = false;

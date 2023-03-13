@@ -1,75 +1,188 @@
 const express = require("express");
-const { User, Block, Datetime } = require("../models"); //DB 가져오기
+const { User, Block, Datetime, Code, Keyword } = require("../models"); //DB 가져오기
 const { isLoggedIn } = require("./middlewares");
 const router = express.Router();
 const moment = require("moment");
+const { Op, UUIDV4 } = require("sequelize");
 
+
+//POST /insertday
+router.post("/insertday", isLoggedIn, async (req, res, next) => {
+  try {
+    const curDate = req.body.curDate;
+    const keyword = req.body.keyword;
+    const isFinished = req.body.isFinished;
+    const code = req.body.code;
+
+    // 날짜 아이디.DatetimeId
+    const dateInfo = await Datetime.findOne({    
+      where : { fullDate : curDate},
+      attributes : ["id"]
+    });
+
+    console.log('========?dateInfo',dateInfo)
+
+     // Code 아이디 전체 가지고 오기 CodeName
+    const codes = await Code.findAll({
+      attributes: ['name']
+    }); 
+
+
+    // 하루 6블록 제작 ================ 
+    const createBlock = async(codename) => {
+      await Block.create({
+        isFinished : "N",
+        userId : req.user.userid,
+        DatetimeId : dateInfo.id,
+        CodeName : codename,
+        // KeywordId : keywordId
+      });
+    };//createBlock
+
+    const dayBlock = await Block.findAll({
+      where : { 
+        userId : req.user.userid,
+        DateTimeId : dateInfo.id,
+      },
+      paranoid : false, 
+    });
+
+    if(dayBlock.length === 0){
+      for(let i = 0; i < codes.length; i++){
+        createBlock(codes[i].name);
+      }
+    }
+
+
+    //키워드가 기존에 있는 경우 KeywordId
+    const keywordInfo = await Keyword.findOne({   
+      where: {
+        keyword: keyword,
+        userId: req.user.userid,
+      },
+      paranoid : false,           //deletedAt 조건 무시하고 검색.
+      attributes: ['id'],
+    });
+    
+    const createKeyword = async() => {
+      const newKeyword = await Keyword.create({
+        keyword : keyword,
+        userId : req.user.userid
+      });
+      return newKeyword.id;
+    }
+
+    //업데이트======
+
+    const updateBlock = async(codename,keywordId) => {
+      await Block.update({
+        KeywordId : keywordId,
+        isFinished : isFinished
+      },
+      {
+        where : {
+          userId : req.user.userid,
+          DateTimeId : dateInfo.id,
+          Codename : codename
+        },
+        paranoid : false,
+        
+      })
+    };//updateBlock
+
+
+    if(keywordInfo){ 
+      //기존에 있는 키워드
+      updateBlock(code,keywordInfo.id)
+    }else{
+      //새로 만드는 키워드
+      const keyId = await createKeyword();
+      updateBlock(code,keyId);
+    }
+
+    res.status(200).send('ok');
+
+
+  }catch(err){
+    console.error(err);
+    next(err);
+  }
+});
 
 // POST /day 일 정보 
 router.post("/day", isLoggedIn, async (req, res, next) => {
   try {
-    let returnData = [];
-    const curDate = req.body.curDate; //지금 입력한 날짜
-    const m = moment(curDate);
-  
-    
-    const dateSeqObj = await Datetime.findOne({
-      where: {
-        dateTimeId: curDate,
-        userId : req.user.userid,
-      },
-      attributes: {
-        exclude: ["updatedAt", "createdAt"],
-      },
+    const curDate = req.body.curDate;
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = (today.getMonth() + 1) >= 10 ? (today.getMonth() + 1) : '0'+ (today.getMonth() + 1) ;
+    const day = (today.getDate()) >= 10 ? today.getDate() : '0' + today.getDate();
+
+    console.log('curDate',curDate)
+    console.log('${year}-${month}-${day}',`${year}-${month}-${day}`);
+
+    // 날짜 아이디.DatetimeId
+    const dateInfo = await Datetime.findOne({    
+      where : { fullDate : curDate ? curDate : `${year}-${month}-${day}`},
+      attributes : ["id"]
     });
     
-    const dateSeq = dateSeqObj.Datetime;  // dateSeq : []
+    // Code 아이디 전체 가지고 오기 CodeName
+    const codes = await Code.findAll({
+      attributes: ['name']
+    }); 
     
-    // const [block, created]  = await Block.findOrCreate({ 
-    //   where: {
-    //     dayId: dateSeq,
-    //     userid : req.user.id, //middleware 에서 가져옴
-    //   },
-    //   defaults : {  //없을 시 기본적으로 작동
-        
-    //   }
-    // });
+    const dayBlock = await Block.findAll({
+      // raw : true,
+      where : { 
+        userId : req.user.userid,
+        DateTimeId : dateInfo.id,
+      },
+      paranoid : false, 
+      include : [{
+        model : Keyword,
+        attributes: ["keyword"]
+      },{
+        model : Datetime,
+        attributes : ["fullDate"]
+      },{
+        model : Code,
+        attributes : ["desc1","name"]
+      }]
+    });
+    
+    console.log('dayBlock',dayBlock)
 
-    // if(!created){ //있을 시 작동
+    const result = {};
 
-    // }
+    result.type = "일간";
+    result.curDate = curDate ? curDate : `${year}-${month}-${day}`;
+    result.blockData = [];
 
-    // const dateArr = await Block.findAll({
-    //   where: {
-    //     dayId: dateSeq,
-    //     userid : req.user.id, //middleware 에서 가져옴
-    //   },
-    //   attributes: {
-    //     exclude: ["updatedAt", "createdAt"],
-    //     include : [
-    //       model : 
-    //     ]
-    //   },
-    // });
 
-    if(dateArr){
-
+    if(dayBlock.length === 0){
+      for(let i = 0; i < codes.length; i++){
+        const obj = {
+          isFinished : 'N',
+          Datetime : {
+            fullDate :  curDate ? curDate : `${year}-${month}-${day}`,
+          },
+          Keyword : {
+            keyword : '',
+          },
+          CodeName : codes[i].name
+        }
+        result.blockData.push(obj)
+      }
+      console.log("=1111111")
+      return res.status(200).send(result);
+    }else{
+      result.blockData = dayBlock;      
+      console.log("=222222")
+      return res.status(200).send(result);
     }
-    returnData = [
-      ...dateArr,
 
-    ]
 
-    // [
-    //   {date : '2023-09-09', code : 'm1' , keyword : '운동' ,isFinished : 'Y'},
-    //   {date : '2023-09-09', code : 'm2' , keyword : '운동' ,isFinished : 'Y'},
-    //   {date : '2023-09-09', code : 'a1' , keyword : '운동' ,isFinished : 'Y'},
-    //   {date : '2023-09-09', code : 'a2' , keyword : '운동' ,isFinished : 'Y'},
-    //   {date : '2023-09-09', code : 'd1' , keyword : '운동' ,isFinished : 'Y'},
-    //   {date : '2023-09-09', code : 'd2' , keyword : '운동' ,isFinished : 'Y'},
-    // ]
-
-    return res.status(200).send(returnData);
 
     
   } catch (err) {

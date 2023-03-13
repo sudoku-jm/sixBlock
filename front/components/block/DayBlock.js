@@ -1,29 +1,27 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import datetime from "../../../back/models/datetime";
 import { DayBlockContainerEl } from "../../style/BlockStyle";
 import Day from "./Day";
 
 const DayBlock = () => {
-  const { dayBlock } = useSelector((state) => state.block);
-  // console.log("dayBlock", dayBlock);
+  const { dayBlock , curDate} = useSelector((state) => state.block);
 
   return (
-    <>
-      {dayBlock &&
-        dayBlock.map((dayBlocks) => {
-          const { type, blockData } = dayBlocks;
-          return (
-            <DayBlockContainerEl key={type}>
-              <h3>{type}</h3>
-              <div>
-                {blockData.map((day) => {
-                  return <Day key={day.seq} day={day} dayType={type} />;
-                })}
-              </div>
-            </DayBlockContainerEl>
-          );
-        })}
-    </>
+    <DayBlockContainerEl>
+      <h3>일간 {curDate}</h3>
+      <div>
+      {
+      dayBlock.map((day , idx) => 
+        {
+          return <Day key={day.id ? day.id : idx} day={day}/>
+        }
+      )
+      }
+
+
+      </div>
+    </DayBlockContainerEl>
   );
 };
 

@@ -18,7 +18,6 @@ const Blocks = () => {
   //오늘 날짜
   const { curDate, dateArr } = useSelector((state) => state.block);
   const dispatch = useDispatch();
-
     //날짜 팝업
   const [isPopOpen, setIsPopOpen] = useState(false);
   
@@ -72,13 +71,13 @@ const Blocks = () => {
               selectList={["일간", "주간", "월간"]}
               onChange={selectType}
             />
-            {/* <div className="title_icon">
-              <TiPlus onClick={() => setIsKeywordPopOpen((prev) => !prev)} />
+            <div className="title_icon">
+              {/* <TiPlus onClick={() => setIsKeywordPopOpen((prev) => !prev)} /> */}
+              {/* {isKeywordPopOpen && <KeywordModal />} */}
 
               {type !== "월간" && (
                 <TiCalendar onClick={() => setIsPopOpen((prev) => !prev)} />
               )}
-              {isKeywordPopOpen && <KeywordModal />}
               {isPopOpen && (
                 <DateSelect
                   date={curDate}
@@ -86,7 +85,7 @@ const Blocks = () => {
                   setIsPopOpen={setIsPopOpen}
                 />
               )}
-            </div> */}
+            </div>
           </SelectTitleEl>
           <DayBlock />
           {/* {type === "일간" ? (
