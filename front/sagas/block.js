@@ -7,10 +7,12 @@ import {
   LOAD_DAY_BLOCK_FAILURE,
   LOAD_DAY_BLOCK_REQUEST,
   LOAD_DAY_BLOCK_SUCCESS,
+  LOAD_WEEK_BLOCK_FAILURE,
+  LOAD_WEEK_BLOCK_REQUEST,
+  LOAD_WEEK_BLOCK_SUCCESS,
 } from "../reducers/block";
 
-//===============일 블록
-//일 블록 불러오기
+//===============일 블록 조회
 function loadDayBlockAPI(data) {
   return axios.post(`/block/day`, data);
 }
@@ -30,8 +32,27 @@ function* loadDayBlock(action) {
   }
 }
 
-//===============일 블록
-//일 블록 불러오기
+//===============주 블록 조회
+function loadWeekBlockAPI(data) {
+  return axios.post(`/block/week`, data);
+}
+function* loadWeekBlock() {
+  try {
+    const result = yield call(loadWeekBlockAPI, action.data);
+    console.log("loadWeekBlockAPI result",result)
+    yield put({
+      type: LOAD_WEEK_BLOCK_SUCCESS,
+      // data : result.data,
+    });
+  } catch (err) {
+    yield put({
+      type: LOAD_WEEK_BLOCK_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+//===============일 블록 등록
 function insertDayBlockAPI(data) {
   return axios.post(`/block/insertday`, data);
 }
@@ -51,13 +72,19 @@ function* insertDayBlock(action) {
 }
 
 
+
+
 function* watchInsertDayBlock() {
   yield takeLatest(INSERT_DAY_BLOCK_REQUEST, insertDayBlock);
 }
 function* watchLoadDayBlock() {
   yield takeLatest(LOAD_DAY_BLOCK_REQUEST, loadDayBlock);
 }
+function* watchLoadWeekBlock() {
+  yield takeLatest(LOAD_WEEK_BLOCK_REQUEST, loadWeekBlock);
+}
 export default function* blockSaga() {
   yield all([fork(watchInsertDayBlock)]);
   yield all([fork(watchLoadDayBlock)]);
+  yield all([fork(watchLoadWeekBlock)]);
 }

@@ -3,9 +3,9 @@ import { TiTick } from "react-icons/ti";
 import { useSelector } from "react-redux";
 import { WeekBlockContainerEl } from "../../style/BlockStyle";
 import KeywordModal from "./KeywordModal";
-
+import useChangeWeekName from "../../hooks/useChangeWeekName";
 const WeekBlock = () => {
-  const { weekBlock } = useSelector((state) => state.block);
+  const { weekBlock,curDate } = useSelector((state) => state.block);
   console.log("weekBlock", weekBlock);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,6 +16,7 @@ const WeekBlock = () => {
 
   return (
     <WeekBlockContainerEl>
+      <h3>주간 {curDate}</h3>
       <div className="week_title">
         <ul>
           <li>Morning</li>
@@ -23,47 +24,31 @@ const WeekBlock = () => {
           <li>Dinner</li>
         </ul>
       </div>
+      
       <div className="week_content">
-        {weekBlock &&
-          weekBlock.map((week) => {
-            const { day, date, weekData } = week;
-
+        {/* {
+          weekBlock.map((w) => {
             return (
-              <div className="week_content_each" key={date}>
-                <h3>{day.substring(0, 3)}</h3>
+              <div className="week_content_each" key={w.week}>
+                <h3>{useChangeWeekName(w.week)}</h3>
                 <ul>
-                  {weekData.map((day) => {
-                    const { type, blockData } = day;
-                    return blockData.map((block) => {
-                      const { seq,  content, isFinished, } =
-                        block;
+                  {
+                    w.blocks.map((day, idx) => {
                       return (
-                        <li
-                          key={seq}
-                          onClick={() => {
-                            setBlockData(block);
-                            openKeywordModal();
-                          }}
-                          className={isFinished ? "finished_block" : ""}
-                        >
-                          {isFinished && <TiTick className="finished_icon" />}
-                          {content !== "" ? (
-                            <span className="dotdot active_text">{content}</span>
-                          ) : (
-                            <span className="dotdot dimmed_text">{type}</span>
-                          )}
+                        <li key={day.id}>
+                          <span>{day.keyword}</span>
                         </li>
-                      );
-                    });
-                  })}
+                      )
+                    })
+                  }
                 </ul>
               </div>
             );
-          })}
+          })} */}
       </div>
-      {isModalOpen && (
+      {/* {isModalOpen && (
         <KeywordModal setIsModalOpen={setIsModalOpen} blockData={blockData} />
-      )}
+      )} */}
     </WeekBlockContainerEl>
   );
 };

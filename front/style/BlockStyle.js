@@ -348,6 +348,10 @@ export const CalendarContEl = styled.div`
 `;
 
 export const WeekBlockContainerEl = styled.div`
+  h3 {
+    font-size: 17px;
+    margin: 10px 0 15px;
+  }
   .week_title {
     ul {
       display: flex;

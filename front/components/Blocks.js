@@ -9,11 +9,9 @@ import DateSelect from "../components/input/DateSelect";
 import { SelectTitleEl } from "../style/BlockStyle";
 import KeywordModal from "../components/block/KeywordModal";
 import moment from "moment";
-import {
-  LOAD_DAY_BLOCK_REQUEST,
-  LOAD_MONTH_BLOCK_REQUEST,
-  LOAD_WEEK_BLOCK_REQUEST,
-} from "../reducers/block";
+import { LOAD_DAY_BLOCK_REQUEST,  LOAD_MONTH_BLOCK_REQUEST,  LOAD_WEEK_BLOCK_REQUEST,} from "../reducers/block";
+
+
 const Blocks = () => {
   const { user } = useSelector((state) => state.user);
   //오늘 날짜
@@ -33,65 +31,52 @@ const Blocks = () => {
     if (user && user.userid) {
       getBlockData();
     }
-  }, [type, user && user.userid]);
+  }, [type,user && user.userid]);
 
   useEffect(() => {
     if(getData){
-      console.log('dateValue',dateValue)
-      const date = moment(dateValue).format("YYYY-MM-DD")
-      if (type === "일간") {
-          dispatch({
-            type: LOAD_DAY_BLOCK_REQUEST,
-            data: {
-              curDate: date
-            },
-          });
-      }
-
+      getLoadBlockRequest(type,dateValue);
       setGetData(false);
     }
 
-  },[dateValue])
+  },[dateValue]);
+
+  const getLoadBlockRequest = (type,dateValue) => {
+    switch(type){
+      case "일간" : 
+        dispatch({
+          type: LOAD_DAY_BLOCK_REQUEST,
+          data: {
+            curDate: moment(dateValue).format("YYYY-MM-DD"),
+          },
+        });
+        break;
+      case "주간":
+        dispatch({
+          type: LOAD_WEEK_BLOCK_REQUEST,
+          data: {
+            curDate: moment(dateValue).format("YYYY-MM-DD"),
+          },
+        });
+        break;
+      case "월간":
+        dispatch({
+          type: LOAD_MONTH_BLOCK_REQUEST,
+          data: {
+            curDate: dateValue,
+          },
+        });
+        break;
+    }
+  };
+  
 
   const onDateClick = useCallback(() =>{
     setGetData(true);
   },[])
 
-  // const onDateSelect = useCallback(() => {
-  //   console.log('onDateSelect',onDateSelect)
-  //   if (type === "일간") {
-  //     dispatch({
-  //       type: LOAD_DAY_BLOCK_REQUEST,
-  //       data: {
-  //         curDate: moment(dateValue).format("YYYY-MM-DD"),
-  //       },
-  //     });
-  //   }
-  // },[]);
-
   const getBlockData = useCallback(() => {
-    if (type === "일간") {
-      dispatch({
-        type: LOAD_DAY_BLOCK_REQUEST,
-        data: {
-          curDate: moment(dateValue).format("YYYY-MM-DD"),
-        },
-      });
-    } else if (type === "주간") {
-      dispatch({
-        type: LOAD_WEEK_BLOCK_REQUEST,
-        data: {
-          curDate: dateValue,
-        },
-      });
-    } else if (type === "월간") {
-      dispatch({
-        type: LOAD_MONTH_BLOCK_REQUEST,
-        data: {
-          curDate: dateValue,
-        },
-      });
-    }
+    getLoadBlockRequest(type,dateValue);
   }, [type]);
 
   const selectType = useCallback((typeValue) => {
@@ -126,14 +111,13 @@ const Blocks = () => {
               )}
             </div>
           </SelectTitleEl>
-          <DayBlock />
-          {/* {type === "일간" ? (
+          {type === "일간" ? (
             <DayBlock />
           ) : type === "주간" ? (
             <WeekBLock />
           ) : (
             <MonthBlock />
-          )} */}
+          )} 
     </>
   );
 };

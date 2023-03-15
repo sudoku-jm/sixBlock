@@ -18,8 +18,6 @@ const DayBlock = () => {
         }
       )
       }
-
-
       </div>
     </DayBlockContainerEl>
   );

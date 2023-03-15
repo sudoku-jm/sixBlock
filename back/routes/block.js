@@ -1,12 +1,10 @@
 const express = require("express");
-const { User, Block, Datetime, Code, Keyword, Sequelize } = require("../models"); //DB 가져오기
+const { Block, Datetime, Code, Keyword, Sequelize } = require("../models"); //DB 가져오기
 const { isLoggedIn } = require("./middlewares");
 const router = express.Router();
-const moment = require("moment");
-const { Op, UUIDV4 } = require("sequelize");
 
 
-//POST /insertday
+//POST DAY블록 추가 /insertday
 router.post("/insertday", isLoggedIn, async (req, res, next) => {
   try {
     const curDate = req.body.curDate;
@@ -20,12 +18,10 @@ router.post("/insertday", isLoggedIn, async (req, res, next) => {
       attributes : ["id"]
     });
 
-
      // Code 아이디 전체 가지고 오기 CodeName
     const codes = await Code.findAll({
       attributes: ['name']
     }); 
-
 
     // 하루 6블록 제작 ================ 
     const createBlock = async(codename) => {
@@ -34,7 +30,6 @@ router.post("/insertday", isLoggedIn, async (req, res, next) => {
         userId : req.user.userid,
         DatetimeId : dateInfo.id,
         CodeName : codename,
-        // KeywordId : keywordId
       });
     };//createBlock
 
@@ -199,6 +194,67 @@ router.post("/day", isLoggedIn, async (req, res, next) => {
       return res.status(200).send(result);
     }
 
+  } catch (err) {
+    console.error(err);
+    next(err);
+  }
+
+});
+
+
+
+
+// POST /week 일 정보 
+router.post("/week", isLoggedIn, async (req, res, next) => {
+  try {
+    const curDate = req.body.curDate;
+    const result = {};
+    
+    //dateTimes 모델 : 해당 일자의 weekId, (year, month, week)가 같은 fullDate와, id를 가지고온다.(7개) 배열에 저장.
+    const currentDate = await Datetime.findOne({    
+      where : { fullDate : curDate ? curDate : `${year}-${month}-${day}`},
+      attributes : ["weekId"]
+    });
+
+    const dateWeek = await Datetime.findAll({
+      where : { weekid : currentDate.weekId },
+      attributes : ["id","day","fullDate"] 
+    }); 
+
+    //배열 for문을 돌려 하루치 block을 가지고 온다. (datetimeid 1개당 block 6개씩)
+    //block모델 : DatetimeId를 가지고 모든 데이터를 가지고 온다.
+    const blocks = await Promise.all(dateWeek.map(async (date) => {
+      const block = await Block.findAll({
+        where: { 
+          userId : req.user.userid,
+          datetimeId: date.id 
+        },
+        paranoid : false, 
+        attributes : {
+          exclude : ["KeywordId","DatetimeId","b_delYn","deletedAt","createdAt"],
+        },
+        include : [{
+          model : Keyword,
+          attributes: ["keyword"]
+        },{
+          model : Datetime,
+          attributes : ["fullDate"]
+        },{ 
+          model : Code,
+          attributes : ["desc1","name"]
+        }]
+      });
+
+      return { date, block };
+    }));
+
+    console.log("blocks?????",blocks)
+
+
+    //block이 없다면 가라데이터를 내려준다
+    
+    //block이 있다면 해당데이터를 내려준다.
+    console.log(curDate);
   } catch (err) {
     console.error(err);
     next(err);
