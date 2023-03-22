@@ -7,6 +7,9 @@ import {
   LOAD_DAY_BLOCK_FAILURE,
   LOAD_DAY_BLOCK_REQUEST,
   LOAD_DAY_BLOCK_SUCCESS,
+  LOAD_MONTH_BLOCK_FAILURE,
+  LOAD_MONTH_BLOCK_REQUEST,
+  LOAD_MONTH_BLOCK_SUCCESS,
   LOAD_WEEK_BLOCK_FAILURE,
   LOAD_WEEK_BLOCK_REQUEST,
   LOAD_WEEK_BLOCK_SUCCESS,
@@ -36,17 +39,36 @@ function* loadDayBlock(action) {
 function loadWeekBlockAPI(data) {
   return axios.post(`/block/week`, data);
 }
-function* loadWeekBlock() {
+function* loadWeekBlock(action) {
   try {
     const result = yield call(loadWeekBlockAPI, action.data);
     console.log("loadWeekBlockAPI result",result)
     yield put({
       type: LOAD_WEEK_BLOCK_SUCCESS,
-      // data : result.data,
+      data : result.data,
     });
   } catch (err) {
     yield put({
       type: LOAD_WEEK_BLOCK_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+//===============월 블록 조회
+function loadMonyhBlockAPI(data) {
+  return axios.post(`/block/month`, data);
+}
+function* loadMonthBlock(action) {
+  try {
+    // const result = yield call(loadMonyhBlockAPI, action.data);
+    // console.log("loadMonyhBlockAPI result",result)
+    yield put({
+      type: LOAD_MONTH_BLOCK_SUCCESS,
+      // data : result.data,
+    });
+  } catch (err) {
+    yield put({
+      type: LOAD_MONTH_BLOCK_FAILURE,
       error: err.response.data,
     });
   }
@@ -83,8 +105,12 @@ function* watchLoadDayBlock() {
 function* watchLoadWeekBlock() {
   yield takeLatest(LOAD_WEEK_BLOCK_REQUEST, loadWeekBlock);
 }
+function* watchLoadMonthBlock() {
+  yield takeLatest(LOAD_MONTH_BLOCK_REQUEST, loadMonthBlock);
+}
 export default function* blockSaga() {
   yield all([fork(watchInsertDayBlock)]);
   yield all([fork(watchLoadDayBlock)]);
   yield all([fork(watchLoadWeekBlock)]);
+  yield all([fork(watchLoadMonthBlock)]);
 }

@@ -38,7 +38,7 @@ const initialState = {
   curDate: "",
 };
 
-//dayBlock
+//dayBlock 더미데이터
 // const dummyDayBlock = {
 //   type : "일간",
 //   curDate : "2023-03-12",
@@ -48,99 +48,125 @@ const initialState = {
 
 // };
 
-//weekBlock
-const dummyWeekBlock = {
-  type : "주간",
-  curDate : "2023-03-12",
-  blockData : [
-    {
-      week:"1",
-      blocks:[
-        { id : 1, isFinished : 'N',  date : '2023-03-12', week:"1", keyword : '키워드1', code : 'm1'},
-        { id : 2, isFinished : 'N',  date : '2023-03-12', week:"1", keyword : '키워드2', code : 'm2'},
-        { id : 3, isFinished : 'N',  date : '2023-03-12', week:"1", keyword : '키워드3', code : 'a1'},
-        { id : 4, isFinished : 'N',  date : '2023-03-12', week:"1", keyword : '키워드4', code : 'a2'},
-        { id : 5, isFinished : 'N',  date : '2023-03-12', week:"1", keyword : '키워드5', code : 'd1'},
-        { id : 6, isFinished : 'N',  date : '2023-03-12', week:"1", keyword : '키워드6', code : 'd2'},
-      ]
-    },
-    {
-      week:"2",
-      blocks:[
-        { id : 7, isFinished : 'N',  date : '2023-03-13', week:"2", keyword : '키워드1', code : 'm1'},
-        { id : 8, isFinished : 'N',  date : '2023-03-13', week:"2", keyword : '키워드2', code : 'm2'},
-        { id : 9, isFinished : 'N',  date : '2023-03-13', week:"2", keyword : '키워드3', code : 'a1'},
-        { id : 10, isFinished : 'N',  date : '2023-03-13', week:"2", keyword : '키워드4', code : 'a2'},
-        { id : 11, isFinished : 'N',  date : '2023-03-13', week:"2", keyword : '키워드5', code : 'd1'},
-        { id : 12, isFinished : 'N',  date : '2023-03-13', week:"2", keyword : '키워드6', code : 'd2'},
-      ]
-    },
-    {
-      week:"3",
-      blocks:[
-        { id : 13, isFinished : 'N',  date : '2023-03-14', week:"3", keyword : '키워드1', code : 'm1'},
-    { id : 14, isFinished : 'N',  date : '2023-03-14', week:"3", keyword : '키워드2', code : 'm2'},
-    { id : 15, isFinished : 'N',  date : '2023-03-14', week:"3", keyword : '키워드3', code : 'a1'},
-    { id : 16, isFinished : 'N',  date : '2023-03-14', week:"3", keyword : '키워드4', code : 'a2'},
-    { id : 17, isFinished : 'N',  date : '2023-03-14', week:"3", keyword : '키워드5', code : 'd1'},
-    { id : 18, isFinished : 'N',  date : '2023-03-14', week:"3", keyword : '키워드6', code : 'd2'},
-      ]
-    },
-    {
-      week:"4",
-      blocks:[
+//weekBlock 더미데이터
+// const dummyWeekBlock = {
+//   type : "주간",
+//   curDate : "2023-03-12",
+//   blockData : [
+//     {
+//       week:"1",
+//       blocks:[
+//         { id : 1, isFinished : 'N',  date : '2023-03-12', week:"1", keyword : '키워드1', code : 'm1'},
+//         { id : 2, isFinished : 'N',  date : '2023-03-12', week:"1", keyword : '키워드2', code : 'm2'},
+//         { id : 3, isFinished : 'N',  date : '2023-03-12', week:"1", keyword : '키워드3', code : 'a1'},
+//         { id : 4, isFinished : 'N',  date : '2023-03-12', week:"1", keyword : '키워드4', code : 'a2'},
+//         { id : 5, isFinished : 'N',  date : '2023-03-12', week:"1", keyword : '키워드5', code : 'd1'},
+//         { id : 6, isFinished : 'N',  date : '2023-03-12', week:"1", keyword : '키워드6', code : 'd2'},
+//       ]
+//     },
+//     {
+//       week:"2",
+//       blocks:[
+//         { id : 7, isFinished : 'N',  date : '2023-03-13', week:"2", keyword : '키워드1', code : 'm1'},
+//         { id : 8, isFinished : 'N',  date : '2023-03-13', week:"2", keyword : '키워드2', code : 'm2'},
+//         { id : 9, isFinished : 'N',  date : '2023-03-13', week:"2", keyword : '키워드3', code : 'a1'},
+//         { id : 10, isFinished : 'N',  date : '2023-03-13', week:"2", keyword : '키워드4', code : 'a2'},
+//         { id : 11, isFinished : 'N',  date : '2023-03-13', week:"2", keyword : '키워드5', code : 'd1'},
+//         { id : 12, isFinished : 'N',  date : '2023-03-13', week:"2", keyword : '키워드6', code : 'd2'},
+//       ]
+//     },
+//     {
+//       week:"3",
+//       blocks:[
+//         { id : 13, isFinished : 'N',  date : '2023-03-14', week:"3", keyword : '키워드1', code : 'm1'},
+//     { id : 14, isFinished : 'N',  date : '2023-03-14', week:"3", keyword : '키워드2', code : 'm2'},
+//     { id : 15, isFinished : 'N',  date : '2023-03-14', week:"3", keyword : '키워드3', code : 'a1'},
+//     { id : 16, isFinished : 'N',  date : '2023-03-14', week:"3", keyword : '키워드4', code : 'a2'},
+//     { id : 17, isFinished : 'N',  date : '2023-03-14', week:"3", keyword : '키워드5', code : 'd1'},
+//     { id : 18, isFinished : 'N',  date : '2023-03-14', week:"3", keyword : '키워드6', code : 'd2'},
+//       ]
+//     },
+//     {
+//       week:"4",
+//       blocks:[
        
-    { id : 19, isFinished : 'N',  date : '2023-03-15', week:"4", keyword : '키워드1', code : 'm1'},
-    { id : 20, isFinished : 'N',  date : '2023-03-15', week:"4", keyword : '키워드2', code : 'm2'},
-    { id : 21, isFinished : 'N',  date : '2023-03-15', week:"4", keyword : '키워드3', code : 'a1'},
-    { id : 22, isFinished : 'N',  date : '2023-03-15', week:"4", keyword : '키워드4', code : 'a2'},
-    { id : 23, isFinished : 'N',  date : '2023-03-15', week:"4", keyword : '키워드5', code : 'd1'},
-    { id : 24, isFinished : 'N',  date : '2023-03-15', week:"4", keyword : '키워드6', code : 'd2'},
-      ]
-    },
-    {
-      week:"5",
-      blocks:[
-        { id : 25, isFinished : 'N',  date : '2023-03-16', week:"5", keyword : '키워드1', code : 'm1'},
-        { id : 26, isFinished : 'N',  date : '2023-03-16', week:"5", keyword : '키워드2', code : 'm2'},
-        { id : 27, isFinished : 'N',  date : '2023-03-16', week:"5", keyword : '키워드3', code : 'a1'},
-        { id : 28, isFinished : 'N',  date : '2023-03-16', week:"5", keyword : '키워드4', code : 'a2'},
-        { id : 29, isFinished : 'N',  date : '2023-03-16', week:"5", keyword : '키워드5', code : 'd1'},
-        { id : 30, isFinished : 'N',  date : '2023-03-16', week:"5", keyword : '키워드6', code : 'd2'},
+//     { id : 19, isFinished : 'N',  date : '2023-03-15', week:"4", keyword : '키워드1', code : 'm1'},
+//     { id : 20, isFinished : 'N',  date : '2023-03-15', week:"4", keyword : '키워드2', code : 'm2'},
+//     { id : 21, isFinished : 'N',  date : '2023-03-15', week:"4", keyword : '키워드3', code : 'a1'},
+//     { id : 22, isFinished : 'N',  date : '2023-03-15', week:"4", keyword : '키워드4', code : 'a2'},
+//     { id : 23, isFinished : 'N',  date : '2023-03-15', week:"4", keyword : '키워드5', code : 'd1'},
+//     { id : 24, isFinished : 'N',  date : '2023-03-15', week:"4", keyword : '키워드6', code : 'd2'},
+//       ]
+//     },
+//     {
+//       week:"5",
+//       blocks:[
+//         { id : 25, isFinished : 'N',  date : '2023-03-16', week:"5", keyword : '키워드1', code : 'm1'},
+//         { id : 26, isFinished : 'N',  date : '2023-03-16', week:"5", keyword : '키워드2', code : 'm2'},
+//         { id : 27, isFinished : 'N',  date : '2023-03-16', week:"5", keyword : '키워드3', code : 'a1'},
+//         { id : 28, isFinished : 'N',  date : '2023-03-16', week:"5", keyword : '키워드4', code : 'a2'},
+//         { id : 29, isFinished : 'N',  date : '2023-03-16', week:"5", keyword : '키워드5', code : 'd1'},
+//         { id : 30, isFinished : 'N',  date : '2023-03-16', week:"5", keyword : '키워드6', code : 'd2'},
     
+//       ]
+//     },
+//     {
+//       week:"6",
+//       blocks:[
+//         { id : 31, isFinished : 'N',  date : '2023-03-17', week:"6", keyword : '키워드1', code : 'm1'},
+//         { id : 32, isFinished : 'N',  date : '2023-03-17', week:"6", keyword : '키워드2', code : 'm2'},
+//         { id : 33, isFinished : 'N',  date : '2023-03-17', week:"6", keyword : '키워드3', code : 'a1'},
+//         { id : 34, isFinished : 'N',  date : '2023-03-17', week:"6", keyword : '키워드4', code : 'a2'},
+//         { id : 35, isFinished : 'N',  date : '2023-03-17', week:"6", keyword : '키워드5', code : 'd1'},
+//         { id : 36, isFinished : 'N',  date : '2023-03-17', week:"6", keyword : '키워드6', code : 'd2'},
+//       ]
+//     },
+//     {
+//       week:"7",
+//       blocks:[
+//         { id : 37, isFinished : 'N',  date : '2023-03-18', week:"7", keyword : '키워드1', code : 'm1'},
+//     { id : 38, isFinished : 'N',  date : '2023-03-18', week:"7", keyword : '키워드2', code : 'm2'},
+//     { id : 39, isFinished : 'N',  date : '2023-03-18', week:"7", keyword : '키워드3', code : 'a1'},
+//     { id : 40, isFinished : 'N',  date : '2023-03-18', week:"7", keyword : '키워드4', code : 'a2'},
+//     { id : 41, isFinished : 'N',  date : '2023-03-18', week:"7", keyword : '키워드5', code : 'd1'},
+//     { id : 42, isFinished : 'N',  date : '2023-03-18', week:"7", keyword : '키워드6', code : 'd2'},
+//       ]
+//     },
+//   ],
+
+// };
+
+
+// monthBlock 더미데이터
+const dummyMonthBlock = {
+  type : "월간",
+  curDate : "2023-03-22",
+  blockData : [
+    { 
+      date : '2023-03-22',
+      blocks : [
+        { id : 1, code : 'm1', isFinished : 'N'},
+        { id : 2, code : 'm2', isFinished : 'N'},
+        { id : 3, code : 'a1', isFinished : 'N'},
+        { id : 4, code : 'a2', isFinished : 'N'},
+        { id : 5, code : 'd1', isFinished : 'N'},
+        { id : 6, code : 'd2', isFinished : 'N'},
       ]
     },
-    {
-      week:"6",
-      blocks:[
-        { id : 31, isFinished : 'N',  date : '2023-03-17', week:"6", keyword : '키워드1', code : 'm1'},
-        { id : 32, isFinished : 'N',  date : '2023-03-17', week:"6", keyword : '키워드2', code : 'm2'},
-        { id : 33, isFinished : 'N',  date : '2023-03-17', week:"6", keyword : '키워드3', code : 'a1'},
-        { id : 34, isFinished : 'N',  date : '2023-03-17', week:"6", keyword : '키워드4', code : 'a2'},
-        { id : 35, isFinished : 'N',  date : '2023-03-17', week:"6", keyword : '키워드5', code : 'd1'},
-        { id : 36, isFinished : 'N',  date : '2023-03-17', week:"6", keyword : '키워드6', code : 'd2'},
+    { 
+      date : '2023-03-23',
+      blocks : [
+        { id : 7, code : 'm1', isFinished : 'N'},
+        { id : 8, code : 'm2', isFinished : 'N'},
+        { id : 9, code : 'a1', isFinished : 'N'},
+        { id : 10, code : 'a2', isFinished : 'N'},
+        { id : 11, code : 'd1', isFinished : 'N'},
+        { id : 12, code : 'd2', isFinished : 'N'},
       ]
     },
-    {
-      week:"7",
-      blocks:[
-        { id : 37, isFinished : 'N',  date : '2023-03-18', week:"7", keyword : '키워드1', code : 'm1'},
-    { id : 38, isFinished : 'N',  date : '2023-03-18', week:"7", keyword : '키워드2', code : 'm2'},
-    { id : 39, isFinished : 'N',  date : '2023-03-18', week:"7", keyword : '키워드3', code : 'a1'},
-    { id : 40, isFinished : 'N',  date : '2023-03-18', week:"7", keyword : '키워드4', code : 'a2'},
-    { id : 41, isFinished : 'N',  date : '2023-03-18', week:"7", keyword : '키워드5', code : 'd1'},
-    { id : 42, isFinished : 'N',  date : '2023-03-18', week:"7", keyword : '키워드6', code : 'd2'},
-      ]
-    },
-
-    
-
-   
-
   ],
 
 };
-
 
 //일 블록 가져오기
 export const LOAD_DAY_BLOCK_REQUEST = "LOAD_DAY_BLOCK_REQUEST";
@@ -211,7 +237,9 @@ const reducer = (state = initialState, action) => {
       case LOAD_WEEK_BLOCK_SUCCESS:
         draft.getWeekBlockLoading = false;
         draft.getWeekBlockDone = true;
-        draft.weekBlock = dummyWeekBlock.blockData;
+        draft.weekBlock = action.data.blockData;
+        draft.blockType = action.data.type;
+        draft.curDate = action.data.curDate;
         break;
       case LOAD_WEEK_BLOCK_FAILURE:
         draft.getWeekBlockLoading = false;
@@ -227,7 +255,8 @@ const reducer = (state = initialState, action) => {
       case LOAD_MONTH_BLOCK_SUCCESS:
         draft.getMonthBlockLoading = false;
         draft.getMonthBlockDone = true;
-        draft.monthBlock = action.data;
+        draft.monthBlock = dummyMonthBlock.blockData;
+        // draft.monthBlock = action.data;
         break;
       case LOAD_MONTH_BLOCK_FAILURE:
         draft.getMonthBlockLoading = false;

@@ -12,6 +12,9 @@ router.post("/insertday", isLoggedIn, async (req, res, next) => {
     const isFinished = req.body.isFinished;
     const code = req.body.code;
 
+    console.log('code',code)
+
+
     // 날짜 아이디.DatetimeId
     const dateInfo = await Datetime.findOne({    
       where : { fullDate : curDate},
@@ -188,8 +191,13 @@ router.post("/day", isLoggedIn, async (req, res, next) => {
         const order = {m1: 1, m2: 2, a1: 3, a2: 4, d1: 5, d2: 6}
         return order[a.CodeName] - order[b.CodeName]
       })
+
       return res.status(200).send(result);
     }else{
+      dayBlock.sort((a, b) => {
+        const order = {m1: 1, m2: 2, a1: 3, a2: 4, d1: 5, d2: 6}
+        return order[a.CodeName] - order[b.CodeName]
+      })
       result.blockData = dayBlock;      
       return res.status(200).send(result);
     }
@@ -208,7 +216,15 @@ router.post("/day", isLoggedIn, async (req, res, next) => {
 router.post("/week", isLoggedIn, async (req, res, next) => {
   try {
     const curDate = req.body.curDate;
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = (today.getMonth() + 1) >= 10 ? (today.getMonth() + 1) : '0'+ (today.getMonth() + 1) ;
+    const day = (today.getDate()) >= 10 ? today.getDate() : '0' + today.getDate();
+
     const result = {};
+    result.type = "주간";
+    result.curDate = curDate ? curDate : `${year}-${month}-${day}`;
+    result.blockData = [];
     
     //dateTimes 모델 : 해당 일자의 weekId, (year, month, week)가 같은 fullDate와, id를 가지고온다.(7개) 배열에 저장.
     const currentDate = await Datetime.findOne({    
@@ -223,7 +239,7 @@ router.post("/week", isLoggedIn, async (req, res, next) => {
 
     //배열 for문을 돌려 하루치 block을 가지고 온다. (datetimeid 1개당 block 6개씩)
     //block모델 : DatetimeId를 가지고 모든 데이터를 가지고 온다.
-    const blocks = await Promise.all(dateWeek.map(async (date) => {
+    const blocksBeforeObj = await Promise.all(dateWeek.map(async (date) => {
       const block = await Block.findAll({
         where: { 
           userId : req.user.userid,
@@ -231,7 +247,7 @@ router.post("/week", isLoggedIn, async (req, res, next) => {
         },
         paranoid : false, 
         attributes : {
-          exclude : ["KeywordId","DatetimeId","b_delYn","deletedAt","createdAt"],
+          exclude : ["KeywordId","DatetimeId","b_delYn","deletedAt","createdAt","updatedAt","userId"],
         },
         include : [{
           model : Keyword,
@@ -244,17 +260,74 @@ router.post("/week", isLoggedIn, async (req, res, next) => {
           attributes : ["desc1","name"]
         }]
       });
-
-      return { date, block };
+      const data = {
+        day : date.day,
+        date : date.fullDate,
+        blocks : [...block]
+      }
+      return data;
     }));
 
-    console.log("blocks?????",blocks)
+    console.log("blocksBeforeObj?????",blocksBeforeObj.length, blocksBeforeObj)
 
+    const createObj = async() => {
+      const objs = []
+      // Code 아이디 전체 가지고 오기 CodeName
+      const codes = await Code.findAll({
+        attributes: ['name']
+      }); 
 
-    //block이 없다면 가라데이터를 내려준다
+      for(let i = 0; i < codes.length; i++){
+        const obj = {
+          isFinished : 'N',
+          Datetime : {
+            fullDate :  curDate ? curDate : `${year}-${month}-${day}`,
+          },
+          Keyword : {
+            keyword : '',
+          },
+          CodeName : codes[i].name
+        }
+        objs.push(obj);
+      }
+
+      return objs;
+    }
+
+    for(let i = 0; i < blocksBeforeObj.length; i++){
+      const obj = {};
+      const week = blocksBeforeObj[i].day;
+      const date = blocksBeforeObj[i].date;
+      const blocks = blocksBeforeObj[i].blocks;
+      //blocks이 없다면 가라데이터를 내려준다
+      if(blocks.length === 0){
+        obj.week = week;
+        obj.date = date;
+        obj.blocks = await createObj();
+        obj.blocks.sort((a, b) => {
+          const order = {m1: 1, m2: 2, a1: 3, a2: 4, d1: 5, d2: 6}
+          return order[a.CodeName] - order[b.CodeName]
+        })
+        result.blockData.push(obj);
+      }else{
+        //blocks가 있다면 기존 데이터를 내려준다.
+        obj.week = week;
+        obj.date = date;
+        obj.blocks = blocks;
+        obj.blocks.sort((a, b) => {
+          const order = {m1: 1, m2: 2, a1: 3, a2: 4, d1: 5, d2: 6}
+          return order[a.CodeName] - order[b.CodeName]
+        })
+
+        result.blockData.push(obj);
+      }
+    }
     
-    //block이 있다면 해당데이터를 내려준다.
-    console.log(curDate);
+
+
+    console.log("curDate????",curDate);
+    console.log("result????",result);
+    return res.status(200).send(result);
   } catch (err) {
     console.error(err);
     next(err);

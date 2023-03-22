@@ -26,17 +26,21 @@ const WeekBlock = () => {
       </div>
       
       <div className="week_content">
-        {/* {
+        {
           weekBlock.map((w) => {
             return (
               <div className="week_content_each" key={w.week}>
-                <h3>{useChangeWeekName(w.week)}</h3>
+                <h3>
+                  {useChangeWeekName(w.week)}<br/>
+                  <em>{w.date}</em>
+                </h3>
                 <ul>
                   {
-                    w.blocks.map((day, idx) => {
+                    w.blocks?.map((day, idx) => {
+                      const {Keyword, CodeName, Datetime} = day;
                       return (
-                        <li key={day.id}>
-                          <span>{day.keyword}</span>
+                        <li key={day.id ? day.id : idx}>
+                          <span>{Keyword?.keyword}/{CodeName}</span>
                         </li>
                       )
                     })
@@ -44,7 +48,7 @@ const WeekBlock = () => {
                 </ul>
               </div>
             );
-          })} */}
+          })}
       </div>
       {/* {isModalOpen && (
         <KeywordModal setIsModalOpen={setIsModalOpen} blockData={blockData} />

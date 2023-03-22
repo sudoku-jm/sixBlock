@@ -375,13 +375,17 @@ export const WeekBlockContainerEl = styled.div`
       }
     }
     h3 {
-      width: 50px;
+      width: 70px;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      em{
+        font-size:1rem;
+      }
     }
     ul {
-      width: calc(100% - 50px);
+      width: calc(100% - 70px);
       display: flex;
       justify-content: space-between;
 
