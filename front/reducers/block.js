@@ -2,7 +2,7 @@ import produce from "immer";
 
 const initialState = {
   //type
-  blockType : "",
+  blockType : "일간",
   //일 블록 가져오기
   getDayBlockLoading: false,
   getDayBlockDone: false,
@@ -36,6 +36,10 @@ const initialState = {
   ],
   dateArr: [],
   curDate: "",
+
+  changeTypeDatesLoading : false,  //일블록 체인지 
+  changeTypeDatesDone : false,
+  changeTypeDatesError : false,
 };
 
 //dayBlock 더미데이터
@@ -138,35 +142,35 @@ const initialState = {
 
 
 // monthBlock 더미데이터
-const dummyMonthBlock = {
-  type : "월간",
-  curDate : "2023-03-22",
-  blockData : [
-    { 
-      date : '2023-03-22',
-      blocks : [
-        { id : 1, code : 'm1', isFinished : 'N'},
-        { id : 2, code : 'm2', isFinished : 'N'},
-        { id : 3, code : 'a1', isFinished : 'N'},
-        { id : 4, code : 'a2', isFinished : 'N'},
-        { id : 5, code : 'd1', isFinished : 'N'},
-        { id : 6, code : 'd2', isFinished : 'N'},
-      ]
-    },
-    { 
-      date : '2023-03-23',
-      blocks : [
-        { id : 7, code : 'm1', isFinished : 'N'},
-        { id : 8, code : 'm2', isFinished : 'N'},
-        { id : 9, code : 'a1', isFinished : 'N'},
-        { id : 10, code : 'a2', isFinished : 'N'},
-        { id : 11, code : 'd1', isFinished : 'N'},
-        { id : 12, code : 'd2', isFinished : 'N'},
-      ]
-    },
-  ],
+// const dummyMonthBlock = {
+//   type : "월간",
+//   curDate : "2023-03-22",
+//   blockData : [
+//     { 
+//       date : '2023-03-22',
+//       blocks : [
+//         { id : 1, code : 'm1', isFinished : 'N'},
+//         { id : 2, code : 'm2', isFinished : 'N'},
+//         { id : 3, code : 'a1', isFinished : 'N'},
+//         { id : 4, code : 'a2', isFinished : 'N'},
+//         { id : 5, code : 'd1', isFinished : 'N'},
+//         { id : 6, code : 'd2', isFinished : 'N'},
+//       ]
+//     },
+//     { 
+//       date : '2023-03-23',
+//       blocks : [
+//         { id : 7, code : 'm1', isFinished : 'N'},
+//         { id : 8, code : 'm2', isFinished : 'N'},
+//         { id : 9, code : 'a1', isFinished : 'N'},
+//         { id : 10, code : 'a2', isFinished : 'N'},
+//         { id : 11, code : 'd1', isFinished : 'N'},
+//         { id : 12, code : 'd2', isFinished : 'N'},
+//       ]
+//     },
+//   ],
 
-};
+// };
 
 //일 블록 가져오기
 export const LOAD_DAY_BLOCK_REQUEST = "LOAD_DAY_BLOCK_REQUEST";
@@ -190,6 +194,11 @@ export const LOAD_MONTH_BLOCK_FAILURE = "LOAD_MONTH_BLOCK_FAILURE";
 export const MODIFY_DAY_BLOCK_REQUEST = "MODIFY_DAY_BLOCK_REQUEST";
 export const MODIFY_DAY_BLOCK_SUCCESS = "MODIFY_DAY_BLOCK_SUCCESS";
 export const MODIFY_DAY_BLOCK_FAILURE = "MODIFY_DAY_BLOCK_FAILURE";
+
+//일 블록으로 체인지
+export const CHANGE_TYPE_DATE_BLOCK_REQUEST = "CHANGE_TYPE_DATE_BLOCK_REQUEST";
+export const CHANGE_TYPE_DATE_BLOCK_SUCCESS = "CHANGE_TYPE_DATE_BLOCK_SUCCESS";
+export const CHANGE_TYPE_DATE_BLOCK_FAILURE = "CHANGE_TYPE_DATE_BLOCK_FAILURE";
 
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
@@ -215,6 +224,7 @@ const reducer = (state = initialState, action) => {
         draft.getDayBlockLoading = true;
         draft.getDayBlockDone = false;
         draft.getDayBlockError = null;
+        draft.dayBlock = [];
         break;
       case LOAD_DAY_BLOCK_SUCCESS:
         draft.getDayBlockLoading = false;
@@ -233,6 +243,7 @@ const reducer = (state = initialState, action) => {
         draft.getWeekBlockLoading = true;
         draft.getWeekBlockDone = false;
         draft.getWeekBlockError = null;
+        draft.weekBlock = [];
         break;
       case LOAD_WEEK_BLOCK_SUCCESS:
         draft.getWeekBlockLoading = false;
@@ -251,12 +262,16 @@ const reducer = (state = initialState, action) => {
         draft.getMonthBlockLoading = true;
         draft.getMonthBlockDone = false;
         draft.getMonthBlockError = null;
+        draft.monthBlock = [];
         break;
       case LOAD_MONTH_BLOCK_SUCCESS:
         draft.getMonthBlockLoading = false;
         draft.getMonthBlockDone = true;
-        draft.monthBlock = dummyMonthBlock.blockData;
-        // draft.monthBlock = action.data;
+        draft.monthBlock = action.data;
+        draft.blockType = action.data.type;
+        draft.curDate = action.data.curDate;
+        // draft.monthBlock = dummyMonthBlock.blockData;
+        
         break;
       case LOAD_MONTH_BLOCK_FAILURE:
         draft.getMonthBlockLoading = false;
@@ -279,7 +294,23 @@ const reducer = (state = initialState, action) => {
         draft.modifyDayBlockError = false;
         draft.modifyDayBlockError = action.error;
         break;
-
+      //============== 일 블록으로 변경
+      case CHANGE_TYPE_DATE_BLOCK_REQUEST : 
+        draft.changeTypeDatesLoading = true,
+        draft.changeTypeDatesDone = false;
+        draft.changeTypeDatesError = null;
+        break;
+      case CHANGE_TYPE_DATE_BLOCK_SUCCESS : 
+        draft.changeTypeDatesLoading = false,
+        draft.changeTypeDatesDone = true;
+        draft.curDate = action.data.curDate;
+        draft.blockType = action.data.blockType;
+        break;
+      case CHANGE_TYPE_DATE_BLOCK_FAILURE : 
+        draft.changeTypeDatesLoading = false,
+        draft.changeTypeDatesDone = false;
+        draft.changeTypeDatesError = action.error;
+        break;
       default:
         return state;
     }

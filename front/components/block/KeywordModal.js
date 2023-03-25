@@ -6,58 +6,66 @@ import {
   TiCalendar,
 } from "react-icons/ti";
 import { useDispatch, useSelector } from "react-redux";
-import { handleDayBlock } from "../../reducers/block";
+import { LOAD_DAY_BLOCK_REQUEST } from "../../reducers/block";
 import { KeywordModalEl, DimmedBG } from "../../style/BlockStyle";
 import KeywordSelectPop from "./KeywordSelectPop";
 import Checkbox from "../input/Checkbox";
 import DateSelect from "../input/DateSelect";
 import Selectbox from "../input/Selectbox";
-const KeywordModal = ({ type, blockData, setIsModalOpen }) => {
-  console.log("keywordmodal================", type, blockData);
+const KeywordModal = ({ type, curDate, setIsModalOpen }) => {
+  console.log("keywordmodal================", type, curDate);
 
   const dispatch = useDispatch();
 
-  const { blockArr, weekBlock } = useSelector((state) => state.block);
+  const { weekBlock } = useSelector((state) => state.block);
+  useEffect(() => {
+    dispatch({
+      type: LOAD_DAY_BLOCK_REQUEST,
+      data: {
+        curDate: curDate,
+      },
+    });
+  },[curDate])
 
   //input 시 내용 저장
-  const [currentBlock, setCurrentBlock] = useState(
-    type === "month"
-      ? weekBlock
-          .find((d) => d.date === blockData)
-          ?.weekData.find((w) => w.date === blockData)
-          ?.blockData.find((b) => b.date === blockData)
-      : blockData
-  );
+  // const [currentBlock, setCurrentBlock] = useState(
+  //   type === "month"
+  //     ? weekBlock
+  //         .find((d) => d.date === curDate)
+  //         ?.weekData.find((w) => w.date === curDate)
+  //         ?.curDate.find((b) => b.date === curDate)
+  //     : curDate
+  // );
 
-  useEffect(()=>{console.log("curbLOCK", currentBlock)},[currentBlock])
+  // useEffect(()=>{console.log("curbLOCK", currentBlock)},[currentBlock])
   
-  const handleCurrentBlock = useCallback(
-    (e, text, nameType) => {
-      console.log("handlecurrentblock", e, text)
-      if (text) {
-        setCurrentBlock({
-          ...currentBlock,
-          [nameType]: text.replace(/[0-9]/g, ""),
-        });
-      } else {
-        const { name, value, checked } = e.target;
-        setCurrentBlock({
-          ...currentBlock,
-          [name]: name === "isFinished" ? checked : value,
-        });
-      }
-    },
-    [currentBlock]
-  );
+  // const handleCurrentBlock = useCallback(
+  //   (e, text, nameType) => {
+  //     console.log("handlecurrentblock", e, text)
+  //     if (text) {
+  //       setCurrentBlock({
+  //         ...currentBlock,
+  //         [nameType]: text.replace(/[0-9]/g, ""),
+  //       });
+  //     } else {
+  //       const { name, value, checked } = e.target;
+  //       setCurrentBlock({
+  //         ...currentBlock,
+  //         [name]: name === "isFinished" ? checked : value,
+  //       });
+  //     }
+  //   },
+  //   [currentBlock]
+  // );
 
-  const [isDatePopOpen, setIsDatePopOpen] = useState(false);
+  // const [isDatePopOpen, setIsDatePopOpen] = useState(false);
 
-  const [isKeywordPopOpen, setIsKeywordPopOpen] = useState(false);
+  // const [isKeywordPopOpen, setIsKeywordPopOpen] = useState(false);
 
-  const setCurrentBlockAction = useCallback(() => {
-    // dispatch(handleDayBlock(currentBlock));
-    setIsModalOpen(false);
-  }, [currentBlock]);
+  // const setCurrentBlockAction = useCallback(() => {
+  //   // dispatch(handleDayBlock(currentBlock));
+  //   setIsModalOpen(false);
+  // }, [currentBlock]);
 
   return (
     <>
@@ -68,13 +76,12 @@ const KeywordModal = ({ type, blockData, setIsModalOpen }) => {
             <TiTimes />
           </div>
           <div className="modal_title">
-            <h4>DayBlock Plan</h4>
+            <h4>{curDate}</h4>
           </div>
-
+          {/*
           <div className="modal_content">
             <div className="modal_content_each">
               <h5>
-                {/* <TiKeyOutline /> */}
                 Keyword
               </h5>
               <div>
@@ -100,7 +107,6 @@ const KeywordModal = ({ type, blockData, setIsModalOpen }) => {
 
             <div className="modal_content_each">
               <h5>
-                {/* <TiCalendarOutline /> */}
                 Date
               </h5>
               <div>
@@ -150,7 +156,7 @@ const KeywordModal = ({ type, blockData, setIsModalOpen }) => {
               Apply
             </button>
             <button className="btnM btnRound btn-grey">Delete</button>
-          </div>
+          </div> */}
         </div>
       </KeywordModalEl>
     </>

@@ -1,6 +1,8 @@
 import axios from "axios";
 import { all, fork, takeLatest, call, put } from "redux-saga/effects";
 import {
+  CHANGE_TYPE_DATE_BLOCK_REQUEST,
+  CHANGE_TYPE_DATE_BLOCK_SUCCESS,
   INSERT_DAY_BLOCK_FAILURE,
   INSERT_DAY_BLOCK_REQUEST,
   INSERT_DAY_BLOCK_SUCCESS,
@@ -60,11 +62,11 @@ function loadMonyhBlockAPI(data) {
 }
 function* loadMonthBlock(action) {
   try {
-    // const result = yield call(loadMonyhBlockAPI, action.data);
-    // console.log("loadMonyhBlockAPI result",result)
+    const result = yield call(loadMonyhBlockAPI, action.data);
+    console.log("loadMonyhBlockAPI result",result)
     yield put({
       type: LOAD_MONTH_BLOCK_SUCCESS,
-      // data : result.data,
+      data : result.data,
     });
   } catch (err) {
     yield put({
@@ -93,7 +95,24 @@ function* insertDayBlock(action) {
   }
 }
 
-
+//============== 일 블록으로 변경
+function* changeTypeDateBlock(action){
+  try{
+    console.log('action',action)
+    yield put({
+      type: CHANGE_TYPE_DATE_BLOCK_SUCCESS,
+      data : {
+        blockType : action.data.type,
+        curDate : action.data.curDate
+      }
+    });
+  }catch(err){
+    yield put({
+      type: CHANGE_TYPE_DATE_BLOCK_FAILURE,
+      error : err.response.data,
+    });
+  }
+}
 
 
 function* watchInsertDayBlock() {
@@ -108,9 +127,13 @@ function* watchLoadWeekBlock() {
 function* watchLoadMonthBlock() {
   yield takeLatest(LOAD_MONTH_BLOCK_REQUEST, loadMonthBlock);
 }
+function* watchChangeTypeDate() {
+  yield takeLatest(CHANGE_TYPE_DATE_BLOCK_REQUEST, changeTypeDateBlock);
+}
 export default function* blockSaga() {
   yield all([fork(watchInsertDayBlock)]);
   yield all([fork(watchLoadDayBlock)]);
   yield all([fork(watchLoadWeekBlock)]);
   yield all([fork(watchLoadMonthBlock)]);
+  yield all([fork(watchChangeTypeDate)]);
 }

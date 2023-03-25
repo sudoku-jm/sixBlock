@@ -137,7 +137,8 @@ const GlobalStyle = createGlobalStyle`
 const ContainerStyle = styled.section`
   & {
     margin: 0 auto;
-    width: 640px;
+    // width: 640px;
+    width:414px;
   }
   /*body scroll*/
   .scroll-hidden {

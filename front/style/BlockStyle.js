@@ -286,14 +286,46 @@ export const CalendarContEl = styled.div`
       text-decoration: none;
       font-size: 15px;
     }
+    .block_container {
+      margin-top:10px;
+      width:100%;
+      .block_container_inner{
+        display:block;
+        width:100%;
+      }
+      .block {
+        display:inline-block;
+        margin:0 2.5px;
+        width: calc(50% - 5px);
+        height: 5px;
+        text-indent:-999px;
+        &.no{
+          background:var(--color-greyeee);
+        }
+        &.yes{
+          background:var(--color-primary-op9);
+        }
+      }
+    }
     .react-calendar__month-view__weekdays__weekday {
       text-decoration: none;
     }
+    .react-calendar__tile--now {
+      background:var(--color-white);
+      border:1px solid var(--color-primary-op9);
+    }
     .react-calendar__tile--active {
       background: var(--color-primary);
-    }
-    .react-calendar__tile--now {
-      background: var(--color-f0f0f0);
+      &.react-calendar__tile--now {
+        background:var(--color-primary);
+        border:1px solid var(--color-primary-op9);
+        .no{
+          background:var(--color-greyeee);
+        }
+        .yes{
+          background:var(--color-point02);
+        }
+      }
     }
     .react-calendar__tile {
       position: relative;
@@ -307,42 +339,6 @@ export const CalendarContEl = styled.div`
     .react-calendar__navigation button {
       font-size: 25px;
     }
-    .dot_container {
-      position: absolute;
-      content: "";
-      bottom: 10%;
-      left: 50%;
-      transform: translateX(-50%);
-      .dot {
-        width: 5px;
-        height: 5px;
-        background: var(--color-red);
-        border-radius: 50%;
-      }
-      &.block_container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        .block {
-          width: 10px;
-          height: 5px;
-          &:not(.active) {
-            opacity: 0;
-          }
-          margin: 1px;
-          &:nth-child(1),
-          &:nth-child(2) {
-            background-color: var(--color-point01);
-          }
-          &:nth-child(3),
-          &:nth-child(4) {
-            background-color: var(--color-point02);
-          }
-          &:nth-child(5),
-          &:nth-child(6) {
-            background-color: var(--color-point03);
-          }
-        }
-      }
     }
   }
 `;
@@ -451,9 +447,9 @@ export const KeywordModalEl = styled.div`
     }
     .modal_title {
       text-align: center;
-      font-size: 2rem;
+      font-size: 1.6rem;
       padding-bottom: 10px;
-      border-bottom: 3px solid var(--color-primary);
+      border-bottom: 1px solid var(--color-greyeee);
     }
     .modal_content {
       padding: 15px 20px;
@@ -499,8 +495,16 @@ export const MonthBlockContEl = styled.div`
     border: none;
     z-index: 1;
     .react-calendar__tile {
-      padding: 10px 10px 35px;
+      display:flex;
+      flex-direction : column;
+      justify-content:flex-start;
+      align-items:center;
+      padding: 10px 10px;
       margin: 7px 0;
+      abbr{
+        display:block;
+        margin: 0 0 10px 0;
+      }
     }
   }
 `;

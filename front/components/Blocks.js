@@ -15,7 +15,7 @@ import { LOAD_DAY_BLOCK_REQUEST,  LOAD_MONTH_BLOCK_REQUEST,  LOAD_WEEK_BLOCK_REQ
 const Blocks = () => {
   const { user } = useSelector((state) => state.user);
   //오늘 날짜
-  const { curDate, dateArr } = useSelector((state) => state.block);
+  const { curDate, dateArr, blockType , changeTypeDatesDone} = useSelector((state) => state.block);
   const dispatch = useDispatch();
     //날짜 팝업
   const [isPopOpen, setIsPopOpen] = useState(false);
@@ -23,7 +23,7 @@ const Blocks = () => {
     //키워드 세팅 팝업
   const [isKeywordPopOpen, setIsKeywordPopOpen] = useState(false);
   
-  const [type, setType] = useState("일간");
+  const [type, setType] = useState(blockType);
   const [dateValue, onChangeDate] = useState(curDate ? new Date(curDate) : new Date());
   const [getData, setGetData] = useState(false);
 
@@ -34,12 +34,22 @@ const Blocks = () => {
   }, [type,user && user.userid]);
 
   useEffect(() => {
+    console.log('???',blockType, type, dateValue);
+    setType(blockType);
+    onChangeDate(curDate ? new Date(curDate) : new Date());
+    
+    if(changeTypeDatesDone){
+      getLoadBlockRequest(type,dateValue);
+    }
+  },[changeTypeDatesDone, blockType, curDate])
+
+  useEffect(() => {
     if(getData){
       getLoadBlockRequest(type,dateValue);
       setGetData(false);
     }
 
-  },[dateValue]);
+  },[dateValue,type,getData]);
 
   const getLoadBlockRequest = (type,dateValue) => {
     switch(type){
@@ -63,7 +73,7 @@ const Blocks = () => {
         dispatch({
           type: LOAD_MONTH_BLOCK_REQUEST,
           data: {
-            curDate: dateValue,
+            curDate: moment(dateValue).format("YYYY-MM-DD"),
           },
         });
         break;
@@ -116,7 +126,7 @@ const Blocks = () => {
           ) : type === "주간" ? (
             <WeekBLock />
           ) : (
-            <MonthBlock />
+            <MonthBlock setGetData={setGetData}/>
           )} 
     </>
   );

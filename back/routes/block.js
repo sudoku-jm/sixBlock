@@ -12,7 +12,6 @@ router.post("/insertday", isLoggedIn, async (req, res, next) => {
     const isFinished = req.body.isFinished;
     const code = req.body.code;
 
-    console.log('code',code)
 
 
     // 날짜 아이디.DatetimeId
@@ -210,9 +209,7 @@ router.post("/day", isLoggedIn, async (req, res, next) => {
 });
 
 
-
-
-// POST /week 일 정보 
+// POST /week 주 정보 
 router.post("/week", isLoggedIn, async (req, res, next) => {
   try {
     const curDate = req.body.curDate;
@@ -268,7 +265,6 @@ router.post("/week", isLoggedIn, async (req, res, next) => {
       return data;
     }));
 
-    console.log("blocksBeforeObj?????",blocksBeforeObj.length, blocksBeforeObj)
 
     const createObj = async() => {
       const objs = []
@@ -323,16 +319,91 @@ router.post("/week", isLoggedIn, async (req, res, next) => {
       }
     }
     
-
-
-    console.log("curDate????",curDate);
-    console.log("result????",result);
     return res.status(200).send(result);
   } catch (err) {
     console.error(err);
     next(err);
   }
 
+});
+
+// POST /month 월 정보
+router.post('/month', isLoggedIn, async (req, res, next) => {
+  try{
+    const curDate = req.body.curData;
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = (today.getMonth() + 1) >= 10 ? (today.getMonth() + 1) : '0'+ (today.getMonth() + 1) ;
+    const day = (today.getDate()) >= 10 ? today.getDate() : '0' + today.getDate();
+
+    const result = {};
+    result.type = "월간";
+    result.curDate = curDate ? curDate : `${year}-${month}-${day}`;
+    result.blockData = [];
+
+    //dateTime 모델 > 해당 월의 weeokId (202303)이 같은 데이터를 가지고 온다.
+    // const currentDate = await Datetime.findOne({    
+    //   where : { fullDate : curDate ? curDate : `${year}-${month}-${day}`},
+    //   attributes : ["year","month"]
+    // });
+
+
+    // fullDate, id값 가지고 옴. (한달 치 데이터 들고 옴 30개 정도)
+    const dateMonth = await Datetime.findAll({
+      where : { 
+        year : year,
+        month : month,
+      },
+      attributes : ["id","day","fullDate"] 
+    }); 
+
+    console.log('dateMonth',dateMonth)
+
+    //배열을 돌려 한 달 치 block을 가지고 온다. 
+    //block에서 DatetimeId를 가지고 해당 날짜 블록 데이터를 다 가지고 온다.
+    // block에 있는 데이터 : id, CodeName, isFinished 값 가지고 오기
+    const montchBlocks = await Promise.all(dateMonth.map(async (date) => {
+      const block = await Block.findAll({
+        where: { 
+          userId : req.user.userid,
+          datetimeId: date.id 
+        },
+        paranoid : false, 
+        attributes : {
+          exclude : ["KeywordId","DatetimeId","b_delYn","deletedAt","createdAt","updatedAt","userId"],
+        },
+        include : [{
+          model : Keyword,
+          attributes: ["keyword"]
+        },{
+          model : Datetime,
+          attributes : ["fullDate"]
+        },{ 
+          model : Code,
+          attributes : ["desc1","name"]
+        }]
+      });
+
+      block.sort((a, b) => {
+        const order = {m1: 1, m2: 2, a1: 3, a2: 4, d1: 5, d2: 6}
+        return order[a.CodeName] - order[b.CodeName]
+      })
+      const data = {
+        date : date.fullDate, // 날짜
+        blocks : [...block]
+      }
+      return data;
+    }));
+
+
+    
+    return res.status(200).send(montchBlocks);
+    
+
+  }catch(err){
+    console.error(err);
+    next(err);
+  }
 });
 
 module.exports = router;
