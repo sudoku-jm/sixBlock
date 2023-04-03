@@ -395,9 +395,9 @@ router.post('/month', isLoggedIn, async (req, res, next) => {
       return data;
     }));
 
-
+    result.blockData = montchBlocks;
     
-    return res.status(200).send(montchBlocks);
+    return res.status(200).send(result);
     
 
   }catch(err){

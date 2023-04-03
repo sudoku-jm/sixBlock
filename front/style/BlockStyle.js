@@ -490,10 +490,16 @@ export const KeywordModalEl = styled.div`
 `;
 
 export const MonthBlockContEl = styled.div`
+  h3 {
+    font-size: 17px;
+    margin: 10px 0 15px;
+  }
   .react-calendar {
     width: 100%;
+    max-width:414px;
     border: none;
     z-index: 1;
+    transform: translate(-50%,-65%);
     .react-calendar__tile {
       display:flex;
       flex-direction : column;

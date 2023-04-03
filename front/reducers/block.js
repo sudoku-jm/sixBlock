@@ -267,7 +267,7 @@ const reducer = (state = initialState, action) => {
       case LOAD_MONTH_BLOCK_SUCCESS:
         draft.getMonthBlockLoading = false;
         draft.getMonthBlockDone = true;
-        draft.monthBlock = action.data;
+        draft.monthBlock = action.data.blockData;
         draft.blockType = action.data.type;
         draft.curDate = action.data.curDate;
         // draft.monthBlock = dummyMonthBlock.blockData;

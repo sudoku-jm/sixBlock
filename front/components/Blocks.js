@@ -34,7 +34,6 @@ const Blocks = () => {
   }, [type,user && user.userid]);
 
   useEffect(() => {
-    console.log('???',blockType, type, dateValue);
     setType(blockType);
     onChangeDate(curDate ? new Date(curDate) : new Date());
     
