@@ -24,6 +24,7 @@ const Blocks = () => {
   const [isKeywordPopOpen, setIsKeywordPopOpen] = useState(false);
   
   const [type, setType] = useState(blockType);
+  // const [dateValue, onChangeDate] = useState(curDate ? new Date(curDate) : new Date());
   const [dateValue, onChangeDate] = useState(curDate ? new Date(curDate) : new Date());
   const [getData, setGetData] = useState(false);
 
@@ -34,8 +35,8 @@ const Blocks = () => {
   }, [type,user && user.userid]);
 
   useEffect(() => {
-    setType(blockType);
-    onChangeDate(curDate ? new Date(curDate) : new Date());
+    console.log('??',blockType, moment(dateValue).format("YYYY-MM-DD"))
+    // setType(blockType);
     
     if(changeTypeDatesDone){
       getLoadBlockRequest(type,dateValue);
@@ -43,6 +44,7 @@ const Blocks = () => {
   },[changeTypeDatesDone, blockType, curDate])
 
   useEffect(() => {
+    console.log('getData',getData)
     if(getData){
       getLoadBlockRequest(type,dateValue);
       setGetData(false);
@@ -80,7 +82,9 @@ const Blocks = () => {
   };
   
 
-  const onDateClick = useCallback(() =>{
+  const onDateClick = useCallback((e) =>{
+    console.log('e',e);
+    onChangeDate(new Date(e));
     setGetData(true);
   },[])
 

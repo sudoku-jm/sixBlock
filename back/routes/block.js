@@ -330,11 +330,11 @@ router.post("/week", isLoggedIn, async (req, res, next) => {
 // POST /month 월 정보
 router.post('/month', isLoggedIn, async (req, res, next) => {
   try{
-    const curDate = req.body.curData;
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = (today.getMonth() + 1) >= 10 ? (today.getMonth() + 1) : '0'+ (today.getMonth() + 1) ;
-    const day = (today.getDate()) >= 10 ? today.getDate() : '0' + today.getDate();
+    const curDate = req.body.curDate;
+    const curDay = curDate ? new Date(curDate) : new Date();  //today
+    const year = curDay.getFullYear();
+    const month = (curDay.getMonth() + 1) >= 10 ? (curDay.getMonth() + 1) : '0'+ (curDay.getMonth() + 1) ;
+    const day = (curDay.getDate()) >= 10 ? curDay.getDate() : '0' + curDay.getDate();
 
     const result = {};
     result.type = "월간";

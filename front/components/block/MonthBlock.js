@@ -2,7 +2,7 @@ import moment from "moment";
 import { useCallback, useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import { useDispatch, useSelector } from "react-redux";
-import { CHANGE_TYPE_DATE_BLOCK_REQUEST } from "../../reducers/block";
+import { CHANGE_TYPE_DATE_BLOCK_REQUEST, LOAD_MONTH_BLOCK_REQUEST } from "../../reducers/block";
 import { CalendarContEl, MonthBlockContEl } from "../../style/BlockStyle";
 import KeywordModal from "./KeywordModal";
 
@@ -19,8 +19,19 @@ const MonthBlock = ({setGetData}) => {
         type : "일간",
         curDate :  moment(date).format("YYYY-MM-DD"),
       }
-    })
+    });
   }, []);
+
+  const onChagneMonth = useCallback((e) => {
+    const date = e.activeStartDate;
+    console.log(moment(date).format("YYYY-MM-DD"));
+    dispatch({
+      type: LOAD_MONTH_BLOCK_REQUEST,
+      data: {
+        curDate: moment(date).format("YYYY-MM-DD"),
+      },
+    });
+  },[])
 
 
 
@@ -30,6 +41,7 @@ const MonthBlock = ({setGetData}) => {
         <h3>월간 {curDate}</h3>
         <CalendarContEl type={"month_cal"}>
           <Calendar
+            onActiveStartDateChange={(e) => onChagneMonth(e)}
             onChange={(date) => {
               onSelectDate(date);
             }}

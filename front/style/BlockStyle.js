@@ -339,7 +339,6 @@ export const CalendarContEl = styled.div`
     .react-calendar__navigation button {
       font-size: 25px;
     }
-    }
   }
 `;
 
@@ -499,7 +498,8 @@ export const MonthBlockContEl = styled.div`
     max-width:414px;
     border: none;
     z-index: 1;
-    transform: translate(-50%,-65%);
+    top:18%;
+    transform:translateX(-50%);
     .react-calendar__tile {
       display:flex;
       flex-direction : column;

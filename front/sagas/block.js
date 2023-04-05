@@ -62,6 +62,7 @@ function loadMonyhBlockAPI(data) {
 }
 function* loadMonthBlock(action) {
   try {
+    console.log('action??',action.data)
     const result = yield call(loadMonyhBlockAPI, action.data);
     console.log("loadMonyhBlockAPI result",result)
     yield put({
