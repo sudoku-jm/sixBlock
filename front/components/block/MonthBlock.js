@@ -42,6 +42,7 @@ const MonthBlock = ({}) => {
         <CalendarContEl type={"month_cal"}>
           <Calendar
             onActiveStartDateChange={(e) => onChagneMonth(e)}
+            showNeighboringMonth={false}
             onChange={(date) => {
               onSelectDate(date);
             }}
