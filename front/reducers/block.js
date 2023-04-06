@@ -303,7 +303,6 @@ const reducer = (state = initialState, action) => {
       case CHANGE_TYPE_DATE_BLOCK_SUCCESS : 
         draft.changeTypeDatesLoading = false,
         draft.changeTypeDatesDone = true;
-        console.log('action.data.curDate',action.data.curDate)
         draft.curDate = action.data.curDate;
         draft.blockType = action.data.blockType;
         break;

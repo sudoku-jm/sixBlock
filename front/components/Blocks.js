@@ -24,33 +24,31 @@ const Blocks = () => {
   const [isKeywordPopOpen, setIsKeywordPopOpen] = useState(false);
   
   const [type, setType] = useState(blockType);
-  // const [dateValue, onChangeDate] = useState(curDate ? new Date(curDate) : new Date());
   const [dateValue, onChangeDate] = useState(curDate ? new Date(curDate) : new Date());
   const [getData, setGetData] = useState(false);
 
   useEffect(() => {
     if (user && user.userid) {
-      getBlockData();
+      getLoadBlockRequest(type,dateValue);
     }
   }, [type,user && user.userid]);
 
   useEffect(() => {
-    console.log('??',blockType, moment(dateValue).format("YYYY-MM-DD"))
-    // setType(blockType);
-    
-    if(changeTypeDatesDone){
-      getLoadBlockRequest(type,dateValue);
-    }
-  },[changeTypeDatesDone, blockType, curDate])
+    onChangeDate(new Date(curDate));
+  },[curDate])
 
   useEffect(() => {
-    console.log('getData',getData)
+    setType(blockType);
+    
+  },[dateValue])
+
+  useEffect(() => {
     if(getData){
       getLoadBlockRequest(type,dateValue);
       setGetData(false);
     }
 
-  },[dateValue,type,getData]);
+  },[getData]);
 
   const getLoadBlockRequest = (type,dateValue) => {
     switch(type){
@@ -78,6 +76,14 @@ const Blocks = () => {
           },
         });
         break;
+      default : 
+        dispatch({
+          type: LOAD_DAY_BLOCK_REQUEST,
+          data: {
+            curDate: moment(dateValue).format("YYYY-MM-DD"),
+          },
+        });
+        break;
     }
   };
   
@@ -86,7 +92,7 @@ const Blocks = () => {
     console.log('e',e);
     onChangeDate(new Date(e));
     setGetData(true);
-  },[])
+  },[dateValue])
 
   const getBlockData = useCallback(() => {
     getLoadBlockRequest(type,dateValue);

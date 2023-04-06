@@ -6,12 +6,12 @@ import { CHANGE_TYPE_DATE_BLOCK_REQUEST, LOAD_MONTH_BLOCK_REQUEST } from "../../
 import { CalendarContEl, MonthBlockContEl } from "../../style/BlockStyle";
 import KeywordModal from "./KeywordModal";
 
-const MonthBlock = ({setGetData}) => {
+const MonthBlock = ({}) => {
   const dispatch = useDispatch();
   const { monthBlock, curDate } = useSelector((state) => state.block);
   const onSelectDate = useCallback((date) => {
     console.log('date',date) //형식 : Thu Mar 23 2023 00:00:00 GMT+0900 (한국 표준시)
-    // onChangeDate(date);
+
 
     dispatch({
       type : CHANGE_TYPE_DATE_BLOCK_REQUEST,
