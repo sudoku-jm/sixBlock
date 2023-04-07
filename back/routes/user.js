@@ -50,7 +50,7 @@ const upload = multer({
 
 //유저정보 불러오기
 router.get('/', async (req, res,next) => {  //GET /user
-  console.log('/user',req.headers);
+  // console.log('/user',req.headers);
   try {
     if(req.user){  
       const fullUserWithoutPassword = await User.findOne({
@@ -58,10 +58,10 @@ router.get('/', async (req, res,next) => {  //GET /user
         attributes : {
             exclude : ['password']
         },
-        include : [{
-          model : Block
-        },
-        ]
+        // include : [{
+        //   model : Block
+        // },
+        // ]
       });
       res.status(200).json(fullUserWithoutPassword);
     }else{

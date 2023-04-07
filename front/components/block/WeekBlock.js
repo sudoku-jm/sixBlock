@@ -40,7 +40,8 @@ const WeekBlock = () => {
                       const {Keyword, CodeName, Datetime} = day;
                       return (
                         <li key={day.id ? day.id : idx}>
-                          <span>{Keyword?.keyword}/{CodeName}</span>
+                          {/* <span>{Keyword?.keyword}/{CodeName}</span> */}
+                          <span>{Keyword?.keyword}</span>
                         </li>
                       )
                     })

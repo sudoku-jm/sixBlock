@@ -6,6 +6,9 @@ import {
   INSERT_DAY_BLOCK_FAILURE,
   INSERT_DAY_BLOCK_REQUEST,
   INSERT_DAY_BLOCK_SUCCESS,
+  LOAD_BLOCK_INFO_FAILURE,
+  LOAD_BLOCK_INFO_REQUEST,
+  LOAD_BLOCK_INFO_SUCCESS,
   LOAD_DAY_BLOCK_FAILURE,
   LOAD_DAY_BLOCK_REQUEST,
   LOAD_DAY_BLOCK_SUCCESS,
@@ -96,10 +99,9 @@ function* insertDayBlock(action) {
   }
 }
 
-//============== 일 블록으로 변경
+//============== 원하는 블록으로 변경
 function* changeTypeDateBlock(action){
   try{
-    console.log('action',action)
     yield put({
       type: CHANGE_TYPE_DATE_BLOCK_SUCCESS,
       data : {
@@ -132,6 +134,7 @@ function* watchChangeTypeDate() {
   yield takeLatest(CHANGE_TYPE_DATE_BLOCK_REQUEST, changeTypeDateBlock);
 }
 export default function* blockSaga() {
+  
   yield all([fork(watchInsertDayBlock)]);
   yield all([fork(watchLoadDayBlock)]);
   yield all([fork(watchLoadWeekBlock)]);

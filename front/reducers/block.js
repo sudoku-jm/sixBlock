@@ -172,6 +172,8 @@ const initialState = {
 
 // };
 
+export const LOAD_USER_BLOCK_INFO_SUCCESS  = "LOAD_USER_BLOCK_INFO_SUCCESS";
+
 //일 블록 가져오기
 export const LOAD_DAY_BLOCK_REQUEST = "LOAD_DAY_BLOCK_REQUEST";
 export const LOAD_DAY_BLOCK_SUCCESS = "LOAD_DAY_BLOCK_SUCCESS";
@@ -204,6 +206,11 @@ const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
 
     switch (action.type) {
+      //=================유저 블록 정보
+      case LOAD_USER_BLOCK_INFO_SUCCESS:
+        draft.blockType = action.data == null ? "일간" : action.data;
+        // draft.blockType = "일간";
+        break;
       //=================일 블록
       case INSERT_DAY_BLOCK_REQUEST:
         draft.insertDayBlockLoading = true;
@@ -294,7 +301,7 @@ const reducer = (state = initialState, action) => {
         draft.modifyDayBlockError = false;
         draft.modifyDayBlockError = action.error;
         break;
-      //============== 일 블록으로 변경
+      //============== 원하는 블록 타입으로 변경
       case CHANGE_TYPE_DATE_BLOCK_REQUEST : 
         draft.changeTypeDatesLoading = true,
         draft.changeTypeDatesDone = false;

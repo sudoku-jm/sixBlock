@@ -27,6 +27,7 @@ import {
   UPLOAD_PROFILE_IMG_SUCCESS,
 
 } from "../reducers/user";
+import { LOAD_USER_BLOCK_INFO_SUCCESS } from "../reducers/block";
 
 /*===========회원정보========== */
 function loadUserInfoAPI() {
@@ -39,6 +40,10 @@ function* loadUserInfo() {
     yield put({
       type: LOAD_USER_INFO_SUCCESS,
       data: result.data,
+    });
+    yield put({
+      type: LOAD_USER_BLOCK_INFO_SUCCESS,
+      data: result.data.blockType,
     });
   } catch (err) {
     console.error(err);

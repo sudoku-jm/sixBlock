@@ -28,8 +28,9 @@ const Blocks = () => {
   const [getData, setGetData] = useState(false);
 
   useEffect(() => {
+    console.log('type',type)
     if (user && user.userid) {
-      getLoadBlockRequest(type,dateValue);
+      fetchLoadBlockRequest(type,dateValue);
     }
   }, [type,user && user.userid]);
 
@@ -40,17 +41,17 @@ const Blocks = () => {
   useEffect(() => {
     setType(blockType);
     
-  },[dateValue])
+  },[dateValue, blockType])
 
   useEffect(() => {
     if(getData){
-      getLoadBlockRequest(type,dateValue);
+      fetchLoadBlockRequest(type,dateValue);
       setGetData(false);
     }
 
   },[getData]);
 
-  const getLoadBlockRequest = (type,dateValue) => {
+  const fetchLoadBlockRequest = (type,dateValue) => {
     switch(type){
       case "일간" : 
         dispatch({
@@ -90,12 +91,14 @@ const Blocks = () => {
 
   const onDateClick = useCallback((e) =>{
     console.log('e',e);
-    onChangeDate(new Date(e));
+    const newDate = new Date(e);
+    onChangeDate(newDate);
+    localStorage.setItem('curDate',newDate)
     setGetData(true);
   },[dateValue])
 
   const getBlockData = useCallback(() => {
-    getLoadBlockRequest(type,dateValue);
+    fetchLoadBlockRequest(type,dateValue);
   }, [type]);
 
   const selectType = useCallback((typeValue) => {
@@ -135,7 +138,7 @@ const Blocks = () => {
           ) : type === "주간" ? (
             <WeekBLock />
           ) : (
-            <MonthBlock setGetData={setGetData}/>
+            <MonthBlock/>
           )} 
     </>
   );

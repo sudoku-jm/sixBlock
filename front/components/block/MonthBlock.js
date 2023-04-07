@@ -9,10 +9,36 @@ import KeywordModal from "./KeywordModal";
 const MonthBlock = ({}) => {
   const dispatch = useDispatch();
   const { monthBlock, curDate } = useSelector((state) => state.block);
+  const [otherMonthDay, setOtherMonthDay] = useState('');
   const onSelectDate = useCallback((date) => {
-    console.log('date',date) //형식 : Thu Mar 23 2023 00:00:00 GMT+0900 (한국 표준시)
+    if(otherMonthDay == "" || otherMonthDay == null){
+      console.log('111date',date)
+      fetchChangeBlockType(date);
+    }else{
+      console.log('222date',date)
+      fetchChangeBlockType(otherMonthDay);
+      setOtherMonthDay('');
+    }
+  }, [otherMonthDay]);
+
+  // 달이 바뀔 경우
+  const onChangeMonth = useCallback((e) => {
+    const date = e.value;
+    const startDate = e.activeStartDate;
+    if(date == undefined){
+      dispatch({
+        type: LOAD_MONTH_BLOCK_REQUEST,
+        data: {
+          curDate: moment(startDate).format("YYYY-MM-DD"),
+        },
+      });
+    }else{
+      setOtherMonthDay(date);
+    }
+  },[]);
 
 
+  const fetchChangeBlockType = (date) => {
     dispatch({
       type : CHANGE_TYPE_DATE_BLOCK_REQUEST,
       data : {
@@ -20,20 +46,8 @@ const MonthBlock = ({}) => {
         curDate :  moment(date).format("YYYY-MM-DD"),
       }
     });
-  }, []);
-
-  const onChagneMonth = useCallback((e) => {
-    const date = e.activeStartDate;
-    console.log(moment(date).format("YYYY-MM-DD"));
-    dispatch({
-      type: LOAD_MONTH_BLOCK_REQUEST,
-      data: {
-        curDate: moment(date).format("YYYY-MM-DD"),
-      },
-    });
-  },[])
-
-
+  }
+  
 
   return (
     <>
@@ -41,8 +55,9 @@ const MonthBlock = ({}) => {
         <h3>월간 {curDate}</h3>
         <CalendarContEl type={"month_cal"}>
           <Calendar
-            onActiveStartDateChange={(e) => onChagneMonth(e)}
-            showNeighboringMonth={false}
+            activeStartDate = {new Date(curDate)}
+            onActiveStartDateChange={(e) => onChangeMonth(e)}
+            // showNeighboringMonth={false} //다른 달 날짜 안보임
             onChange={(date) => {
               onSelectDate(date);
             }}
@@ -50,7 +65,7 @@ const MonthBlock = ({}) => {
             tileContent={(date, view) => {
               return (
                 <div className="block_container">
-                   {monthBlock.map((day) => {
+                   {monthBlock?.map((day) => {
                     //날짜가 일치할 경우
                     if (day.date === moment(date.date).format("YYYY-MM-DD")) {
                       return (

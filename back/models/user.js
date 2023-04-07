@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(100), //암호화 하면 늘어나기 때문
         allowNull: false,
       },
+      blockType : {
+        type: DataTypes.STRING(5),
+        allowNull:true,
+      },
       u_delYN: {
         type: DataTypes.STRING(1), //삭제여부 : Y, N
         allowNull: false,

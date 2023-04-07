@@ -1,8 +1,7 @@
 const express = require("express");
-const { Block, Datetime, Code, Keyword, Sequelize } = require("../models"); //DB 가져오기
+const { User, Block, Datetime, Code, Keyword, Sequelize } = require("../models"); //DB 가져오기
 const { isLoggedIn } = require("./middlewares");
 const router = express.Router();
-
 
 //POST DAY블록 추가 /insertday
 router.post("/insertday", isLoggedIn, async (req, res, next) => {
@@ -191,6 +190,15 @@ router.post("/day", isLoggedIn, async (req, res, next) => {
         return order[a.CodeName] - order[b.CodeName]
       })
 
+
+      //유저 블록타입 업데이트
+      await User.update(
+        {
+          blockType: "일간"
+        },
+        { where: { userid: req.user.userid } }
+      );
+
       return res.status(200).send(result);
     }else{
       dayBlock.sort((a, b) => {
@@ -318,6 +326,14 @@ router.post("/week", isLoggedIn, async (req, res, next) => {
         result.blockData.push(obj);
       }
     }
+
+     //유저 블록타입 업데이트
+     await User.update(
+      {
+        blockType: "주간"
+      },
+      { where: { userid: req.user.userid } }
+    );
     
     return res.status(200).send(result);
   } catch (err) {
@@ -396,6 +412,14 @@ router.post('/month', isLoggedIn, async (req, res, next) => {
     }));
 
     result.blockData = montchBlocks;
+
+     //유저 블록타입 업데이트
+     await User.update(
+      {
+        blockType: "월간"
+      },
+      { where: { userid: req.user.userid } }
+    );
     
     return res.status(200).send(result);
     

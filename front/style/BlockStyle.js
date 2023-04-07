@@ -350,7 +350,7 @@ export const WeekBlockContainerEl = styled.div`
   .week_title {
     ul {
       display: flex;
-      margin-left: 50px;
+      margin-left: 70px;
       li {
         width: calc(100% / 3);
         padding: 10px 0;
