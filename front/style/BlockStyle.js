@@ -391,7 +391,8 @@ export const WeekBlockContainerEl = styled.div`
         align-items: center;
         justify-content: center;
         border-radius: 10px;
-        background-color: var(--color-primary-op2);
+        border:1px solie var(--color-primary-op2);
+        box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 3px;
         cursor: pointer;
         span {
           &.dimmed_text {
@@ -402,9 +403,12 @@ export const WeekBlockContainerEl = styled.div`
             font-weight: 700;
           }
         }
+        &.ing{
+          background-color: var(--color-primary-op2);
+        }
         &.finished_block {
           background-color: var(--color-f0f0f0);
-          box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 3px;
+         
           cursor: pointer;
           .finished_icon {
             position: absolute;
@@ -498,7 +502,7 @@ export const MonthBlockContEl = styled.div`
     max-width:414px;
     border: none;
     z-index: 1;
-    top:18%;
+    top:20%;
     transform:translateX(-50%);
     .react-calendar__tile {
       display:flex;

@@ -1,10 +1,13 @@
 import { useCallback, useState } from "react";
 import { TiTick } from "react-icons/ti";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { WeekBlockContainerEl } from "../../style/BlockStyle";
 import KeywordModal from "./KeywordModal";
 import useChangeWeekName from "../../hooks/useChangeWeekName";
+import { CHANGE_TYPE_DATE_BLOCK_REQUEST } from "../../reducers/block";
+import moment from "moment";
 const WeekBlock = () => {
+  const dispatch = useDispatch();
   const { weekBlock,curDate } = useSelector((state) => state.block);
   console.log("weekBlock", weekBlock);
 
@@ -13,6 +16,23 @@ const WeekBlock = () => {
   const openKeywordModal = useCallback(() => {
     setIsModalOpen(true);
   }, [isModalOpen]);
+
+
+  const onSelectDate = useCallback((w) =>{
+    console.log('???',w)
+    fetchChangeBlockType(w.date);
+  },[]);
+
+  const fetchChangeBlockType = (date) => {
+    dispatch({
+      type : CHANGE_TYPE_DATE_BLOCK_REQUEST,
+      data : {
+        type : "일간",
+        curDate :  moment(date).format("YYYY-MM-DD"),
+      }
+    });
+  }
+  
 
   return (
     <WeekBlockContainerEl>
@@ -37,12 +57,19 @@ const WeekBlock = () => {
                 <ul>
                   {
                     w.blocks?.map((day, idx) => {
-                      const {Keyword, CodeName, Datetime} = day;
+                      const {Keyword, CodeName, Datetime,isFinished} = day;
                       return (
-                        <li key={day.id ? day.id : idx}>
-                          {/* <span>{Keyword?.keyword}/{CodeName}</span> */}
-                          <span>{Keyword?.keyword}</span>
-                        </li>
+                        Keyword?.keyword == "" ? <>
+                          <li key={day.id ? day.id : idx} className="" onClick={() => onSelectDate(w)}>
+                           -
+                          </li>
+                        </>:
+                        <>
+                          <li key={day.id ? day.id : idx} className={isFinished=='Y'?'finished_block' : 'ing'} onClick={() => onSelectDate(w)}>
+                            {/* <span>{Keyword?.keyword}/{CodeName}</span> */}
+                            <span>{Keyword?.keyword}</span>
+                          </li>
+                        </>
                       )
                     })
                   }
