@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "./axiosInstance";
 import { all, fork, takeLatest, call, put } from "redux-saga/effects";
 import {
   CHANGE_TYPE_DATE_BLOCK_REQUEST,

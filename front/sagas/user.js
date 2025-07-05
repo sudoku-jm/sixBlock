@@ -1,5 +1,6 @@
 import { all, fork, put, takeLatest, call, delay } from "redux-saga/effects";
-import axios from "axios";
+// import axios from "axios";
+import axios from "./axiosInstance";
 import {
   DUPLICATE_CHECK_ID_FAILRE,
   DUPLICATE_CHECK_ID_REQUEST,
@@ -43,7 +44,7 @@ function* loadUserInfo() {
     });
     yield put({
       type: LOAD_USER_BLOCK_INFO_SUCCESS,
-      data: result.data.blockType,
+      data: result.data.blockType || '일간',
     });
   } catch (err) {
     console.error(err);
